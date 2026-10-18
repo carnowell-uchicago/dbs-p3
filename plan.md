@@ -1,5 +1,7 @@
 # Plan: "Kind Regards", a kindness postcard wall (Assignment 3)
 
+> **Later changes (2026-10-18, the student's choices).** This is the plan as approved; the README and `AGENTS.md` describe the tool as it is now. Since then: the first visit is a step-by-step Write tutorial with a practice example (not the Today screen below), the wall is a pixel corkboard with **Show me a memory**, Look back can edit and delete, and there's one daily idea with no "Show me another" (83 ideas in all).
+
 ## Context
 Assignment 3 asks for an everyday tool built around three flows: the first visit, the main task, and coming back. It must use Next.js, Tailwind, and localStorage, and deploy on Vercel. The brief requires the student to make the decisions, so everything below reflects choices the student made in this planning session:
 

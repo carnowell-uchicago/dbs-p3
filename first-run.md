@@ -60,6 +60,8 @@ Two bugs were found while making these fixes, and fixed: "Show me another" didn'
 
 **Verified:** a 61-check end-to-end browser run (laptop and phone) passes, including every fix above. Contrast is still 24 of 24.
 
+**Since then:** the first visit became the Write tutorial, so the first-visit idea (and "Show me another") is gone; see Round 2 and the README.
+
 ## Round 2: after the corkboard and the new first visit
 
 Later on 2026-10-18, after the wall became a corkboard and the first visit became "write right here", a fresh subagent ran the check again on the live site: same goal ("Write postcards for three kind things you did this week, then come back later"), phone (390×844) and laptop (1280×900), starting from empty storage and without reading the code. It covered the first visit, the form with deliberate mistakes, the corkboard (open, close, delete and Undo, edit, Show me a memory), People and Look back (including edits there), a keyboard-only pass, and a return 8 days later.
@@ -117,3 +119,5 @@ Later on 2026-10-18, after the wall became a corkboard and the first visit becam
 | 15 | Cards overlapped on a small board | New cards take free slots on a loose, randomly nudged grid, favoring the emptiest; they only overlap once the board is full. |
 
 **Verified:** the first-visit, form, wall, Look back, and keyboard checks pass in a browser at 390 and 1280 wide; every page at 360 and 390 has no sideways scrolling; 12 of 12 four-card phone boards had no overlaps. Contrast is 25 of 25 (the blue-on-sky pair is no longer used).
+
+**Since then:** at the student's request, the first visit moved from Today to a step-by-step Write tutorial (one box at a time, with an example offered and a practice postcard that isn't saved), and the daily idea can no longer be swapped. Fix #6 now lives in the tutorial's Who step.
