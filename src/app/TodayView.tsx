@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { IdeaCard } from "@/components/postcards/IdeaCard";
+import { QuickWrite } from "./QuickWrite";
 import { Postcard } from "@/components/postcards/Postcard";
 import { LinkButton } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Panel } from "@/components/ui/Panel";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { focusRing, font, type } from "@/components/ui/styles";
-import { examplePostcard } from "@/data/example";
 import { addDays, dayKey, isSunday, relativeDay, weekStart } from "@/lib/dates";
 import { personToRevisit, postcardsInWeek, todaysIdea } from "@/lib/derive";
 import { useKindRegards } from "@/lib/store";
@@ -27,29 +27,13 @@ export function TodayView() {
   const lastVisit = state.visits?.current !== today ? state.visits?.current : state.visits?.previous;
   const sunday = isSunday(today);
 
-  // First visit: nothing saved yet. Useful right away: an idea to act on and
-  // the one button to write it down. No tour, no empty wall.
+  // First visit: nothing saved yet. No reading first: the postcard's one
+  // box is right here, with starters to tap, and pinning shows the wall.
   if (total === 0) {
     return (
       <>
-        <PageHeader
-          title="Who did you notice today?"
-          lead="Do one kind thing for someone, big or small. Then write it on a postcard and pin it to your wall."
-        >
-          <div className="flex flex-wrap items-center gap-4 pt-2">
-            <LinkButton href="/write" variant="primary">
-              Write a postcard
-            </LinkButton>
-            <p className={type.meta}>Takes under a minute. No sign-up; it stays on this device.</p>
-          </div>
-        </PageHeader>
-        <IdeaCard idea={idea} comfort={comfort} />
-        <section aria-labelledby="looks-like" className="flex flex-col gap-4">
-          <h2 id="looks-like" className={type.heading}>
-            What a postcard looks like
-          </h2>
-          <Postcard postcard={examplePostcard} example headingLevel="h3" />
-        </section>
+        <PageHeader title="Who did you notice today?" />
+        <QuickWrite state={state} />
       </>
     );
   }
