@@ -79,7 +79,7 @@ function Wall() {
       message={toast?.message ?? null}
       action={toast?.undo ? { label: "Undo", onClick: undo } : undefined}
       onDismiss={dismiss}
-      duration={toast?.undo ? 10000 : 5000}
+      duration={toast?.undo ? 30000 : 5000}
     />
   );
 

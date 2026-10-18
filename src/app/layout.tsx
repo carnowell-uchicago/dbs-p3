@@ -35,7 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </Link>
           <NavBar />
         </header>
-        <main id="main" tabIndex={-1} className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 pt-6 pb-24 outline-none sm:px-6">
+        <main id="main" tabIndex={-1} className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 pt-6 pb-32 outline-none sm:px-6">
           <StorageNotice />
           {children}
         </main>
