@@ -8,42 +8,59 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-# Kindness Log: Design, Build, Ship, Assignment 3
+# Kind Regards: Design, Build, Ship, Assignment 3
 
-MPCS 51238, Autumn 2026. **Due Tuesday, October 20, 5:30 PM.** The brief PDF is in the repo root (gitignored).
+A daily kindness log kept as a wall of postcards. MPCS 51238, Autumn 2026. **Due Tuesday, October 20, 5:30 PM.**
+- **Live:** https://dbs-p3.vercel.app (Vercel auto-deploys `main`)
+- **Repo:** github.com/carnowell-uchicago/dbs-p3. Plain `git push` over HTTPS works.
+- **Brief:** the PDF in the repo root (gitignored; read it with the Read tool).
+
+## Starting a new session
+1. Read this file, then `README.md` for the overview. `plan.md` is the approved plan, and `first-run.md` has the usability feedback and fixes.
+2. **The build is complete.** Expect small requested edits, not new features. Don't redo finished work.
+3. If the student asks whether `AGENTS.md` loaded: it shows under "Memory files" in `/context`. There must be **no `CLAUDE.md`** (the brief requires `AGENTS.md` as the context file).
+
+## Working rules (agreed with the student)
+- **The student decides; the agent builds.** The brief marks one-shot work incomplete, so design choices come from the student. Ask about anything that changes the tool's scope, flows, wording the student chose, or the visual style. Routine code, fixes, docs, and tests don't need asking.
+- **Small commits pushed straight to `main`** (approved), each ending with the co-author line. Never force-push or rewrite history.
+- **No new dependencies** beyond Next.js/Tailwind without asking. Test tooling stays outside the repo (see Verifying).
+- **Left to the student; don't write these:** the README "My reflection" section, submitting in Google Classroom, and the in-class explanation.
 
 ## The assignment
-A small everyday tool built around three flows: the **first visit**, the **main task**, and **coming back**. There's one route per flow step, with shared navigation. The flows are drawn in Mermaid in `flows.md` and shown in `README.md`.
+A small everyday tool built around three flows: the **first visit**, the **main task**, and **coming back**. There's one route per flow step, with shared navigation. The flows are drawn in Mermaid in `flows.md` and embedded in `README.md`; keep the two in sync.
 
-- **Graded on:** the live Vercel URL; a first visit that's useful right away (no dead-end empty screen); a one-column form with a label on every field, errors next to the field that say what to do next, and input kept on error; a reason to come back, plus memory between visits; shared components; clear navigation; keyboard access, real labels, and contrast checked; the agent's first-run usability feedback in `README.md`; and commits that show progress.
-- **One-shot work is marked incomplete.** The student makes the design decisions at checkpoints: flows (in plan mode), onboarding research takeaways, the reason to come back, and which first-run fixes to make. The agent builds everything else.
+- **Graded on:** the live URL; a first visit that's useful right away (no dead-end empty screen); a one-column form with a label on every field, errors next to the field that say what to do next, and input kept on error; a reason to come back, plus memory between visits; shared components; clear navigation; keyboard access, real labels, and contrast checked; the first-run usability feedback in `README.md`; and commits that show progress.
+- **Hard constraints:** Next.js + Tailwind only. Data lives in `localStorage`: no backend, database, accounts, or external APIs. Vercel Hobby plan.
 
-## Hard constraints
-- Next.js + Tailwind only. Data lives in the browser in `localStorage`: no backend, database, accounts, or external APIs.
-- Push back on any package we don't need.
-- Deploy on Vercel's Hobby plan from `main`.
-
-## Status
-- **2026-10-18: complete and deployed** at https://dbs-p3.vercel.app (Vercel deploys `main`).
-- The first-run check is done (`first-run.md`). The student picked 14 of 16 fixes (all except #12, #13, #16, the Look back wording), and they're shipped.
-- A 62-check end-to-end browser run passes locally and on production. Contrast is 24 of 24.
-- **Left for the student:** running `/context`, the README "My reflection" section, submitting, and explaining in class.
+## Status (2026-10-18)
+- **Done:** all 5 routes, all 4 student checkpoints, research (`research.md`), flows, README, and the first-run check. The student chose 14 of 16 fixes; all are shipped. Not fixed, by the student's choice: #12, #13, #16 (Look back wording).
+- **Later small edits from the student:** the example postcard now says "orange coat" (`src/data/example.ts`), and the form hint says "their green coat" (`WriteForm.tsx`).
+- **Verified:** a 62-check end-to-end run passes locally and on production; contrast is 24 of 24.
+- **Still with the student:** confirm `AGENTS.md` loads in `/context` (in a new session), write "My reflection", submit, and the class talk.
 
 ## Code map
-- **Form:** `/write` has What (required), Who, When (Today / Yesterday / Earlier with a date), Reaction, Feeling (chips + Other…), and the idea checkbox. Field ids double as error keys (`fieldOrder`).
-- `src/app/<route>/page.tsx` is a thin server file with metadata; the `*View.tsx` / `WriteForm.tsx` next to it is the client UI. Routes: `/` (TodayView), `/write`, `/wall`, `/people`, `/look-back`.
-- `src/lib/store.ts`: the single localStorage entry `kind-regards:v1`, `useKindRegards()` (null on the server, so pages show `Skeleton`), and actions. `derive.ts`: today's idea, people, nudges, weeks. `dates.ts`: local day keys (YYYY-MM-DD); weeks run Mon–Sun.
-- `src/data/ideas.ts`: 27 ideas (5 groups, quiet or in person). `example.ts`: the labeled example postcard.
-- `src/components/ui/`: shared Button/LinkButton, Fields (Field, TextField, TextAreaField, CheckboxField), ChipGroup, Panel, Notice, Toast, Skeleton, Icon, styles (pixel `edge`, `focusRing`, `type`). **Use these everywhere.**
-- `src/lib/tokens.ts`: colors (CSS vars `--cp-*` on `<html>`) and the contrast pairs. Add a pair whenever a new color combination appears; `npm run contrast`.
-- **Gotcha:** Cache Components keeps up to 3 pages mounted (hidden, still in the DOM). Use `focusPageHeading()` (`src/lib/focus.ts`) instead of querying `main h1` directly; `RouteFocus` moves focus on navigation. Wall and Write key their content on `useRouter().bfcacheId` so a fresh visit resets local state. Pages using `useSearchParams` sit inside `<Suspense>`.
+- `src/app/<route>/page.tsx` is a thin server file with metadata; the client UI sits next to it (`TodayView.tsx`, `write/WriteForm.tsx`, `wall/WallView.tsx`, `people/PeopleView.tsx`, `look-back/LookBackView.tsx`). There's also `not-found.tsx` and the pixel-heart `icon.svg`.
+- **Form (`/write`):** What (required, 280 max), Who (optional, 40 max, suggests past names), When (Today / Yesterday / Earlier with a date; no future dates), Reaction (140), Feeling (chips + Other…, 60), and the "This was today's idea" checkbox (on edits, only if the postcard had an idea). Field ids double as error keys (`fieldOrder`); the first error gets focus. The draft autosaves.
+- `src/lib/store.ts`: the single localStorage entry `kind-regards:v1`, `useKindRegards()` (null on the server, so pages show `Skeleton`), and actions. Postcards are sorted by `day`, then `createdAt`. `derive.ts`: today's idea (first visit → a compliment; Sunday → "For you" until a comfort level is picked), people, nudges (7+ days), weeks. `dates.ts`: local day keys (YYYY-MM-DD); weeks run Mon–Sun.
+- `src/data/ideas.ts`: 27 original ideas (5 groups, quiet or in person), in a "notice, then say" voice. Never reuse the RAK wordings listed in `research.md`.
+- `src/components/ui/`: shared Button/LinkButton, Fields (Field, TextField, TextAreaField, CheckboxField), ChipGroup, Panel, Notice, Toast (pauses while hovered or focused), Skeleton, Icon, and styles (pixel `edge`, `focusRing`, `type`). **Use these everywhere.** Layout lives in `src/components/layout/` (NavBar, SkyBand, PageHeader, StorageNotice, RouteFocus); postcards in `src/components/postcards/`.
+- `src/lib/tokens.ts`: colors (CSS vars `--cp-*` on `<html>`) and the contrast pairs. Add a pair whenever a new color combination appears, run `npm run contrast`, and update the README table.
+- **Gotchas:**
+  - Cache Components keeps up to 3 pages mounted (hidden, still in the DOM). Use `focusPageHeading()` (`src/lib/focus.ts`) instead of querying `main h1`. `RouteFocus` waits for the new page's visible h1 after navigation.
+  - Wall and Write key their content on `useRouter().bfcacheId`, so a fresh visit resets local state.
+  - Pages that use `useSearchParams` sit inside `<Suspense>`.
+
+## Verifying changes
+- `npm run build`, `npm run lint`, `npm run contrast`.
+- **Browser tests:** install `playwright-core` in the session scratchpad (not the repo) and launch with `chromium.launch({ channel: "chrome" })`, which uses the installed Google Chrome. Check the first visit with empty storage, each form error (text kept, focus), save and reload, edit, delete and Undo, and a return visit (shift `day`, `createdAt`, and `visits.current` back in `kind-regards:v1`). Run at 1280 and 390 wide, and keyboard-only. Look at the screenshots.
+- After pushing, check the live URL once Vercel redeploys (about 1 minute).
 
 ## Decisions (made by the student)
-- **Tool:** a kindness log/jar. Each day it suggests one small kind act. Doing it and logging it fills your jar. The goal is to help the user thoughtfully appreciate others every day.
-- **Prompt groups (keep all):** compliments (the seed: "Genuinely compliment someone on [their hair, their sense of style, …]"), gratitude, reaching out, small acts, and kindness to yourself (optional, about once a week).
-- **Onboarding research tools:** Duolingo, Happyfeed, and the Random Acts of Kindness Foundation.
-- **Collection:** a postcard wall, not a jar (jars are taken). **One log action** for any kindness; the daily idea is secondary ("This was today's idea" checkbox).
-- **Extras:** people-first prompts, a specificity nudge, optional "How did they react?" and "How did you feel after?", a Quiet / In person comfort level, optional names (for strangers).
-- **Return:** a new idea daily, the Sunday look-back, people you haven't reached lately, a running total (no streaks).
-- **Prompt voice:** "notice, then say." **Style:** Cozy Pixel (from p2) plus Life is Strange-inspired journal touches. The name "Kind Regards" was proposed by the agent and can be changed.
-- **Must be substantially different** from all three (and any other existing kindness jar or kindness app): no copied names, terms, mechanics, visuals, or prompt wording. Having something that makes it better is a secondary goal.
+- **Tool:** a kindness log that helps the user thoughtfully appreciate others every day. Built for the student.
+- **Prompt groups (all kept):** compliments (seeded by the student's "compliment someone on their hair, their style…" idea), thanks, reaching out, small acts, and for you (Sundays).
+- **Research:** Duolingo, Happyfeed, and the RAK Foundation. The app must be **substantially different** from them and from other kindness apps (no jars, streaks, mascots, or growing plants, and none of RAK's wording or terms). Being better is secondary.
+- **Collection:** a postcard wall (jars are taken). **One log action** for any kindness; the daily idea is secondary.
+- **Extras:** people-first prompts, a specificity nudge, optional reaction and feeling fields, Quiet / In person, and optional names (blank is fine for strangers).
+- **Return:** a new idea daily, the Sunday look-back, people you haven't written to lately, and a running total (never a streak).
+- **Style:** Cozy Pixel (from Assignment 2, `~/projects/p2`) plus Life is Strange-inspired journal touches (golden-hour sky, tape, handwriting, postmarks). No butterflies, Polaroids, or game names.
+- **Name:** "Kind Regards" (proposed by the agent; kept by the student).
