@@ -8,13 +8,13 @@ Each box with a route in brackets is a page. Every page shares the same nav: Tod
 
 ```mermaid
 flowchart LR
-    A["Today [/]<br/>Who did you notice today?<br/>(nothing saved yet)"] --> Q["What did you do or notice?<br/>the one box, right on the page"]
+    A["Today [/]<br/>Who did you notice today?<br/>(nothing saved yet)"] --> Q["What did you do or notice?<br/>the one box, right on the page<br/>+ Who was it for? (optional)"]
     Q -->|"tap a starter:<br/>Complimented / Thanked /<br/>Checked in on / Helped"| Q
     Q -->|"Pin it to my wall"| V{"Valid?"}
     V -->|"empty, or only a starter"| QE["Under the box:<br/>'Write what you did or noticed…'<br/>'Finish the sentence…'<br/>(text kept, focus on the box)"]
     QE --> Q
     V -->|"yes"| P["Wall [/wall]<br/>it drops onto the corkboard:<br/>'Pinned to your wall.'"]
-    Q -->|"Add who, when, or how it felt"| W["Write [/write]<br/>what you typed carries over"]
+    Q -->|"Add when or how it felt"| W["Write [/write]<br/>what you typed carries over"]
 ```
 
 ### 2 · Main task: write it down and pin it

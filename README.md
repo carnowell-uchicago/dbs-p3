@@ -16,13 +16,13 @@ These are the three flows (first visit, main task, coming back). The source is i
 
 ```mermaid
 flowchart LR
-    A["Today [/]<br/>Who did you notice today?<br/>(nothing saved yet)"] --> Q["What did you do or notice?<br/>the one box, right on the page"]
+    A["Today [/]<br/>Who did you notice today?<br/>(nothing saved yet)"] --> Q["What did you do or notice?<br/>the one box, right on the page<br/>+ Who was it for? (optional)"]
     Q -->|"tap a starter:<br/>Complimented / Thanked /<br/>Checked in on / Helped"| Q
     Q -->|"Pin it to my wall"| V{"Valid?"}
     V -->|"empty, or only a starter"| QE["Under the box:<br/>'Write what you did or noticed…'<br/>'Finish the sentence…'<br/>(text kept, focus on the box)"]
     QE --> Q
     V -->|"yes"| P["Wall [/wall]<br/>it drops onto the corkboard:<br/>'Pinned to your wall.'"]
-    Q -->|"Add who, when, or how it felt"| W["Write [/write]<br/>what you typed carries over"]
+    Q -->|"Add when or how it felt"| W["Write [/write]<br/>what you typed carries over"]
 ```
 
 ### 2 · Main task: write it down and pin it
@@ -105,7 +105,7 @@ Subagents studied how three similar tools welcome someone new. The full notes ar
 | Happyfeed (now Orca) | An account form | Name, email, password, *before* any value | Right after sign-up | **Took:** scheduled look-backs. **Avoided:** the jar, shake-for-random, sign-up first. |
 | Random Acts of Kindness | Free resources, no sign-up | Nothing | One click to an idea | **Took:** asking for nothing, with something to do in one tap (here, the starters on the first visit; the daily idea starts on the second). **Avoided:** their wording, calendars, terms. Filled their gap: no way to log or reflect. |
 
-So the first visit asks for nothing and has almost nothing to read. Following the brief ("learn by doing, not by reading a tour"), Today opens on the question and the postcard's one required box, right on the page. Starters (**Complimented**, **Thanked**, **Checked in on**, **Helped**) begin the sentence for you, and **Pin it to my wall** drops the postcard onto the corkboard. The optional fields are one link away. The daily idea starts on the second visit, as part of coming back.
+So the first visit asks for nothing and has almost nothing to read. Following the brief ("learn by doing, not by reading a tour"), Today opens on the question and the postcard's one required box, right on the page. Starters (**Complimented**, **Thanked**, **Checked in on**, **Helped**) begin the sentence for you, and **Pin it to my wall** drops the postcard onto the corkboard. An optional **Who was it for?** box sits under it, and the other optional fields are one link away. The daily idea starts on the second visit, as part of coming back.
 
 ## The form
 
@@ -145,8 +145,7 @@ So the first visit asks for nothing and has almost nothing to read. Following th
 | Field error text on the page | error #b3361f | bg #f7ecd6 | 5.17:1 | 4.5:1 | Pass |
 | Handwriting and postmark on postcards | ink #3a3f6b | surface #fff8ea | 9.45:1 | 4.5:1 | Pass |
 | Idea stamp label | text #3b2a20 | tape-gold #f6c945 | 8.69:1 | 4.5:1 | Pass |
-| Welcome banner, look-back summary, 'days ago' badge | text #3b2a20 | sky-1 #ffd9a0 | 10.20:1 | 4.5:1 | Pass |
-| Handwritten names in the look-back summary | ink #3a3f6b | sky-1 #ffd9a0 | 7.46:1 | 4.5:1 | Pass |
+| Welcome banner, look-back summary and its names, 'days ago' badge, memory label | text #3b2a20 | sky-1 #ffd9a0 | 10.20:1 | 4.5:1 | Pass |
 | Toast text | surface #fff8ea | text #3b2a20 | 12.92:1 | 4.5:1 | Pass |
 | Control edges on the page | wood #8a4a24 | bg #f7ecd6 | 5.81:1 | 3:1 | Pass |
 | Control edges on cards | wood #8a4a24 | surface #fff8ea | 6.44:1 | 3:1 | Pass |
@@ -156,7 +155,7 @@ So the first visit asks for nothing and has almost nothing to read. Following th
 | Postcard edges on the corkboard | wood #8a4a24 | cork #d6a771 | 3.12:1 | 3:1 | Pass |
 | Focus outline on the corkboard | text #3b2a20 | cork #d6a771 | 6.26:1 | 3:1 | Pass |
 
-26 of 26 pairs pass.
+25 of 25 pairs pass.
 
 ## First-run check
 
@@ -218,6 +217,63 @@ Two bugs were found while making these fixes, and fixed: "Show me another" didn'
 
 **Verified:** a 61-check end-to-end browser run (laptop and phone) passes, including every fix above. Contrast is still 24 of 24.
 
+### Second check: after the corkboard and the new first visit
+
+Later on 2026-10-18, after the wall became a corkboard and the first visit became "write right here", a fresh subagent ran the check again on the live site: same goal ("Write postcards for three kind things you did this week, then come back later"), phone (390×844) and laptop (1280×900), starting from empty storage and without reading the code. It covered the first visit, the form with deliberate mistakes, the corkboard (open, close, delete and Undo, edit, Show me a memory), People and Look back (including edits there), a keyboard-only pass, and a return 8 days later.
+
+**Timings:** about 5–10 s to see what to do; first postcard saved in about 20–30 s (tap a starter, type one sentence, tap Pin).
+
+#### What it said worked
+- **The first visit gets you doing something right away:** one question, one box, four starters, and Pin, with about 25 words to read. "Oh, I just type the nice thing. Got it."
+- **Form errors** sit under their field, focus jumps to the first one, and nothing typed is lost. "It tells me exactly what to fix."
+- **Pinning feels rewarding:** "Just pinned", focus on the new card, "Updated" after edits, and one-tap Undo. "Cute, and I'm not scared to delete."
+- **Coming back:** "Welcome back", the Sunday look-back link, and "Thinking of Raj?". "That actually makes me want to text Raj."
+- **Look back reads like a short letter**, and a quiet week says "That's okay."
+- **Accessibility basics:** skip link, labelled nav, real labels, a named postcard dialog that Escape closes with focus returned, no sideways scrolling at 390.
+
+#### Usability feedback (as reported)
+**High:** none.
+
+**Medium**
+1. **Wall, phone:** previews cut to 3–5 words, and with 1–2 cards the tall board is mostly empty cork (one card sat about 1,100 px down).
+2. **Show me a memory, phone:** the memory label and Close pile up over the page's "Your wall" heading.
+3. **Today, return visit, phone:** the daily idea is about 1,400 px down, though the welcome box says "Here's a new idea for today."
+4. **Postcard dialog, keyboard:** after Close, Edit, and Delete, the next Tab left the dialog before cycling back.
+
+**Low**
+5. Screen-reader names run "optional" into the label ("Who was it for?optional").
+6. A name in the sentence but not in Who shows "To someone" and isn't in People; on the first visit Who was behind "Add who, when, or how it felt".
+7. The "My own" stamp is never explained.
+8. On the first visit, nothing says what the tool is for until after the first pin.
+9. On phones, the main box's focus outline overlaps the hint above it.
+10. On the corkboard, a focused card's thin outline is the least obvious focus state.
+11. Only the main box shows a character count; Reaction (140) and "In your own words" don't.
+12. Names on People and Look back are blue handwriting, so they look like links.
+13. A stray space on People: "last Oct 10 , 8 days ago".
+14. After pinning, the wall's heading and total are scrolled out of view.
+15. On a phone, with 4 cards, one covered part of another.
+
+#### What the student chose to fix
+- **Fix:** #1, #2, #3, #5, #6, #7 (a short explanation when you hover over a stamp), #9, #10, #11, #12, #13, #15.
+- **Not fixed (the student's choice):** #4 (that's the browser's normal behavior for a modal dialog: Tab passes through the browser's own controls), #8, #14.
+
+#### What changed
+| # | Feedback | Change |
+|---|---|---|
+| 1 | Phone board mostly empty, previews cut short | On phones the board grows with the number of cards instead of filling the screen, and mini cards are a little bigger with three lines of text. |
+| 2 | Memory label piled over the heading | The memory label and Close sit on their own solid sky strip. |
+| 3 | Daily idea far down on return | Until you've written one today, the idea comes right after the buttons. |
+| 5 | "optional" ran into labels | A real space before "optional" on every field and chip group. |
+| 6 | Names typed into the sentence only | The first visit has an optional **Who was it for?** box, so People picks the name up. The link is now "Add when or how it felt". |
+| 7 | "My own" never explained | Hovering over a stamp explains it ("My own: a kindness you came up with yourself, not from the daily idea." or "Compliment: this came from one of the daily ideas."). On a full postcard the stamp can also be focused or tapped, and Escape hides the note. |
+| 9 | Focus outline over the hint | Text fields use a tighter outline that clears the hint. |
+| 10 | Faint card focus on cork | A focused card gets a thicker outline and lifts. |
+| 11 | No count on Reaction or "In your own words" | Both show a character count. |
+| 12 | Names looked like links | Names on People and Look back are cocoa handwriting. |
+| 13 | Stray space before the comma | The "N days ago" badge now follows a " · " separator, read naturally by screen readers. |
+| 15 | Cards overlapped on a small board | New cards take free slots on a loose, randomly nudged grid, favoring the emptiest; they only overlap once the board is full. |
+
+**Verified:** the first-visit, form, wall, Look back, and keyboard checks pass in a browser at 390 and 1280 wide; every page at 360 and 390 has no sideways scrolling; 12 of 12 four-card phone boards had no overlaps. Contrast is 25 of 25 (the blue-on-sky pair is no longer used).
 
 ## My reflection
 
