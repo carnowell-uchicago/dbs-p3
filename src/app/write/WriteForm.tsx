@@ -22,23 +22,28 @@ type Errors = Partial<Record<keyof typeof limits, string>>;
 
 const feelingPicks = ["Warm", "Lighter", "Nervous, then glad", "Proud", "Not sure yet"];
 
+const over = (n: number) => `${n} ${n === 1 ? "character" : "characters"} over`;
+
 // Errors say what to do next, and never clear what was typed.
 export function validate(values: Values): Errors {
   const errors: Errors = {};
   const what = values.what.trim();
   if (!what) errors.what = "Write what you did or noticed. A few words is enough, like “told Sam the talk was clear.”";
-  else if (what.length > limits.what) errors.what = `Keep it postcard-sized: ${what.length - limits.what} characters over.`;
+  else if (what.length > limits.what) errors.what = `Keep it postcard-sized: ${over(what.length - limits.what)}.`;
   if (values.to.trim().length > limits.to) errors.to = `Shorten the name to ${limits.to} characters, or use a nickname.`;
   const reaction = values.reaction.trim().length;
-  if (reaction > limits.reaction) errors.reaction = `Keep it to ${limits.reaction} characters: ${reaction - limits.reaction} over.`;
+  if (reaction > limits.reaction) errors.reaction = `Keep it to ${limits.reaction} characters: ${over(reaction - limits.reaction)}.`;
   const feeling = values.feeling.trim().length;
-  if (feeling > limits.feeling) errors.feeling = `Keep it to ${limits.feeling} characters: ${feeling - limits.feeling} over.`;
+  if (feeling > limits.feeling) errors.feeling = `Keep it to ${limits.feeling} characters: ${over(feeling - limits.feeling)}.`;
   return errors;
 }
 
 export function WriteForm() {
   const state = useKindRegards();
   const params = useSearchParams();
+  // Pages stay mounted (hidden) between navigations, so a fresh visit gets a
+  // fresh form (reloaded from the saved draft); back/forward keeps it as is.
+  const { bfcacheId } = useRouter();
   if (!state) return <Skeleton label="Getting your postcard ready" />;
 
   const editId = params.get("edit") ?? undefined;
@@ -63,7 +68,7 @@ export function WriteForm() {
   }
 
   // Remount when switching between new and edit, so the fields start fresh.
-  return <Form key={editId ?? "new"} state={state} editId={editing?.id} presetTo={params.get("to") ?? undefined} />;
+  return <Form key={`${editId ?? "new"}-${bfcacheId}`} state={state} editId={editing?.id} presetTo={params.get("to") ?? undefined} />;
 }
 
 function startingValues(state: State, editId: string | undefined, presetTo: string | undefined) {

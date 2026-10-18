@@ -11,6 +11,12 @@ export function todaysIdea(state: State, today: string): { idea: Idea; comfort: 
   const offset = sameDay ? state.today!.offset : 0;
   const n = dayNumber(today);
 
+  // Before the first postcard, open on a compliment: it shows what the tool
+  // is for (noticing someone else) better than any explanation would.
+  if (state.postcards.length === 0 && offset === 0) {
+    const compliments = ideas.filter((i) => i.group === "compliment" && i.comfort === comfort);
+    return { idea: compliments[mod(n, compliments.length)], comfort };
+  }
   if (isSunday(today) && offset === 0) {
     const forYou = ideas.filter((i) => i.group === "for-you");
     return { idea: forYou[Math.floor(n / 7) % forYou.length], comfort };

@@ -17,8 +17,8 @@ export const navItems = [
 export function NavBar() {
   const pathname = usePathname();
   return (
-    <nav aria-label="Main" className="-mx-1 overflow-x-auto px-1 pt-1 pb-3">
-      <ul className="flex min-w-max gap-3">
+    <nav aria-label="Main" className="pt-1 pb-3">
+      <ul className="flex flex-wrap gap-x-2.5 gap-y-4 sm:gap-x-3">
         {navItems.map((item) => {
           const current = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
           return (

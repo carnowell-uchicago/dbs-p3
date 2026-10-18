@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Postcard } from "@/components/postcards/Postcard";
 import { Button, LinkButton } from "@/components/ui/Button";
@@ -16,11 +16,18 @@ import { deletePostcard, restorePostcard, useKindRegards, type Postcard as Postc
 
 type ToastState = { message: string; undo?: { postcard: PostcardData; index: number } } | null;
 
+// Pages stay mounted (hidden) between navigations under Cache Components, so
+// key on bfcacheId: a fresh visit re-reads "just pinned" from the URL, while
+// back/forward keeps the view as it was.
 export function WallView() {
+  const { bfcacheId } = useRouter();
+  return <Wall key={bfcacheId} />;
+}
+
+function Wall() {
   const state = useKindRegards();
   const params = useSearchParams();
   const router = useRouter();
-  const headingRef = useRef<HTMLHeadingElement>(null);
 
   // Read the one-time "just pinned" signal from the URL, then drop it so a
   // reload doesn't celebrate twice.
@@ -54,16 +61,27 @@ export function WallView() {
     const removed = deletePostcard(id);
     if (!removed) return;
     setToast({ message: "Postcard taken down.", undo: removed });
-    headingRef.current?.focus();
+    // The card is gone; put focus on the page heading (after the re-render).
+    afterRender(() => document.querySelector<HTMLElement>("main h1")?.focus());
   }
 
   function undo() {
     if (toast?.undo) {
       restorePostcard(toast.undo.postcard, toast.undo.index);
+      const id = toast.undo.postcard.id;
       setToast({ message: "Postcard put back." });
-      document.getElementById(`card-${toast.undo.postcard.id}`)?.focus();
+      afterRender(() => document.getElementById(`card-${id}`)?.focus());
     }
   }
+
+  const toastEl = (
+    <Toast
+      message={toast?.message ?? null}
+      action={toast?.undo ? { label: "Undo", onClick: undo } : undefined}
+      onDismiss={dismiss}
+      duration={toast?.undo ? 10000 : 5000}
+    />
+  );
 
   if (total === 0) {
     return (
@@ -76,7 +94,7 @@ export function WallView() {
         <LinkButton href="/write" variant="primary" className="self-start">
           Write your first postcard
         </LinkButton>
-        <Toast message={toast?.message ?? null} onDismiss={dismiss} />
+        {toastEl}
       </>
     );
   }
@@ -84,7 +102,7 @@ export function WallView() {
   return (
     <>
       <header className="flex flex-col gap-3">
-        <h1 ref={headingRef} tabIndex={-1} className={`${type.display} outline-none`}>
+        <h1 tabIndex={-1} className={`${type.display} outline-none`}>
           {filter ? `Postcards to ${shown[0]?.to ?? filter}` : "Your wall"}
         </h1>
         <p className={`${type.body} text-lg text-(--cp-muted)`}>
@@ -136,12 +154,11 @@ export function WallView() {
         </ol>
       )}
 
-      <Toast
-        message={toast?.message ?? null}
-        action={toast?.undo ? { label: "Undo", onClick: undo } : undefined}
-        onDismiss={dismiss}
-        duration={toast?.undo ? 10000 : 5000}
-      />
+      {toastEl}
     </>
   );
+}
+
+function afterRender(fn: () => void) {
+  window.requestAnimationFrame(() => window.requestAnimationFrame(fn));
 }

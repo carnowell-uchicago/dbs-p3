@@ -91,7 +91,7 @@ export function Postcard({
         {/* address side */}
         <div className="flex flex-row-reverse items-start justify-between gap-4 sm:w-44 sm:flex-col sm:items-end sm:pl-5">
           <div
-            className="flex size-16 shrink-0 flex-col items-center justify-center gap-1 bg-(--cp-tape-gold) text-(--cp-text) outline-2 outline-offset-2 outline-(--cp-bevel) outline-dashed"
+            className="flex h-16 w-22 shrink-0 flex-col items-center justify-center gap-1 bg-(--cp-tape-gold) text-(--cp-text) outline-2 outline-offset-2 outline-(--cp-bevel) outline-dashed"
             title={idea ? groupLabels[idea.group] : "Your own"}
           >
             <PixelSprite rows={stampArt[group]} colors={{ x: "var(--cp-text)" }} className="size-6" />
