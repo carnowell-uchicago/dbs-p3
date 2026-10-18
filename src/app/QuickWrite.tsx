@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useRef, useState, type FormEvent } from "react";
 import { limits, validate } from "@/app/write/WriteForm";
 import { Button } from "@/components/ui/Button";
-import { TextAreaField } from "@/components/ui/Fields";
+import { TextAreaField, TextField } from "@/components/ui/Fields";
 import { Icon } from "@/components/ui/Icon";
 import { focusRing, font, type } from "@/components/ui/styles";
 import { addPostcard, saveDraft, type State } from "@/lib/store";
@@ -12,21 +12,20 @@ import { addPostcard, saveDraft, type State } from "@/lib/store";
 // Openings you finish yourself: one per kind of kindness in the ideas.
 const starters = ["Complimented ", "Thanked ", "Checked in on ", "Helped "];
 
-// The first visit: the postcard's one required box, right on Today. Tap a
-// starter to begin the sentence, finish it, and pin it. The optional fields
-// are one link away on /write, which picks up what's typed here.
+// The first visit: the postcard's one required box, right on Today, and the
+// optional name (so a person you write about shows up in People). Tap a
+// starter to begin the sentence, finish it, and pin it. The other optional
+// fields are one link away on /write, which picks up what's typed here.
 export function QuickWrite({ state }: { state: State }) {
   const router = useRouter();
   const box = useRef<HTMLTextAreaElement>(null);
   const [what, setWhat] = useState(() => (state.draft && !state.draft.editId ? state.draft.what : ""));
+  const [to, setTo] = useState(() => (state.draft && !state.draft.editId ? state.draft.to : ""));
   const [submitted, setSubmitted] = useState(false);
 
   const onlyStarter = starters.some((s) => what.trim() === s.trim());
-  const error = submitted
-    ? onlyStarter
-      ? "Finish the sentence: who was it, and what did you notice?"
-      : validate({ what, to: "", when: "today", day: "", reaction: "", feeling: "" }).what
-    : undefined;
+  const errors = submitted ? validate({ what, to, when: "today", day: "", reaction: "", feeling: "" }) : {};
+  const error = submitted && onlyStarter ? "Finish the sentence: who was it, and what did you notice?" : errors.what;
 
   function start(starter: string) {
     setWhat(starter);
@@ -47,13 +46,17 @@ export function QuickWrite({ state }: { state: State }) {
       box.current?.focus();
       return;
     }
-    const id = addPostcard({ what });
+    if (to.trim().length > limits.to) {
+      document.getElementById("quick-to")?.focus();
+      return;
+    }
+    const id = addPostcard({ what, to });
     router.push(`/wall?pinned=${id}`);
   }
 
   // Carry what's typed over to the full form.
   function addMore() {
-    saveDraft({ what, to: "", when: "today", day: "", reaction: "", feeling: "" });
+    saveDraft({ what, to, when: "today", day: "", reaction: "", feeling: "" });
     router.push("/write");
   }
 
@@ -86,6 +89,16 @@ export function QuickWrite({ state }: { state: State }) {
           </div>
         </div>
       ) : null}
+      <TextField
+        id="quick-to"
+        label="Who was it for?"
+        optional
+        hint="A name or nickname. Leave it blank for a stranger."
+        error={errors.to}
+        value={to}
+        onChange={(e) => setTo(e.target.value)}
+        autoComplete="off"
+      />
       <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-1">
         <Button type="submit" variant="primary">
           Pin it to my wall
@@ -95,7 +108,7 @@ export function QuickWrite({ state }: { state: State }) {
           onClick={addMore}
           className={`${font.body} inline-flex min-h-11 items-center gap-2 font-semibold underline decoration-2 underline-offset-4 decoration-(--cp-wood) hover:decoration-4 ${focusRing} focus-visible:outline-offset-2`}
         >
-          Add who, when, or how it felt
+          Add when or how it felt
           <Icon name="arrow" />
         </button>
       </div>

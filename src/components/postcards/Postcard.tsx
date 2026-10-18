@@ -1,22 +1,11 @@
 import type { CSSProperties, ReactNode } from "react";
-import { PixelSprite } from "@/components/ui/PixelSprite";
 import { edge, font } from "@/components/ui/styles";
-import { getIdea, groupLabels, type Group } from "@/data/ideas";
 import { fromDayKey, shortDate } from "@/lib/dates";
 import type { Postcard as PostcardData } from "@/lib/store";
+import { Stamp } from "./Stamp";
 
 export const tapes = ["var(--cp-tape-rose)", "var(--cp-tape-sky)", "var(--cp-tape-gold)"];
 const tilts = [-1.2, 0.8, -0.5, 1.4, -0.9, 0.4];
-
-// Tiny pixel pictures for the stamp, one per idea group.
-export const stampArt: Record<Group | "own", string[]> = {
-  compliment: ["..x..x..", ".xxxxxx.", "..xxxx..", "...xx...", "........", ".x....x.", "..xxxx..", "........"],
-  thanks: [".xx..xx.", "xxxxxxxx", "xxxxxxxx", ".xxxxxx.", "..xxxx..", "...xx...", "........", "........"],
-  "reach-out": ["........", "xxxxxxxx", "xx....xx", "x.x..x.x", "x..xx..x", "x......x", "xxxxxxxx", "........"],
-  "small-act": ["...x....", "..xxx...", ".xxxxx..", "...x....", "...x..x.", "...xxxx.", "....xx..", "........"],
-  "for-you": ["...xx...", "..x..x..", ".x....x.", "x..xx..x", ".x....x.", "..x..x..", "...xx...", "........"],
-  own: [".xx..xx.", "x..xx..x", "x......x", "x......x", ".x....x.", "..x..x..", "...xx...", "........"],
-};
 
 // A postcard pinned to the wall: tape on top, a slight tilt, the message in
 // handwriting on the left, and the stamp, postmark, and "To" line on the right.
@@ -37,8 +26,6 @@ export function Postcard({
   headingLevel?: "h2" | "h3";
   actions?: ReactNode;
 }) {
-  const idea = getIdea(postcard.ideaId);
-  const group = idea?.group ?? "own";
   const Heading = headingLevel;
   const headingId = `postcard-${postcard.id}`;
   const date = fromDayKey(postcard.day);
@@ -92,13 +79,7 @@ export function Postcard({
 
         {/* address side */}
         <div className="flex flex-row-reverse items-start justify-between gap-4 sm:w-44 sm:flex-col sm:items-end sm:pl-5">
-          <div
-            className="flex h-16 w-22 shrink-0 flex-col items-center justify-center gap-1 bg-(--cp-tape-gold) text-(--cp-text) outline-2 outline-offset-2 outline-(--cp-bevel) outline-dashed"
-            title={idea ? groupLabels[idea.group] : "Your own"}
-          >
-            <PixelSprite rows={stampArt[group]} colors={{ x: "var(--cp-text)" }} className="size-6" />
-            <span className={`${font.display} text-xs leading-none`}>{idea ? groupLabels[idea.group] : "My own"}</span>
-          </div>
+          <Stamp postcard={postcard} />
           <div className="flex flex-col gap-2 sm:items-end">
             <time
               dateTime={postcard.day}

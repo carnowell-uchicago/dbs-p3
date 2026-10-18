@@ -1,10 +1,9 @@
 import type { CSSProperties } from "react";
-import { PixelSprite } from "@/components/ui/PixelSprite";
 import { edge, focusRing, font } from "@/components/ui/styles";
-import { getIdea } from "@/data/ideas";
 import { shortDate } from "@/lib/dates";
 import type { Postcard as PostcardData } from "@/lib/store";
-import { stampArt, tapes } from "./Postcard";
+import { tapes } from "./Postcard";
+import { MiniStamp } from "./Stamp";
 
 // A small postcard pinned to the corkboard. It's a button: the first lines in
 // handwriting, a tiny stamp, and who it was to. Opening it shows the full card.
@@ -24,7 +23,6 @@ export function MiniPostcard({
   onOpen: () => void;
 }) {
   const spot = postcard.spot ?? { x: 0, y: 0, tilt: 0 };
-  const idea = getIdea(postcard.ideaId);
   const tape = tapes[Math.abs(hash(postcard.id)) % tapes.length];
 
   return (
@@ -46,7 +44,7 @@ export function MiniPostcard({
       }
       className={`group absolute z-(--z) flex h-(--card-h) w-(--card-w) cursor-pointer flex-col bg-(--cp-surface) p-2 pt-3 text-left [--d:3px] [--w:2px] hover:z-[999] focus-visible:z-[999] motion-safe:transition-[scale] motion-safe:duration-150 hover:scale-110 focus-visible:scale-110 ${
         fresh ? "[--e:var(--cp-text)] motion-safe:animate-[pin-drop_400ms_ease-out]" : "[--e:var(--cp-wood)]"
-      } ${focusRing} focus-visible:outline-offset-4`}
+      } ${focusRing} focus-visible:-translate-y-1 focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:[--d:6px]`}
     >
       <span
         aria-hidden
@@ -63,15 +61,10 @@ export function MiniPostcard({
           {badge}
         </span>
       ) : null}
+      <MiniStamp postcard={postcard} />
       <span
         aria-hidden
-        className="absolute top-2 right-2 grid size-6 place-items-center bg-(--cp-tape-gold) outline-1 outline-offset-1 outline-(--cp-bevel) outline-dashed sm:size-8"
-      >
-        <PixelSprite rows={stampArt[idea?.group ?? "own"]} colors={{ x: "var(--cp-text)" }} className="size-4 sm:size-5" />
-      </span>
-      <span
-        aria-hidden
-        className={`${font.hand} line-clamp-2 pr-7 text-sm leading-tight break-words text-(--cp-ink) sm:line-clamp-3 sm:pr-9 sm:text-base`}
+        className={`${font.hand} line-clamp-3 pr-7 text-sm leading-tight break-words text-(--cp-ink) sm:pr-9 sm:text-base`}
       >
         {postcard.what}
       </span>

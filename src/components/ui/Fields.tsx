@@ -24,7 +24,7 @@ export function Field({ id, label, optional, hint, error, count, children }: Fie
     <div className="flex flex-col gap-2">
       <label htmlFor={id} className={`${type.label} self-start text-(--cp-text)`}>
         {label}
-        {optional ? <span className={`${font.body} ml-2 text-sm font-normal text-(--cp-muted)`}>optional</span> : null}
+        {optional ? <span className={`${font.body} ml-1 text-sm font-normal text-(--cp-muted)`}> optional</span> : null}
       </label>
       {hint ? (
         <p id={`${id}-hint`} className={`${type.meta} -mt-1`}>
@@ -64,8 +64,13 @@ export function Field({ id, label, optional, hint, error, count, children }: Fie
   );
 }
 
+// Fields sit close under their hints, so their focus outline sits nearer the
+// edge than the shared ring (written out in full so Tailwind generates it).
+const wellRing =
+  "outline-hidden focus-visible:outline-3 focus-visible:outline-solid focus-visible:outline-offset-[4px] focus-visible:outline-(--cp-text)";
+
 // Paper well with a 3px wood edge; cocoa on hover, berry when invalid.
-const well = `w-full bg-(--cp-surface) text-base text-(--cp-text) placeholder:text-(--cp-muted) [--w:3px] [--d:0px] [--e:var(--cp-wood)] hover:[--e:var(--cp-text)] aria-invalid:[--e:var(--cp-error)] ${font.body} ${focusRing}`;
+const well = `w-full bg-(--cp-surface) text-base text-(--cp-text) placeholder:text-(--cp-muted) [--w:3px] [--d:0px] [--e:var(--cp-wood)] hover:[--e:var(--cp-text)] aria-invalid:[--e:var(--cp-error)] ${font.body} ${wellRing}`;
 
 type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "id"> &
   Omit<FieldProps, "children"> & { inputRef?: Ref<HTMLInputElement> };

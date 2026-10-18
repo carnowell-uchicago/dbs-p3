@@ -12,7 +12,7 @@ import { Button, LinkButton } from "@/components/ui/Button";
 import { Dialog } from "@/components/ui/Dialog";
 import { Icon } from "@/components/ui/Icon";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { focusRing, font, type } from "@/components/ui/styles";
+import { edge, focusRing, font, type } from "@/components/ui/styles";
 import { examplePostcard } from "@/data/example";
 import { placeNew } from "@/lib/board";
 import { dayKey, daysBetween } from "@/lib/dates";
@@ -140,19 +140,26 @@ function Wall() {
     >
       {current ? (
         <div className="flex flex-col gap-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            {opened?.memory ? (
-              <p id="memory-title" className={`${font.display} bg-(--cp-sky-1) px-3 py-1 text-lg text-(--cp-text)`}>
+          {opened?.memory ? (
+            // A solid strip, so the label never reads as part of the page behind.
+            <div
+              style={edge}
+              className="flex items-center justify-between gap-3 bg-(--cp-sky-1) py-2 pr-2 pl-4 [--d:3px] [--e:var(--cp-wood)] [--w:3px]"
+            >
+              <p id="memory-title" className={`${font.display} text-base text-(--cp-text) sm:text-lg`}>
                 A memory from {memoryAge === 1 ? "yesterday" : `${memoryAge} days ago`}
               </p>
-            ) : (
-              <span />
-            )}
-            <Button size="sm" onClick={close}>
+              <Button size="sm" onClick={close} className="shrink-0">
+                <Icon name="close" />
+                Close
+              </Button>
+            </div>
+          ) : (
+            <Button size="sm" onClick={close} className="self-end">
               <Icon name="close" />
               Close
             </Button>
-          </div>
+          )}
           <Postcard
             postcard={current}
             example={current.id === example.id && total === 0}
@@ -189,7 +196,7 @@ function Wall() {
             Write your first postcard
           </LinkButton>
         </PageHeader>
-        <CorkBoard label="Your corkboard" ref={board}>
+        <CorkBoard label="Your corkboard" count={1} ref={board}>
           <MiniPostcard postcard={example} layer={1} badge="Example" onOpen={() => setOpened({ id: example.id })} />
         </CorkBoard>
         {dialog}
@@ -234,7 +241,7 @@ function Wall() {
       {shown.length === 0 ? (
         <p className={type.body}>No postcards to {filter} yet.</p>
       ) : (
-        <CorkBoard label="Your corkboard" ref={board}>
+        <CorkBoard label="Your corkboard" count={placed.length} ref={board}>
           {placed.map((postcard) => (
             <MiniPostcard
               key={postcard.id}

@@ -272,6 +272,7 @@ function Form({
           optional
           hint="A smile, a reply, or nothing yet. All fine."
           error={errors.reaction}
+          count={{ value: values.reaction.trim().length, max: limits.reaction }}
           value={values.reaction}
           onChange={(e) => set("reaction", e.target.value)}
         />
@@ -299,6 +300,7 @@ function Form({
               id="feeling"
               label="In your own words"
               error={errors.feeling}
+              count={{ value: values.feeling.trim().length, max: limits.feeling }}
               value={values.feeling}
               onChange={(e) => set("feeling", e.target.value)}
             />

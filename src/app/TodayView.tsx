@@ -107,6 +107,10 @@ export function TodayView() {
         </PageHeader>
       )}
 
+      {/* Not written yet today: the idea comes right after the buttons, as the
+          welcome promises, ahead of everything else. */}
+      {done ? null : <IdeaCard idea={idea} comfort={comfort} title="Idea for today" />}
+
       {done ? (
         <section aria-labelledby="today-postcard" className="flex flex-col gap-4">
           <h2 id="today-postcard" className={type.heading}>
@@ -131,7 +135,7 @@ export function TodayView() {
         </Panel>
       ) : null}
 
-      <IdeaCard idea={idea} comfort={comfort} title={done ? "Another idea" : "Idea for today"} />
+      {done ? <IdeaCard idea={idea} comfort={comfort} title="Another idea" /> : null}
     </>
   );
 }

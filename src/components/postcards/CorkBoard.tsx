@@ -1,9 +1,10 @@
-import type { ReactNode, Ref } from "react";
+import type { CSSProperties, ReactNode, Ref } from "react";
 import { edge } from "@/components/ui/styles";
 import { colors } from "@/lib/tokens";
 
 // A pixel corkboard in a wood frame, wider than the page column and tall
-// enough to fill most of the window. Postcards sit inside the pinning area
+// enough to fill most of the window. On phones it grows with the number of
+// cards instead, so one or two cards aren't lost in empty cork. Postcards sit inside the pinning area
 // (the ref), placed by their spot. It sets --card-w / --card-h for them.
 const flecks: [number, number, "d" | "l"][] = [
   [1, 1, "d"], [5, 0, "l"], [9, 2, "d"], [3, 4, "l"], [7, 5, "d"], [11, 6, "l"], [0, 7, "l"], [4, 8, "d"],
@@ -15,7 +16,17 @@ const tile = `url("data:image/svg+xml,${encodeURIComponent(
     .join("")}</svg>`,
 )}")`;
 
-export function CorkBoard({ label, ref, children }: { label: string; ref?: Ref<HTMLDivElement>; children: ReactNode }) {
+export function CorkBoard({
+  label,
+  count,
+  ref,
+  children,
+}: {
+  label: string;
+  count: number;
+  ref?: Ref<HTMLDivElement>;
+  children: ReactNode;
+}) {
   return (
     <section
       aria-label={label}
@@ -23,8 +34,8 @@ export function CorkBoard({ label, ref, children }: { label: string; ref?: Ref<H
       className="w-[min(calc(100vw-2rem),72rem)] max-w-none self-center bg-(--cp-wood) p-2 [--d:4px] [--e:var(--cp-text)] [--w:3px] sm:p-3"
     >
       <div
-        style={{ backgroundImage: tile, backgroundSize: "48px 48px" }}
-        className="relative h-[clamp(26rem,calc(100svh-18rem),46rem)] border-2 border-(--cp-bevel) shadow-[inset_0_4px_0_rgb(0_0_0/0.15)] [--card-h:5.25rem] [--card-w:7.5rem] sm:[--card-h:7rem] sm:[--card-w:10rem]"
+        style={{ backgroundImage: tile, backgroundSize: "48px 48px", "--count": count } as CSSProperties}
+        className="relative h-[clamp(16rem,calc(var(--count)*5rem+6rem),calc(100svh-12rem))] sm:h-[clamp(26rem,calc(100svh-18rem),46rem)] border-2 border-(--cp-bevel) shadow-[inset_0_4px_0_rgb(0_0_0/0.15)] [--card-h:6.25rem] [--card-w:8.75rem] sm:[--card-h:7rem] sm:[--card-w:10rem]"
       >
         <div ref={ref} className="absolute inset-3 sm:inset-5">
           {children}

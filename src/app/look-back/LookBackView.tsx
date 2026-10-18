@@ -114,7 +114,7 @@ function LookBack() {
               {week.length} {week.length === 1 ? "kindness" : "kindnesses"}
               {names.length ? (
                 <>
-                  , for <span className={`${font.hand} text-xl text-(--cp-ink)`}>{listNames(names.map((n) => n.name), unnamed)}</span>
+                  , for <span className={`${font.hand} text-xl text-(--cp-text)`}>{listNames(names.map((n) => n.name), unnamed)}</span>
                 </>
               ) : unnamed ? ", all for strangers or someone unnamed" : ""}
               .
@@ -122,7 +122,7 @@ function LookBack() {
             </p>
             {felt.length ? (
               <p className={type.body}>
-                Afterwards you felt: <span className={`${font.hand} text-xl text-(--cp-ink)`}>{[...new Set(felt)].join(", ")}</span>.
+                Afterwards you felt: <span className={`${font.hand} text-xl text-(--cp-text)`}>{[...new Set(felt)].join(", ")}</span>.
               </p>
             ) : null}
           </Panel>

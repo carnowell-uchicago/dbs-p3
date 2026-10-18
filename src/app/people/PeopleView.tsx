@@ -55,15 +55,15 @@ export function PeopleView() {
             <li key={person.key}>
               <Panel as="article" labelledBy={`person-${i}`} className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 p-4">
                 <div className="flex flex-col gap-1">
-                  <h2 id={`person-${i}`} className={`${font.hand} text-2xl text-(--cp-ink)`}>
+                  <h2 id={`person-${i}`} className={`${font.hand} text-2xl text-(--cp-text)`}>
                     {person.name}
                   </h2>
                   <p className={type.meta}>
                     {person.count} {person.count === 1 ? "postcard" : "postcards"} · last {relativeDay(person.lastDay, today)}
                     {due ? (
                       <>
-                        <span className="sr-only">, </span>
-                        <span className={`${font.display} ml-2 bg-(--cp-sky-1) px-2 py-0.5 text-sm text-(--cp-text)`}>
+                        {" · "}
+                        <span className={`${font.display} bg-(--cp-sky-1) px-2 py-0.5 text-sm text-(--cp-text)`}>
                           {days} days ago
                         </span>
                       </>

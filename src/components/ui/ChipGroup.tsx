@@ -33,7 +33,7 @@ export function ChipGroup<T extends string>({
     <div role="group" aria-labelledby={labelId} aria-describedby={describedBy} className="flex flex-col gap-2">
       <span id={labelId} className={hideLabel ? "sr-only" : `${font.display} text-base font-medium`}>
         {label}
-        {optional ? <span className={`${font.body} ml-2 text-sm font-normal text-(--cp-muted)`}>optional</span> : null}
+        {optional ? <span className={`${font.body} ml-1 text-sm font-normal text-(--cp-muted)`}> optional</span> : null}
       </span>
       <div className="flex flex-wrap gap-x-3 gap-y-4 pt-1 pb-1">
         {options.map((option) => {
