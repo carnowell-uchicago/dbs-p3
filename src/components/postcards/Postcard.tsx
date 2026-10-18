@@ -5,11 +5,11 @@ import { getIdea, groupLabels, type Group } from "@/data/ideas";
 import { fromDayKey, shortDate } from "@/lib/dates";
 import type { Postcard as PostcardData } from "@/lib/store";
 
-const tapes = ["var(--cp-tape-rose)", "var(--cp-tape-sky)", "var(--cp-tape-gold)"];
+export const tapes = ["var(--cp-tape-rose)", "var(--cp-tape-sky)", "var(--cp-tape-gold)"];
 const tilts = [-1.2, 0.8, -0.5, 1.4, -0.9, 0.4];
 
 // Tiny pixel pictures for the stamp, one per idea group.
-const stampArt: Record<Group | "own", string[]> = {
+export const stampArt: Record<Group | "own", string[]> = {
   compliment: ["..x..x..", ".xxxxxx.", "..xxxx..", "...xx...", "........", ".x....x.", "..xxxx..", "........"],
   thanks: [".xx..xx.", "xxxxxxxx", "xxxxxxxx", ".xxxxxx.", "..xxxx..", "...xx...", "........", "........"],
   "reach-out": ["........", "xxxxxxxx", "xx....xx", "x.x..x.x", "x..xx..x", "x......x", "xxxxxxxx", "........"],

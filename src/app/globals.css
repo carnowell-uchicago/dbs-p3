@@ -44,3 +44,24 @@ body {
     opacity: 1;
   }
 }
+
+/* A postcard opening from the corkboard. */
+@keyframes zoom-in {
+  from {
+    scale: 0.6;
+    opacity: 0;
+  }
+}
+
+/* A new postcard dropping onto the corkboard (its tilt is set separately). */
+@keyframes pin-drop {
+  from {
+    translate: 0 -16px;
+    opacity: 0;
+  }
+}
+
+/* No page scrolling behind an open postcard. */
+html:has(dialog[open]) {
+  overflow: hidden;
+}
