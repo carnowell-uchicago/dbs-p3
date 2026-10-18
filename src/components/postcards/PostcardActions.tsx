@@ -6,7 +6,8 @@ import { Icon } from "@/components/ui/Icon";
 import { Toast } from "@/components/ui/Toast";
 import { shortDate } from "@/lib/dates";
 import { focusPageHeading } from "@/lib/focus";
-import { deletePostcard, restorePostcard, type Postcard } from "@/lib/store";
+import { deletePostcard, removePractice, restorePostcard, type Postcard } from "@/lib/store";
+import { type } from "@/components/ui/styles";
 
 // Edit and Delete under a postcard, used on the wall and in Look back.
 export function PostcardActions({
@@ -20,6 +21,18 @@ export function PostcardActions({
   onEdit?: () => void;
   onDelete: () => void;
 }) {
+  // The practice postcard can't be edited (edits are saved), only removed.
+  if (postcard.practice) {
+    return (
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+        <p className={type.meta}>Practice: not saved, and gone when you leave or reload.</p>
+        <Button variant="quiet" size="sm" onClick={onDelete}>
+          <Icon name="trash" />
+          Remove<span className="sr-only"> practice postcard</span>
+        </Button>
+      </div>
+    );
+  }
   return (
     <>
       <LinkButton href={editHref} variant="quiet" size="sm" onClick={onEdit}>
@@ -44,6 +57,12 @@ export function useTakeDown(initialMessage: string | null, focusRestored: (id: s
   const dismiss = useCallback(() => setToast(null), []);
 
   function takeDown(id: string) {
+    if (id === "practice") {
+      removePractice();
+      setToast({ message: "Practice postcard removed." });
+      afterRender(focusPageHeading);
+      return;
+    }
     const removed = deletePostcard(id);
     if (!removed) return;
     setToast({ message: "Postcard taken down.", undo: removed.postcard });

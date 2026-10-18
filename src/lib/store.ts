@@ -18,6 +18,7 @@ export type Postcard = {
   feeling?: string;
   ideaId?: string;
   spot?: Spot; // where it's pinned on the corkboard, set the first time the wall shows it
+  practice?: boolean; // the tutorial's example postcard: shown, never saved
 };
 
 // Position on the corkboard as a fraction (0–1) of the room left after the
@@ -94,13 +95,65 @@ function parse(raw: string | null): State {
 let cachedRaw: string | null | undefined;
 let cached: State = empty;
 
-function getSnapshot(): State {
+// What's saved on this device.
+function getSaved(): State {
   const raw = readRaw();
   if (raw !== cachedRaw) {
     cachedRaw = raw;
     cached = parse(raw);
+    shown = undefined;
   }
   return cached;
+}
+
+// --- The tutorial's practice postcard, kept in memory only ------------------
+// Finishing the first-visit tutorial with the example shows it like a real
+// postcard everywhere, marked "Practice", until the page is left or reloaded.
+// It's never written to localStorage, and it goes away once a real postcard
+// is pinned.
+
+let practice: Postcard | undefined;
+let tutorialDone = false;
+let shown: State | undefined;
+
+// What pages see: what's saved, plus the practice postcard while there's no
+// real one.
+function getSnapshot(): State {
+  const saved = getSaved();
+  if (!shown) shown = practice && saved.postcards.length === 0 ? { ...saved, postcards: [practice] } : saved;
+  return shown;
+}
+
+function changedInMemory() {
+  shown = undefined;
+  listeners.forEach((listener) => listener());
+}
+
+export function pinPractice(input: PostcardInput): string {
+  const now = new Date();
+  practice = {
+    id: "practice",
+    createdAt: now.toISOString(),
+    day: dayKey(now),
+    ...clean(input),
+    practice: true,
+    spot: { x: 0.3, y: 0.2, tilt: -3 },
+  };
+  tutorialDone = true;
+  changedInMemory();
+  return practice.id;
+}
+
+export function removePractice() {
+  practice = undefined;
+  changedInMemory();
+}
+
+// The tutorial runs on the first visit until a postcard (real or practice) is
+// pinned in this page session.
+export function useTutorial(): boolean {
+  const state = useKindRegards();
+  return Boolean(state) && state!.postcards.length === 0 && !tutorialDone;
 }
 
 const listeners = new Set<() => void>();
@@ -119,7 +172,7 @@ function subscribe(listener: () => void) {
 }
 
 function update(change: (state: State) => State) {
-  const raw = JSON.stringify(change(getSnapshot()));
+  const raw = JSON.stringify(change(getSaved()));
   memory = raw;
   if (canPersist()) {
     try {
@@ -168,6 +221,8 @@ function byNewest(a: Postcard, b: Postcard) {
 export function addPostcard(input: PostcardInput): string {
   const now = new Date();
   const postcard: Postcard = { id: newId(), createdAt: now.toISOString(), day: input.day ?? dayKey(now), ...clean(input) };
+  practice = undefined;
+  tutorialDone = true;
   update((s) => ({ ...s, postcards: [postcard, ...s.postcards].sort(byNewest), draft: undefined }));
   return postcard.id;
 }
@@ -183,7 +238,7 @@ export function updatePostcard(id: string, input: PostcardInput) {
 }
 
 export function deletePostcard(id: string): { postcard: Postcard; index: number } | undefined {
-  const state = getSnapshot();
+  const state = getSaved();
   const index = state.postcards.findIndex((p) => p.id === id);
   if (index < 0) return undefined;
   const postcard = state.postcards[index];
@@ -225,7 +280,7 @@ export function showAnotherIdea() {
 // the day changes, so Today can say "Welcome back" with when you were last here.
 export function recordVisit() {
   const today = dayKey();
-  const visits = getSnapshot().visits;
+  const visits = getSaved().visits;
   if (visits?.current === today) return;
   update((s) => ({ ...s, visits: { current: today, previous: s.visits?.current } }));
 }

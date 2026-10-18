@@ -46,10 +46,12 @@ export function Postcard({
         style={{ backgroundColor: tapes[index % tapes.length] }}
       />
       <Heading id={headingId} className="sr-only">
-        {example ? "Example postcard" : `Postcard${postcard.to ? ` to ${postcard.to}` : ""}, ${shortDate(postcard.day)}`}
+        {example ? "Example postcard" : postcard.practice ? "Practice postcard, not saved" : `Postcard${postcard.to ? ` to ${postcard.to}` : ""}, ${shortDate(postcard.day)}`}
       </Heading>
-      {example ? (
-        <p className={`${font.display} absolute top-2 left-3 bg-(--cp-text) px-2 text-sm text-(--cp-surface)`}>Example</p>
+      {example || postcard.practice ? (
+        <p className={`${font.display} absolute top-2 left-3 bg-(--cp-text) px-2 text-sm text-(--cp-surface)`}>
+          {example ? "Example" : "Practice, not saved"}
+        </p>
       ) : null}
       {highlight ? (
         <p className={`${font.display} absolute top-2 left-3 bg-(--cp-success) px-2 text-sm text-(--cp-text)`}>{highlightLabel}</p>

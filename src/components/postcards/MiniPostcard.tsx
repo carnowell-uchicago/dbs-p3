@@ -55,7 +55,7 @@ export function MiniPostcard({
         <span
           aria-hidden
           className={`${font.display} absolute -top-3 -left-2 z-10 px-1.5 text-xs leading-5 ${
-            fresh ? "bg-(--cp-success) text-(--cp-text)" : "bg-(--cp-text) text-(--cp-surface)"
+            fresh && !postcard.practice ? "bg-(--cp-success) text-(--cp-text)" : "bg-(--cp-text) text-(--cp-surface)"
           }`}
         >
           {badge}

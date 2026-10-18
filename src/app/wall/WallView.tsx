@@ -45,7 +45,13 @@ function Wall() {
   const [edited] = useState(() => Boolean(params.get("edited")));
   const [wantsMemory, setWantsMemory] = useState(() => params.has("memory"));
   const [welcome] = useState(() =>
-    params.get("pinned") ? (params.get("edited") ? "Postcard updated." : "Pinned to your wall.") : null,
+    params.get("pinned") === "practice"
+      ? "Practice postcard pinned. It isn't saved."
+      : params.get("pinned")
+        ? params.get("edited")
+          ? "Postcard updated."
+          : "Pinned to your wall."
+        : null,
   );
   const { takeDown, toastEl } = useTakeDown(welcome, (id) => document.getElementById(`card-${id}`)?.focus());
   const [opened, setOpened] = useState<Opened>(null);
@@ -247,7 +253,15 @@ function Wall() {
               key={postcard.id}
               postcard={postcard}
               layer={layers.get(postcard.id) ?? 1}
-              badge={postcard.id === pinned ? (edited ? "Updated" : "Just pinned") : undefined}
+              badge={
+                postcard.practice
+                  ? "Practice, not saved"
+                  : postcard.id === pinned
+                    ? edited
+                      ? "Updated"
+                      : "Just pinned"
+                    : undefined
+              }
               fresh={postcard.id === pinned}
               onOpen={() => setOpened({ id: postcard.id })}
             />

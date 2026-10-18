@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { IdeaCard } from "@/components/postcards/IdeaCard";
-import { QuickWrite } from "./QuickWrite";
 import { Postcard } from "@/components/postcards/Postcard";
 import { LinkButton } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -12,13 +13,22 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { focusRing, font, type } from "@/components/ui/styles";
 import { addDays, dayKey, isSunday, relativeDay, weekStart } from "@/lib/dates";
 import { personToRevisit, postcardsInWeek, todaysIdea } from "@/lib/derive";
-import { useKindRegards } from "@/lib/store";
+import { useKindRegards, useTutorial } from "@/lib/store";
 
 const linkClass = `font-semibold underline decoration-2 underline-offset-4 decoration-(--cp-wood) hover:decoration-4 ${focusRing} focus-visible:outline-offset-2`;
 
 export function TodayView() {
   const state = useKindRegards();
-  if (!state) return <Skeleton />;
+  const tutorial = useTutorial();
+  const router = useRouter();
+
+  // First visit (nothing saved): the onboarding is the Write tutorial, so go
+  // straight there.
+  useEffect(() => {
+    if (tutorial) router.replace("/write");
+  }, [tutorial, router]);
+
+  if (!state || tutorial) return <Skeleton />;
 
   const today = dayKey();
   const { idea, comfort } = todaysIdea(state, today);
@@ -27,13 +37,17 @@ export function TodayView() {
   const lastVisit = state.visits?.current !== today ? state.visits?.current : state.visits?.previous;
   const sunday = isSunday(today);
 
-  // First visit: nothing saved yet. No reading first: the postcard's one
-  // box is right here, with starters to tap, and pinning shows the wall.
+  // Nothing saved, but the tutorial's done for this visit (its practice
+  // postcard was removed): one way forward, and today's idea.
   if (total === 0) {
     return (
       <>
-        <PageHeader title="Who did you notice today?" />
-        <QuickWrite state={state} />
+        <PageHeader title="Who did you notice today?">
+          <LinkButton href="/write" variant="primary" className="self-start">
+            Write a postcard
+          </LinkButton>
+        </PageHeader>
+        <IdeaCard idea={idea} comfort={comfort} />
       </>
     );
   }

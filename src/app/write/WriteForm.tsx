@@ -13,49 +13,26 @@ import { focusRing, type } from "@/components/ui/styles";
 import { getIdea } from "@/data/ideas";
 import { addDays, dayKey, longDate } from "@/lib/dates";
 import { people, todaysIdea } from "@/lib/derive";
-import { addPostcard, saveDraft, updatePostcard, useKindRegards, type Draft, type State, type When } from "@/lib/store";
-
-export const limits = { what: 280, to: 40, reaction: 140, feeling: 60 } as const;
-
-type Values = Omit<Draft, "editId">;
-// Field ids, in the order they appear (the first with an error gets focus).
-const fieldOrder = ["what", "to", "day", "reaction", "feeling"] as const;
-type Errors = Partial<Record<(typeof fieldOrder)[number], string>>;
-
-const feelingPicks = ["Warm", "Lighter", "Nervous, then glad", "Proud", "Not sure yet"];
-const OTHER = "__other";
-const whenOptions: { value: When; label: string }[] = [
-  { value: "today", label: "Today" },
-  { value: "yesterday", label: "Yesterday" },
-  { value: "earlier", label: "Earlier" },
-];
-
-// The day a postcard is for, from the When choice.
-function chosenDay(values: Values, today: string): string {
-  if (values.when === "yesterday") return addDays(today, -1);
-  if (values.when === "earlier") return values.day;
-  return today;
-}
-
-const over = (n: number) => `${n} ${n === 1 ? "character" : "characters"} over`;
-
-// Errors say what to do next, and never clear what was typed.
-export function validate(values: Values, today: string = dayKey()): Errors {
-  const errors: Errors = {};
-  const what = values.what.trim();
-  if (!what) errors.what = "Write what you did or noticed. A few words is enough, like “told Sam the talk was clear.”";
-  else if (what.length > limits.what) errors.what = `Keep it postcard-sized: ${over(what.length - limits.what)}.`;
-  if (values.to.trim().length > limits.to) errors.to = `Shorten the name to ${limits.to} characters, or use a nickname.`;
-  if (values.when === "earlier") {
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(values.day)) errors.day = "Pick the date it happened, or choose Today.";
-    else if (values.day > today) errors.day = "Pick today or an earlier date. Postcards are for things that already happened.";
-  }
-  const reaction = values.reaction.trim().length;
-  if (reaction > limits.reaction) errors.reaction = `Keep it to ${limits.reaction} characters: ${over(reaction - limits.reaction)}.`;
-  const feeling = values.feeling.trim().length;
-  if (feeling > limits.feeling) errors.feeling = `Keep it to ${limits.feeling} characters: ${over(feeling - limits.feeling)}.`;
-  return errors;
-}
+import {
+  addPostcard,
+  saveDraft,
+  updatePostcard,
+  useKindRegards,
+  useTutorial,
+  type State,
+} from "@/lib/store";
+import {
+  chosenDay,
+  feelingPicks,
+  fieldOrder,
+  limits,
+  OTHER,
+  startingValues,
+  validate,
+  whenOptions,
+  type Values,
+} from "./form";
+import { Tutorial } from "./Tutorial";
 
 export function WriteForm() {
   const state = useKindRegards();
@@ -63,9 +40,12 @@ export function WriteForm() {
   // Pages stay mounted (hidden) between navigations, so a fresh visit gets a
   // fresh form (reloaded from the saved draft); back/forward keeps it as is.
   const { bfcacheId } = useRouter();
+  const tutorial = useTutorial();
   if (!state) return <Skeleton label="Getting your postcard ready" />;
 
   const editId = params.get("edit") ?? undefined;
+  // First visit: the onboarding is this page, one box at a time.
+  if (tutorial && !editId) return <Tutorial key={bfcacheId} state={state} presetTo={params.get("to") ?? undefined} />;
   const editing = editId ? state.postcards.find((p) => p.id === editId) : undefined;
 
   if (editId && !editing) {
@@ -98,29 +78,6 @@ export function WriteForm() {
       fromLookBack={fromLookBack}
     />
   );
-}
-
-function startingValues(state: State, editId: string | undefined, presetTo: string | undefined) {
-  const draft = state.draft;
-  const today = dayKey();
-  // Older drafts (before the When field) lack when/day.
-  const withWhen = (d: Draft): Values => ({ ...d, when: d.when ?? "today", day: d.day ?? "" });
-  if (editId) {
-    if (draft?.editId === editId) return { values: withWhen(draft), restored: true };
-    const p = state.postcards.find((x) => x.id === editId)!;
-    const when: When = p.day === today ? "today" : p.day === addDays(today, -1) ? "yesterday" : "earlier";
-    return {
-      values: { what: p.what, to: p.to ?? "", when, day: p.day, reaction: p.reaction ?? "", feeling: p.feeling ?? "", ideaId: p.ideaId },
-      restored: false,
-    };
-  }
-  if (draft && !draft.editId && (draft.what || draft.to || draft.reaction || draft.feeling)) {
-    return { values: { ...withWhen(draft), to: draft.to || presetTo || "" }, restored: true };
-  }
-  return {
-    values: { what: "", to: presetTo ?? "", when: "today" as When, day: "", reaction: "", feeling: "", ideaId: undefined },
-    restored: false,
-  };
 }
 
 function Form({
