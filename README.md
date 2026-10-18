@@ -34,10 +34,11 @@ flowchart TD
     E1 & E2 -->|"text kept, focus on the first error"| W
     W -.->|"leave mid-way"| D[("Draft saved on this device")]
     D -.->|"'We kept what you were writing.'"| W
-    V -->|"yes"| P["Wall [/wall]<br/>new postcard highlighted:<br/>'Pinned to your wall.'"]
-    P -->|"Edit"| W
-    P -->|"Delete"| U["'Postcard taken down.' + Undo"]
-    U -->|"Undo"| P
+    V -->|"yes"| P["Wall [/wall]<br/>the new postcard lands in an empty spot on the corkboard,<br/>highlighted: 'Pinned to your wall.'"]
+    P -->|"open a postcard"| O["The postcard, full size"]
+    O -->|"Edit"| W
+    O -->|"Delete"| U["'Postcard taken down.' + Undo"]
+    U -->|"Undo, back in the same spot"| P
 ```
 
 ### 3 · Coming back: it remembers
@@ -52,6 +53,8 @@ flowchart TD
     L -->|"quiet week, no guilt"| W
     PE["People [/people]<br/>everyone you've written to, and when"] -->|"Write again"| W
     PE -->|"See postcards"| PF["Wall [/wall?to=Sam]"]
+    R -->|"Show me a memory"| M["Wall [/wall]<br/>a random postcard from before today, full size"]
+    M -->|"Show me another"| M
 ```
 
 ### States each page handles
@@ -60,7 +63,7 @@ flowchart TD
 |---|---|
 | Today | Loading (a brief skeleton while localStorage is read) · first visit · returning · wrote one today · Sunday ("For you" idea; links to last week if this week is empty) · person to revisit |
 | Write | New · prefilled name (`?to=`) · edit (`?edit=`) · edit of a deleted postcard · draft restored · errors · Earlier date · Other feeling |
-| Wall | Empty (an example postcard, labeled) · list · just pinned · updated · deleted with Undo · filtered by person |
+| Wall | Empty (an example postcard on the board, labeled) · board · full board (cards overlap, newest on top) · postcard opened · a memory · just pinned · updated · deleted with Undo · filtered by person |
 | People | No names yet (only strangers, or none) · list, with "7+ days" marked |
 | Look back | This week · last week · a quiet week (no guilt) |
 | Every page | The browser won't save (private mode): a notice that postcards won't be kept |
@@ -71,9 +74,9 @@ Each step in the flow has its own route, and every page shares the same nav. The
 
 | Route | What it's for |
 |---|---|
-| `/` Today | **First visit:** today's idea, the Write a postcard button, and an example postcard. **Returning:** a welcome back message, today's idea, someone to revisit, and a Sunday look-back link. After one postcard: "One postcard today. Nice." |
+| `/` Today | **First visit:** today's idea, the Write a postcard button, and an example postcard. **Returning:** a welcome back message, today's idea, someone to revisit, a Sunday look-back link, and **Show me a memory** (opens a past postcard on the wall). After one postcard: "One postcard today. Nice." |
 | `/write` | The one-column postcard form. It also handles editing (`?edit=`) and prefilling a name (`?to=`). |
-| `/wall` | Every postcard, newest first, with a running total. Edit, Delete (with Undo), and filter by person. |
+| `/wall` | A pixel corkboard with every postcard pinned small, and a running total. Open a postcard to read it full size, Edit, or Delete (with Undo). **Show me a memory** opens a random one from before today. Filter by person. |
 | `/people` | Everyone you've written to, how often, and when you last did. Anyone at 7+ days is marked. |
 | `/look-back` | This week or last week: who you noticed, how it landed, and how you felt. |
 
@@ -84,6 +87,7 @@ Each step in the flow has its own route, and every page shares the same nav. The
 - **One way to log anything.** Any kind act counts, so there's a single **Write a postcard** action. The daily idea is a nudge, not an assignment. If you used it, you tick "This was today's idea."
 - **Ideas use a "notice, then say" voice.** For example: "Notice one thing about someone's style… and tell them what caught your eye." **Quiet / In person** lets you match the idea to your energy that day. On Sundays the first idea is one for yourself.
 - **A postcard wall, not a jar.** The research found the jar already taken by Happyfeed's "Happiness Jar" and a "Gratitude Jar" app. Postcards are addressed to someone, which suits an app about people.
+- **A corkboard.** The wall is a pixel corkboard in a wood frame. Each postcard is pinned small, in the emptiest spot when it's written, and keeps that spot. Once the board is full, new cards overlap older ones, with the newest on top. Opening one shows it full size. **Show me a memory** pulls up a random past postcard.
 - **People come first.** Postcards carry an optional name (blank is fine for strangers). That powers the People page and the gentle "Thinking of Sam?" nudge.
 - **Reflection is optional.** "How did they react?" and "How did you feel after?" are optional. They give the Sunday look-back something to show.
 - **No streaks.** The count is a running total that never resets. A quiet week gets "there's nothing to catch up on," never a warning.
@@ -115,9 +119,10 @@ So the first visit asks for nothing. It opens on a compliment idea and one butto
 
 ## Accessibility
 
-- **Keyboard:** everything works with a keyboard. There's a skip link and a square cocoa focus outline on every control. Focus moves to the heading on every page change, to the new postcard after pinning, to the heading after deleting, and back to the card after Undo. The Undo toast pauses while focused. The tab order was checked in a headless browser.
+- **Keyboard:** everything works with a keyboard. There's a skip link and a square cocoa focus outline on every control. Focus moves to the heading on every page change, to the new postcard after pinning, to the heading after deleting, and back to the card after Undo. Every postcard on the corkboard is a button, in newest-first tab order; a focused card comes to the front of the pile. An opened postcard is a modal `<dialog>`: focus stays inside, Escape closes it, and focus goes back to the card. The Undo toast pauses while focused. The tab order was checked in a headless browser.
 - **Labels:** real labels on all fields. Toggle chips use `aria-pressed` and show a check, so state doesn't rely on color alone. The toast and loading states are announced with `role="status"`.
-- **Motion:** `prefers-reduced-motion` turns off the pin-in animation.
+- **Motion:** `prefers-reduced-motion` turns off the pin-in, pin-drop, and open animations.
+- **Mobile:** every page was checked at 360 and 390 wide, empty and with postcards: no sideways scrolling, and every control (apart from links inside a sentence) is at least 24px. The corkboard and its cards shrink to fit.
 - **Contrast:** checked with the agent by a script (`npm run contrast`) over every color pair the UI uses:
 
 | Use | Foreground | Background | Ratio | Needs | Result |
@@ -146,8 +151,10 @@ So the first visit asks for nothing. It opens on a compliment idea and one butto
 | Error edge on inputs | error #b3361f | surface #fff8ea | 5.73:1 | 3:1 | Pass |
 | Focus outline | text #3b2a20 | bg #f7ecd6 | 11.65:1 | 3:1 | Pass |
 | Toast action focus | accent #f08a24 | text #3b2a20 | 5.44:1 | 3:1 | Pass |
+| Postcard edges on the corkboard | wood #8a4a24 | cork #d6a771 | 3.12:1 | 3:1 | Pass |
+| Focus outline on the corkboard | text #3b2a20 | cork #d6a771 | 6.26:1 | 3:1 | Pass |
 
-24 of 24 pairs pass.
+26 of 26 pairs pass.
 
 ## First-run check
 

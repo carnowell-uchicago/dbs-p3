@@ -26,10 +26,11 @@ flowchart TD
     E1 & E2 -->|"text kept, focus on the first error"| W
     W -.->|"leave mid-way"| D[("Draft saved on this device")]
     D -.->|"'We kept what you were writing.'"| W
-    V -->|"yes"| P["Wall [/wall]<br/>new postcard highlighted:<br/>'Pinned to your wall.'"]
-    P -->|"Edit"| W
-    P -->|"Delete"| U["'Postcard taken down.' + Undo"]
-    U -->|"Undo"| P
+    V -->|"yes"| P["Wall [/wall]<br/>the new postcard lands in an empty spot on the corkboard,<br/>highlighted: 'Pinned to your wall.'"]
+    P -->|"open a postcard"| O["The postcard, full size"]
+    O -->|"Edit"| W
+    O -->|"Delete"| U["'Postcard taken down.' + Undo"]
+    U -->|"Undo, back in the same spot"| P
 ```
 
 ### 3 · Coming back: it remembers
@@ -44,6 +45,8 @@ flowchart TD
     L -->|"quiet week, no guilt"| W
     PE["People [/people]<br/>everyone you've written to, and when"] -->|"Write again"| W
     PE -->|"See postcards"| PF["Wall [/wall?to=Sam]"]
+    R -->|"Show me a memory"| M["Wall [/wall]<br/>a random postcard from before today, full size"]
+    M -->|"Show me another"| M
 ```
 
 ## States each page handles
@@ -52,7 +55,7 @@ flowchart TD
 |---|---|
 | Today | Loading (a brief skeleton while localStorage is read) · first visit · returning · wrote one today · Sunday ("For you" idea; links to last week if this week is empty) · person to revisit |
 | Write | New · prefilled name (`?to=`) · edit (`?edit=`) · edit of a deleted postcard · draft restored · errors · Earlier date · Other feeling |
-| Wall | Empty (an example postcard, labeled) · list · just pinned · updated · deleted with Undo · filtered by person |
+| Wall | Empty (an example postcard on the board, labeled) · board · full board (cards overlap, newest on top) · postcard opened · a memory · just pinned · updated · deleted with Undo · filtered by person |
 | People | No names yet (only strangers, or none) · list, with "7+ days" marked |
 | Look back | This week · last week · a quiet week (no guilt) |
 | Every page | The browser won't save (private mode): a notice that postcards won't be kept |
