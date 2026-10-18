@@ -6,7 +6,9 @@ import { tapes } from "./Postcard";
 import { MiniStamp } from "./Stamp";
 
 // A small postcard pinned to the corkboard. It's a button: the first lines in
-// handwriting, a tiny stamp, and who it was to. Opening it shows the full card.
+// handwriting, a tiny stamp, and who it was to. Its name is that visible text
+// (plus the date), so voice control can open it by its first words (WCAG
+// 2.5.3). Opening it shows the full card.
 // The board sets --card-w / --card-h; `layer` stacks newer cards on top, and
 // hover or focus brings a card to the front.
 export function MiniPostcard({
@@ -30,7 +32,6 @@ export function MiniPostcard({
       type="button"
       id={`card-${postcard.id}`}
       onClick={onOpen}
-      aria-label={`${badge ? `${badge}: ` : ""}Postcard${postcard.to ? ` to ${postcard.to}` : ""}, ${shortDate(postcard.day)}: ${postcard.what}`}
       style={
         {
           ...edge,
@@ -53,24 +54,24 @@ export function MiniPostcard({
       />
       {badge ? (
         <span
-          aria-hidden
           className={`${font.display} absolute -top-3 -left-2 z-10 px-1.5 text-xs leading-5 ${
             fresh && !postcard.practice ? "bg-(--cp-success) text-(--cp-text)" : "bg-(--cp-text) text-(--cp-surface)"
           }`}
         >
           {badge}
+          <span className="sr-only">: </span>
         </span>
       ) : null}
       <MiniStamp postcard={postcard} />
       <span
-        aria-hidden
         className={`${font.hand} line-clamp-3 pr-7 text-sm leading-tight break-words text-(--cp-ink) sm:pr-9 sm:text-base`}
       >
         {postcard.what}
       </span>
-      <span aria-hidden className={`${font.hand} mt-auto max-w-full truncate self-end text-xs text-(--cp-ink) sm:text-sm`}>
+      <span className={`${font.hand} mt-auto max-w-full truncate self-end text-xs text-(--cp-ink) sm:text-sm`}>
         <span className={`${font.body} text-(--cp-muted)`}>To </span>
         {postcard.to ?? "someone"}
+        <span className="sr-only">, {shortDate(postcard.day)}</span>
       </span>
     </button>
   );

@@ -5,7 +5,7 @@ import { edge, focusRing, font } from "./styles";
 export type Variant = "primary" | "secondary" | "quiet";
 type Size = "md" | "sm";
 
-const base = `inline-flex items-center justify-center gap-2 font-semibold select-none whitespace-nowrap motion-safe:transition-[translate,background-color] motion-safe:duration-75 ${font.display} ${focusRing}`;
+const base = `inline-flex items-center justify-center gap-2 max-w-full text-center font-semibold select-none motion-safe:transition-[translate,background-color] motion-safe:duration-75 ${font.display} ${focusRing}`;
 
 // Pressed sinks the face into its drop shadow; disabled goes flat and pale.
 const raised =

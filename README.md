@@ -128,6 +128,13 @@ So the first visit asks for nothing: opening the site goes straight to **Write**
 - **Labels:** real labels on all fields. Toggle chips use `aria-pressed` and show a check, so state doesn't rely on color alone. The toast and loading states are announced with `role="status"`.
 - **Motion:** `prefers-reduced-motion` turns off the pin-in, pin-drop, and open animations.
 - **Mobile:** every page was checked at 360 and 390 wide, empty and with postcards: no sideways scrolling, and every control (apart from links inside a sentence) is at least 24px. The corkboard and its cards shrink to fit.
+- **WCAG 2.2 AA audit:** the agent ran [axe-core](https://github.com/dequelabs/axe-core) (WCAG 2.0, 2.1, and 2.2 A and AA rules) on every page and state: each tutorial step and its error, empty pages, a return visit, the form with errors, an open postcard, a memory, and the Undo toast, at 1280 and 320 wide. It also tabbed through each page (every stop has a visible outline, is on screen, and isn't hidden), and checked 200% text and WCAG text spacing for sideways scrolling. Four things it found were fixed:
+  - **Label in Name (2.5.3):** a corkboard card's spoken name now starts with its visible text, so voice control can open it by its first words.
+  - **Reflow (1.4.10):** button labels can wrap, so none runs off a 320px screen.
+  - **Content on Hover or Focus (1.4.13):** Escape hides a stamp's note without moving the pointer or focus; on an open postcard, it doesn't also close it.
+  - **Focus Not Obscured (2.4.11):** focused items scroll clear of the Undo toast.
+
+  axe passes everywhere. Its only "needs review" items are color contrast over the pixel edges and textures, which it can't measure; the script below checks those pairs.
 - **Contrast:** checked with the agent by a script (`npm run contrast`) over every color pair the UI uses:
 
 | Use | Foreground | Background | Ratio | Needs | Result |
