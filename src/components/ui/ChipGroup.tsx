@@ -16,6 +16,8 @@ export function ChipGroup<T extends string>({
   onChange,
   clearable = false,
   hideLabel = false,
+  optional = false,
+  describedBy,
 }: {
   label: string;
   labelId: string;
@@ -24,11 +26,14 @@ export function ChipGroup<T extends string>({
   onChange: (value: T | undefined) => void;
   clearable?: boolean;
   hideLabel?: boolean;
+  optional?: boolean;
+  describedBy?: string;
 }) {
   return (
-    <div role="group" aria-labelledby={labelId} className="flex flex-col gap-2">
+    <div role="group" aria-labelledby={labelId} aria-describedby={describedBy} className="flex flex-col gap-2">
       <span id={labelId} className={hideLabel ? "sr-only" : `${font.display} text-base font-medium`}>
         {label}
+        {optional ? <span className={`${font.body} ml-2 text-sm font-normal text-(--cp-muted)`}>optional</span> : null}
       </span>
       <div className="flex flex-wrap gap-x-3 gap-y-4 pt-1 pb-1">
         {options.map((option) => {

@@ -19,10 +19,20 @@ export type Postcard = {
   ideaId?: string;
 };
 
-export type PostcardInput = Pick<Postcard, "what" | "to" | "reaction" | "feeling" | "ideaId">;
+export type PostcardInput = Pick<Postcard, "what" | "to" | "reaction" | "feeling" | "ideaId"> & { day?: string };
 
 // What's typed in the form but not yet pinned. `editId` marks an edit.
-export type Draft = { what: string; to: string; reaction: string; feeling: string; ideaId?: string; editId?: string };
+export type When = "today" | "yesterday" | "earlier";
+export type Draft = {
+  what: string;
+  to: string;
+  when: When;
+  day: string; // YYYY-MM-DD, used when `when` is "earlier"
+  reaction: string;
+  feeling: string;
+  ideaId?: string;
+  editId?: string;
+};
 
 export type State = {
   version: 1;
@@ -132,7 +142,7 @@ function newId(): string {
     : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
-function clean(input: PostcardInput): PostcardInput {
+function clean(input: PostcardInput) {
   const trim = (value?: string) => value?.trim() || undefined;
   return {
     what: input.what.trim(),
@@ -143,17 +153,25 @@ function clean(input: PostcardInput): PostcardInput {
   };
 }
 
+// Newest day first; within a day, most recently written first.
+function byNewest(a: Postcard, b: Postcard) {
+  if (a.day !== b.day) return a.day < b.day ? 1 : -1;
+  return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0;
+}
+
 export function addPostcard(input: PostcardInput): string {
   const now = new Date();
-  const postcard: Postcard = { id: newId(), createdAt: now.toISOString(), day: dayKey(now), ...clean(input) };
-  update((s) => ({ ...s, postcards: [postcard, ...s.postcards], draft: undefined }));
+  const postcard: Postcard = { id: newId(), createdAt: now.toISOString(), day: input.day ?? dayKey(now), ...clean(input) };
+  update((s) => ({ ...s, postcards: [postcard, ...s.postcards].sort(byNewest), draft: undefined }));
   return postcard.id;
 }
 
 export function updatePostcard(id: string, input: PostcardInput) {
   update((s) => ({
     ...s,
-    postcards: s.postcards.map((p) => (p.id === id ? { ...p, ...clean(input) } : p)),
+    postcards: s.postcards
+      .map((p) => (p.id === id ? { ...p, ...clean(input), day: input.day ?? p.day } : p))
+      .sort(byNewest),
     draft: undefined,
   }));
 }
@@ -167,12 +185,11 @@ export function deletePostcard(id: string): { postcard: Postcard; index: number 
   return { postcard, index };
 }
 
-export function restorePostcard(postcard: Postcard, index: number) {
+// Undo a delete. The list is kept in date order, so it slots back in place.
+export function restorePostcard(postcard: Postcard) {
   update((s) => {
     if (s.postcards.some((p) => p.id === postcard.id)) return s;
-    const postcards = [...s.postcards];
-    postcards.splice(Math.min(index, postcards.length), 0, postcard);
-    return { ...s, postcards };
+    return { ...s, postcards: [...s.postcards, postcard].sort(byNewest) };
   });
 }
 

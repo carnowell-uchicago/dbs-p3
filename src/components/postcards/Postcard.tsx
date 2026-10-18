@@ -24,6 +24,7 @@ export function Postcard({
   postcard,
   index = 0,
   highlight = false,
+  highlightLabel = "Just pinned",
   example = false,
   headingLevel = "h2",
   actions,
@@ -31,6 +32,7 @@ export function Postcard({
   postcard: PostcardData;
   index?: number;
   highlight?: boolean;
+  highlightLabel?: string;
   example?: boolean;
   headingLevel?: "h2" | "h3";
   actions?: ReactNode;
@@ -63,7 +65,7 @@ export function Postcard({
         <p className={`${font.display} absolute top-2 left-3 bg-(--cp-text) px-2 text-sm text-(--cp-surface)`}>Example</p>
       ) : null}
       {highlight ? (
-        <p className={`${font.display} absolute top-2 left-3 bg-(--cp-success) px-2 text-sm text-(--cp-text)`}>Just pinned</p>
+        <p className={`${font.display} absolute top-2 left-3 bg-(--cp-success) px-2 text-sm text-(--cp-text)`}>{highlightLabel}</p>
       ) : null}
 
       <div className="grid gap-4 px-5 pb-5 sm:grid-cols-[1fr_auto] sm:gap-0">

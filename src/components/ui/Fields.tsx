@@ -46,8 +46,17 @@ export function Field({ id, label, optional, hint, error, count, children }: Fie
             id={`${id}-count`}
             className={`${font.body} shrink-0 text-sm tabular-nums ${over > 0 ? "font-semibold text-(--cp-error)" : "text-(--cp-muted)"}`}
           >
-            {over > 0 ? `${over} over` : `${count.value} / ${count.max}`}
-            <span className="sr-only"> characters</span>
+            {over > 0 ? (
+              <>
+                {over}
+                <span className="sr-only"> characters</span> over
+              </>
+            ) : (
+              <>
+                {count.value} / {count.max}
+                <span className="sr-only"> characters</span>
+              </>
+            )}
           </p>
         ) : null}
       </div>

@@ -47,23 +47,26 @@ export function PeopleView() {
         lead={`${list.length} ${list.length === 1 ? "person" : "people"} you've appreciated. Anyone you haven't written to in a week is marked, in case they come to mind.`}
       />
       <ul className="flex flex-col gap-6">
-        {list.map((person) => {
+        {list.map((person, i) => {
           const days = daysBetween(person.lastDay, today);
           const due = days >= 7;
           const to = encodeURIComponent(person.name);
           return (
             <li key={person.key}>
-              <Panel as="article" labelledBy={`person-${person.key}`} className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 p-4">
+              <Panel as="article" labelledBy={`person-${i}`} className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 p-4">
                 <div className="flex flex-col gap-1">
-                  <h2 id={`person-${person.key}`} className={`${font.hand} text-2xl text-(--cp-ink)`}>
+                  <h2 id={`person-${i}`} className={`${font.hand} text-2xl text-(--cp-ink)`}>
                     {person.name}
                   </h2>
                   <p className={type.meta}>
                     {person.count} {person.count === 1 ? "postcard" : "postcards"} · last {relativeDay(person.lastDay, today)}
                     {due ? (
-                      <span className={`${font.display} ml-2 bg-(--cp-sky-1) px-2 py-0.5 text-sm text-(--cp-text)`}>
-                        {days} days ago
-                      </span>
+                      <>
+                        <span className="sr-only">, </span>
+                        <span className={`${font.display} ml-2 bg-(--cp-sky-1) px-2 py-0.5 text-sm text-(--cp-text)`}>
+                          {days} days ago
+                        </span>
+                      </>
                     ) : null}
                   </p>
                 </div>

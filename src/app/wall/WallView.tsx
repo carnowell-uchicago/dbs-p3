@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { Toast } from "@/components/ui/Toast";
 import { focusRing, type } from "@/components/ui/styles";
 import { examplePostcard } from "@/data/example";
+import { shortDate } from "@/lib/dates";
 import { personKey } from "@/lib/derive";
 import { focusPageHeading } from "@/lib/focus";
 import { deletePostcard, restorePostcard, useKindRegards, type Postcard as PostcardData } from "@/lib/store";
@@ -33,6 +34,7 @@ function Wall() {
   // Read the one-time "just pinned" signal from the URL, then drop it so a
   // reload doesn't celebrate twice.
   const [pinned] = useState(() => params.get("pinned"));
+  const [edited] = useState(() => Boolean(params.get("edited")));
   const [toast, setToast] = useState<ToastState>(() =>
     params.get("pinned") ? { message: params.get("edited") ? "Postcard updated." : "Pinned to your wall." } : null,
   );
@@ -71,7 +73,7 @@ function Wall() {
 
   function undo() {
     if (toast?.undo) {
-      restorePostcard(toast.undo.postcard, toast.undo.index);
+      restorePostcard(toast.undo.postcard);
       const id = toast.undo.postcard.id;
       setToast({ message: "Postcard put back." });
       afterRender(() => document.getElementById(`card-${id}`)?.focus());
@@ -140,15 +142,16 @@ function Wall() {
                 postcard={postcard}
                 index={i}
                 highlight={postcard.id === pinned}
+                highlightLabel={edited ? "Updated" : "Just pinned"}
                 actions={
                   <>
                     <LinkButton href={`/write?edit=${postcard.id}`} variant="quiet" size="sm">
                       <Icon name="pencil" />
-                      Edit<span className="sr-only"> postcard{postcard.to ? ` to ${postcard.to}` : ""}</span>
+                      Edit<span className="sr-only"> postcard: {describe(postcard)}</span>
                     </LinkButton>
                     <Button variant="quiet" size="sm" onClick={() => remove(postcard.id)}>
                       <Icon name="trash" />
-                      Delete<span className="sr-only"> postcard{postcard.to ? ` to ${postcard.to}` : ""}</span>
+                      Delete<span className="sr-only"> postcard: {describe(postcard)}</span>
                     </Button>
                   </>
                 }
@@ -161,6 +164,13 @@ function Wall() {
       {toastEl}
     </>
   );
+}
+
+// "to Maya, Oct 3" or, with no name, the first few words: "“Returned a dropped glove…”, Oct 3".
+function describe(p: PostcardData): string {
+  const words = p.what.split(/\s+/).slice(0, 5).join(" ");
+  const who = p.to ? `to ${p.to}` : `\u201c${words}${p.what.split(/\s+/).length > 5 ? "\u2026" : ""}\u201d`;
+  return `${who}, ${shortDate(p.day)}`;
 }
 
 function afterRender(fn: () => void) {
