@@ -16,11 +16,13 @@ These are the three flows (first visit, main task, coming back). The source is i
 
 ```mermaid
 flowchart LR
-    A["Today [/]<br/>Who did you notice today?<br/>(nothing saved yet)"] --> I["Idea for today<br/>a compliment to try"]
-    I -->|"Quiet / In person,<br/>Show me another"| I
-    A --> X["Example postcard<br/>(labeled Example, not an empty wall)"]
-    A -->|"Write a postcard"| W["Write [/write]"]
-    I -->|"did it"| W
+    A["Today [/]<br/>Who did you notice today?<br/>(nothing saved yet)"] --> Q["What did you do or notice?<br/>the one box, right on the page"]
+    Q -->|"tap a starter:<br/>Complimented / Thanked /<br/>Checked in on / Helped"| Q
+    Q -->|"Pin it to my wall"| V{"Valid?"}
+    V -->|"empty, or only a starter"| QE["Under the box:<br/>'Write what you did or noticed…'<br/>'Finish the sentence…'<br/>(text kept, focus on the box)"]
+    QE --> Q
+    V -->|"yes"| P["Wall [/wall]<br/>it drops onto the corkboard:<br/>'Pinned to your wall.'"]
+    Q -->|"Add who, when, or how it felt"| W["Write [/write]<br/>what you typed carries over"]
 ```
 
 ### 2 · Main task: write it down and pin it
@@ -61,7 +63,7 @@ flowchart TD
 
 | Page | States |
 |---|---|
-| Today | Loading (a brief skeleton while localStorage is read) · first visit · returning · wrote one today · Sunday ("For you" idea; links to last week if this week is empty) · person to revisit |
+| Today | Loading (a brief skeleton while localStorage is read) · first visit (write right here; errors under the box) · returning · wrote one today · Sunday ("For you" idea; links to last week if this week is empty) · person to revisit |
 | Write | New · prefilled name (`?to=`) · edit (`?edit=`) · edit of a deleted postcard · draft restored · errors · Earlier date · Other feeling |
 | Wall | Empty (an example postcard on the board, labeled) · board · full board (cards overlap, newest on top) · postcard opened · a memory · just pinned · updated · deleted with Undo · filtered by person |
 | People | No names yet (only strangers, or none) · list, with "7+ days" marked |
@@ -74,7 +76,7 @@ Each step in the flow has its own route, and every page shares the same nav. The
 
 | Route | What it's for |
 |---|---|
-| `/` Today | **First visit:** today's idea, the Write a postcard button, and an example postcard. **Returning:** a welcome back message, today's idea, someone to revisit, a Sunday look-back link, and **Show me a memory** (opens a past postcard on the wall). After one postcard: "One postcard today. Nice." |
+| `/` Today | **First visit:** the question, the postcard's one box with starters to tap, and Pin it to my wall. **Returning:** a welcome back message, today's idea, someone to revisit, a Sunday look-back link, and **Show me a memory** (opens a past postcard on the wall). After one postcard: "One postcard today. Nice." |
 | `/write` | The one-column postcard form. It also handles editing (`?edit=`) and prefilling a name (`?to=`). |
 | `/wall` | A pixel corkboard with every postcard pinned small, and a running total. Open a postcard to read it full size, Edit, or Delete (with Undo). **Show me a memory** opens a random one from before today. Filter by person. |
 | `/people` | Everyone you've written to, how often, and when you last did. Anyone at 7+ days is marked. |
@@ -103,7 +105,7 @@ Subagents studied how three similar tools welcome someone new. The full notes ar
 | Happyfeed (now Orca) | An account form | Name, email, password, *before* any value | Right after sign-up | **Took:** scheduled look-backs. **Avoided:** the jar, shake-for-random, sign-up first. |
 | Random Acts of Kindness | Free resources, no sign-up | Nothing | One click to an idea | **Took:** an idea right away, asking for nothing. **Avoided:** their wording, calendars, terms. Filled their gap: no way to log or reflect. |
 
-So the first visit asks for nothing. It opens on a compliment idea and one button, with an example postcard instead of an empty wall.
+So the first visit asks for nothing and has almost nothing to read. Following the brief ("learn by doing, not by reading a tour"), Today opens on the question and the postcard's one required box, right on the page. Starters (**Complimented**, **Thanked**, **Checked in on**, **Helped**) begin the sentence for you, and **Pin it to my wall** drops the postcard onto the corkboard. The optional fields are one link away. The daily idea starts on the second visit, as part of coming back.
 
 ## The form
 

@@ -8,11 +8,13 @@ Each box with a route in brackets is a page. Every page shares the same nav: Tod
 
 ```mermaid
 flowchart LR
-    A["Today [/]<br/>Who did you notice today?<br/>(nothing saved yet)"] --> I["Idea for today<br/>a compliment to try"]
-    I -->|"Quiet / In person,<br/>Show me another"| I
-    A --> X["Example postcard<br/>(labeled Example, not an empty wall)"]
-    A -->|"Write a postcard"| W["Write [/write]"]
-    I -->|"did it"| W
+    A["Today [/]<br/>Who did you notice today?<br/>(nothing saved yet)"] --> Q["What did you do or notice?<br/>the one box, right on the page"]
+    Q -->|"tap a starter:<br/>Complimented / Thanked /<br/>Checked in on / Helped"| Q
+    Q -->|"Pin it to my wall"| V{"Valid?"}
+    V -->|"empty, or only a starter"| QE["Under the box:<br/>'Write what you did or noticed…'<br/>'Finish the sentence…'<br/>(text kept, focus on the box)"]
+    QE --> Q
+    V -->|"yes"| P["Wall [/wall]<br/>it drops onto the corkboard:<br/>'Pinned to your wall.'"]
+    Q -->|"Add who, when, or how it felt"| W["Write [/write]<br/>what you typed carries over"]
 ```
 
 ### 2 · Main task: write it down and pin it
@@ -53,7 +55,7 @@ flowchart TD
 
 | Page | States |
 |---|---|
-| Today | Loading (a brief skeleton while localStorage is read) · first visit · returning · wrote one today · Sunday ("For you" idea; links to last week if this week is empty) · person to revisit |
+| Today | Loading (a brief skeleton while localStorage is read) · first visit (write right here; errors under the box) · returning · wrote one today · Sunday ("For you" idea; links to last week if this week is empty) · person to revisit |
 | Write | New · prefilled name (`?to=`) · edit (`?edit=`) · edit of a deleted postcard · draft restored · errors · Earlier date · Other feeling |
 | Wall | Empty (an example postcard on the board, labeled) · board · full board (cards overlap, newest on top) · postcard opened · a memory · just pinned · updated · deleted with Undo · filtered by person |
 | People | No names yet (only strangers, or none) · list, with "7+ days" marked |
