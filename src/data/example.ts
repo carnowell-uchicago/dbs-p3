@@ -5,7 +5,7 @@ export const examplePostcard: Postcard = {
   id: "example",
   createdAt: "2026-10-17T18:00:00.000Z",
   day: "2026-10-17",
-  what: "Told Priya her green coat looked like autumn itself. She did a little spin.",
+  what: "Told Priya her orange coat looked like autumn itself. She did a little spin.",
   to: "Priya",
   reaction: "Laughed and said she almost didn't wear it.",
   feeling: "Warm",
