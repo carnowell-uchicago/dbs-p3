@@ -18,7 +18,7 @@ export function NavBar() {
   const pathname = usePathname();
   return (
     <nav aria-label="Main" className="pt-1 pb-3">
-      <ul className="flex flex-wrap gap-x-3 gap-y-4">
+      <ul className="flex flex-wrap gap-x-2 gap-y-4 sm:gap-x-3">
         {navItems.map((item) => {
           const current = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
           return (
@@ -27,7 +27,7 @@ export function NavBar() {
                 href={item.href}
                 aria-current={current ? "page" : undefined}
                 style={edge}
-                className={`inline-flex h-9 items-center px-2 text-sm font-semibold sm:px-3 sm:text-base [--w:3px] [--e:var(--cp-wood)] ${font.display} ${focusRing} ${
+                className={`inline-flex h-9 items-center px-1.5 text-sm font-semibold sm:px-3 sm:text-base [--w:3px] [--e:var(--cp-wood)] ${font.display} ${focusRing} ${
                   current
                     ? "translate-y-[3px] bg-(--cp-wood) text-(--cp-surface) [--d:0px]"
                     : "bg-(--cp-surface) text-(--cp-text) [--d:3px] hover:bg-(--cp-hover) active:translate-y-[3px] active:[--d:0px]"
