@@ -17,7 +17,13 @@ export type Postcard = {
   reaction?: string;
   feeling?: string;
   ideaId?: string;
+  spot?: Spot; // where it's pinned on the corkboard, set the first time the wall shows it
 };
+
+// Position on the corkboard as a fraction (0–1) of the room left after the
+// card's own size, so a card always fits whatever the board's size. Tilt is
+// in degrees.
+export type Spot = { x: number; y: number; tilt: number };
 
 export type PostcardInput = Pick<Postcard, "what" | "to" | "reaction" | "feeling" | "ideaId"> & { day?: string };
 
@@ -191,6 +197,11 @@ export function restorePostcard(postcard: Postcard) {
     if (s.postcards.some((p) => p.id === postcard.id)) return s;
     return { ...s, postcards: [...s.postcards, postcard].sort(byNewest) };
   });
+}
+
+// Pins newly placed postcards to their spots on the corkboard.
+export function placePostcards(spots: Record<string, Spot>) {
+  update((s) => ({ ...s, postcards: s.postcards.map((p) => (spots[p.id] ? { ...p, spot: spots[p.id] } : p)) }));
 }
 
 export function saveDraft(draft: Draft | undefined) {

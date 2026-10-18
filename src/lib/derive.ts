@@ -71,3 +71,11 @@ export function postcardsInWeek(postcards: Postcard[], start: string): Postcard[
 export function thisWeek(today: string) {
   return weekStart(today);
 }
+
+// A random postcard from before today, for "Show me a memory". Avoids the
+// one just shown when there's another to pick.
+export function pickMemory(postcards: Postcard[], today: string, notId?: string): Postcard | undefined {
+  const past = postcards.filter((p) => p.day < today);
+  const pool = past.length > 1 ? past.filter((p) => p.id !== notId) : past;
+  return pool[Math.floor(Math.random() * pool.length)];
+}

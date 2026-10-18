@@ -29,6 +29,9 @@ export const colors = {
   "tape-rose": "#f4a7b9",
   "tape-sky": "#8fd3f4",
   "tape-gold": "#f6c945",
+  cork: "#d6a771", // Corkboard on the wall, with darker and lighter flecks
+  "cork-dark": "#b9854e",
+  "cork-light": "#e6c08f",
 } as const;
 
 export type ColorName = keyof typeof colors;
@@ -63,4 +66,6 @@ export const pairs: { fg: ColorName; bg: ColorName; use: string; kind: "text" | 
   { fg: "error", bg: "surface", use: "Error edge on inputs", kind: "ui" },
   { fg: "text", bg: "bg", use: "Focus outline", kind: "ui" },
   { fg: "accent", bg: "text", use: "Toast action focus", kind: "ui" },
+  { fg: "wood", bg: "cork", use: "Postcard edges on the corkboard", kind: "ui" },
+  { fg: "text", bg: "cork", use: "Focus outline on the corkboard", kind: "ui" },
 ];
