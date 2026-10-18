@@ -18,6 +18,8 @@ flowchart LR
     R -->|"your own"| P["Wall [/wall]<br/>it drops onto the corkboard: 'Pinned to your wall.'<br/>saved; the tutorial is over"]
     R -->|"the example"| PR["Wall [/wall]<br/>'Practice postcard pinned. It isn't saved.'<br/>shown on every tab, labeled Practice"]
     PR -->|"leave or reload"| A
+    T1 -->|"Skip the tutorial"| SK["Wall [/wall]<br/>the example postcard on the empty board<br/>(anything typed stays as a draft)"]
+    SK -->|"leave or reload"| A
 ```
 
 ### 2 · Main task: write it down and pin it
@@ -59,7 +61,7 @@ flowchart TD
 | Page | States |
 |---|---|
 | Today | Loading (a brief skeleton while localStorage is read) · first visit (goes straight to the Write tutorial) · nothing saved after practice (one button and the idea) · returning · wrote one today · Sunday ("For you" idea; links to last week if this week is empty) · person to revisit |
-| Write | First-visit tutorial (one box at a time, example offered, practice not saved) · new · prefilled name (`?to=`) · edit (`?edit=`) · edit of a deleted postcard · draft restored · errors · Earlier date · Other feeling |
+| Write | First-visit tutorial (one box at a time, example offered, practice not saved, Skip; the other tabs are off until it's finished or skipped) · new · prefilled name (`?to=`) · edit (`?edit=`) · edit of a deleted postcard · draft restored · errors · Earlier date · Other feeling |
 | Wall | Practice postcard (labeled, removable, not saved) · empty (an example postcard on the board, labeled) · board · full board (cards overlap, newest on top) · postcard opened · a memory · just pinned · updated · deleted with Undo · filtered by person |
 | People | No names yet (only strangers, or none) · list, with "7+ days" marked |
 | Look back | This week · last week · a quiet week (no guilt) · edited (back on that postcard's week) · deleted with Undo |

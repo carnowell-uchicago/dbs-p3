@@ -26,6 +26,8 @@ flowchart LR
     R -->|"your own"| P["Wall [/wall]<br/>it drops onto the corkboard: 'Pinned to your wall.'<br/>saved; the tutorial is over"]
     R -->|"the example"| PR["Wall [/wall]<br/>'Practice postcard pinned. It isn't saved.'<br/>shown on every tab, labeled Practice"]
     PR -->|"leave or reload"| A
+    T1 -->|"Skip the tutorial"| SK["Wall [/wall]<br/>the example postcard on the empty board<br/>(anything typed stays as a draft)"]
+    SK -->|"leave or reload"| A
 ```
 
 ### 2 · Main task: write it down and pin it
@@ -67,7 +69,7 @@ flowchart TD
 | Page | States |
 |---|---|
 | Today | Loading (a brief skeleton while localStorage is read) · first visit (goes straight to the Write tutorial) · nothing saved after practice (one button and the idea) · returning · wrote one today · Sunday ("For you" idea; links to last week if this week is empty) · person to revisit |
-| Write | First-visit tutorial (one box at a time, example offered, practice not saved) · new · prefilled name (`?to=`) · edit (`?edit=`) · edit of a deleted postcard · draft restored · errors · Earlier date · Other feeling |
+| Write | First-visit tutorial (one box at a time, example offered, practice not saved, Skip; the other tabs are off until it's finished or skipped) · new · prefilled name (`?to=`) · edit (`?edit=`) · edit of a deleted postcard · draft restored · errors · Earlier date · Other feeling |
 | Wall | Practice postcard (labeled, removable, not saved) · empty (an example postcard on the board, labeled) · board · full board (cards overlap, newest on top) · postcard opened · a memory · just pinned · updated · deleted with Undo · filtered by person |
 | People | No names yet (only strangers, or none) · list, with "7+ days" marked |
 | Look back | This week · last week · a quiet week (no guilt) · edited (back on that postcard's week) · deleted with Undo |
@@ -108,7 +110,7 @@ Subagents studied how three similar tools welcome someone new. The full notes ar
 | Happyfeed (now Orca) | An account form | Name, email, password, *before* any value | Right after sign-up | **Took:** scheduled look-backs. **Avoided:** the jar, shake-for-random, sign-up first. |
 | Random Acts of Kindness | Free resources, no sign-up | Nothing | One click to an idea | **Took:** asking for nothing, with something to do in one tap (here, "Use this example" on the first visit; the daily idea starts on the second). **Avoided:** their wording, calendars, terms. Filled their gap: no way to log or reflect. |
 
-So the first visit asks for nothing: opening the site goes straight to **Write**, where the first postcard is written one box at a time. Each box has a short note beside it on what it's for (names fill People; the date feeds the Sunday look-back), and every box offers the example's answer, "Or use this example (it won't be saved)", so nobody stalls on having nothing good yet. Writing your own saves it and ends the tutorial. Finishing with the example pins a **practice postcard**: it shows like a real one on every tab, labeled "Practice, not saved", and disappears when you leave or reload (which brings the tutorial back). After the first postcard, Write is the full form.
+So the first visit asks for nothing: opening the site goes straight to **Write**, where the first postcard is written one box at a time. Each box has a short note beside it on what it's for (names fill People; the date feeds the Sunday look-back), and every box offers the example's answer, "Or use this example (it won't be saved)", so nobody stalls on having nothing good yet. Writing your own saves it and ends the tutorial. Finishing with the example pins a **practice postcard**: it shows like a real one on every tab, labeled "Practice, not saved", and disappears when you leave or reload (which brings the tutorial back). **Skip the tutorial** goes straight to the wall, where the example postcard sits on the empty board. Until the tutorial is finished or skipped, the other tabs are switched off (flat and pale, and out of the Tab order), with a note saying they open once you finish or skip. After the first postcard, Write is the full form.
 
 ## The form
 

@@ -11,7 +11,7 @@ import { Panel } from "@/components/ui/Panel";
 import { font, type } from "@/components/ui/styles";
 import { examplePostcard } from "@/data/example";
 import { addDays, dayKey, longDate } from "@/lib/dates";
-import { addPostcard, pinPractice, saveDraft, type State } from "@/lib/store";
+import { addPostcard, pinPractice, saveDraft, skipTutorial, type State } from "@/lib/store";
 import {
   chosenDay,
   feelingPicks,
@@ -149,6 +149,13 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
     }
   }
 
+  // Skip: go to the wall, where the example postcard waits on the empty board.
+  // Anything typed stays as a draft for the full form.
+  function skip() {
+    skipTutorial();
+    router.push("/wall");
+  }
+
   // The example's answer for this step, and how to fill it in. It's offered
   // only while the box is empty, so it can never replace what you typed.
   const offers: Record<Step, { show: string; use: () => void; open: boolean }> = {
@@ -223,6 +230,12 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
               Pin it now
             </Button>
           ) : null}
+        </div>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <Button variant="quiet" onClick={skip}>
+            Skip the tutorial
+          </Button>
+          <p className={type.meta}>The other tabs open once you finish or skip.</p>
         </div>
       </form>
     </>

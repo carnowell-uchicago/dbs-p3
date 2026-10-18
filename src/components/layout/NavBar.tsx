@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { edge, focusRing, font } from "@/components/ui/styles";
+import { useTutorial } from "@/lib/store";
 
 export const navItems = [
   { href: "/", label: "Today" },
@@ -14,13 +15,30 @@ export const navItems = [
 
 // Shared navigation. The current page is a wood tab with paper text and
 // aria-current, so where you are never rests on color alone (it's also sunk in).
+// During the first-visit tutorial the other tabs are switched off (flat and
+// pale) until it's finished or skipped.
 export function NavBar() {
   const pathname = usePathname();
+  const tutorial = useTutorial();
   return (
     <nav aria-label="Main" className="pt-1 pb-3">
       <ul className="flex flex-wrap gap-x-2 gap-y-4 sm:gap-x-3">
         {navItems.map((item) => {
           const current = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+          if (tutorial && !current) {
+            return (
+              <li key={item.href}>
+                <span
+                  aria-disabled="true"
+                  title="Finish or skip the tutorial first"
+                  style={edge}
+                  className={`inline-flex h-9 cursor-not-allowed items-center bg-(--cp-bg) px-1.5 text-sm font-semibold text-(--cp-muted) sm:px-3 sm:text-base [--w:3px] [--e:var(--cp-bevel)] [--d:0px] ${font.display}`}
+                >
+                  {item.label}
+                </span>
+              </li>
+            );
+          }
           return (
             <li key={item.href}>
               <Link

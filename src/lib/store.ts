@@ -149,11 +149,18 @@ export function removePractice() {
   changedInMemory();
 }
 
+// Skipping the tutorial ends it for this page session, like pinning does.
+export function skipTutorial() {
+  tutorialDone = true;
+  changedInMemory();
+}
+
 // The tutorial runs on the first visit until a postcard (real or practice) is
-// pinned in this page session.
+// pinned, or it's skipped, in this page session.
 export function useTutorial(): boolean {
   const state = useKindRegards();
-  return Boolean(state) && state!.postcards.length === 0 && !tutorialDone;
+  const done = useSyncExternalStore(subscribe, () => tutorialDone, () => false);
+  return Boolean(state) && state!.postcards.length === 0 && !done;
 }
 
 const listeners = new Set<() => void>();

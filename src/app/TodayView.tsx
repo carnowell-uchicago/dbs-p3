@@ -37,8 +37,8 @@ export function TodayView() {
   const lastVisit = state.visits?.current !== today ? state.visits?.current : state.visits?.previous;
   const sunday = isSunday(today);
 
-  // Nothing saved, but the tutorial's done for this visit (its practice
-  // postcard was removed): one way forward, and today's idea.
+  // Nothing saved, but the tutorial's done for this visit (skipped, or its
+  // practice postcard was removed): one way forward, and today's idea.
   if (total === 0) {
     return (
       <>
