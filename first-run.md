@@ -33,5 +33,9 @@ Step 8 of the brief. On 2026-10-18 a subagent used the **live site** (https://db
 15. **Feelings again:** the text box and the quick-pick chips repeat each other.
 16. **"Your week, on a Sunday"** reads oddly.
 
-## What we changed
-_The student chooses which items to fix; see the README._
+## What the student chose to fix
+- **Fix:** #1 (Undo timing), #2 (optional "When?"), #3 (Look back opens last week if this week is empty), #4 (reword "Done for today"), #5 (focus on page change), #6 (retag ideas; keep "For you" on Sundays, labeled, outside the Quiet/In person filter), #7 (phone nav on one row), #8, #9, #14 (edit fixes), #10, #11 (screen reader text and toast placement), #15 (feelings as chips plus "Other…").
+- **Not fixed (the student's choice):** #12, #13, #16 (Look back wording).
+
+## What changed
+_Filled in as the fixes land._
