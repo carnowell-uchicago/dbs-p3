@@ -282,10 +282,6 @@ Later on 2026-10-18, after the wall became a corkboard and the first visit becam
 
 **Since then:** at the student's request, the first visit moved from Today to a step-by-step Write tutorial (one box at a time, with an example offered and a practice postcard that isn't saved), and the daily idea can no longer be swapped. Fix #6 now lives in the tutorial's Who step.
 
-## My reflection
-
-_To be written by me: how I worked with the agent, what was easy, and what was hard._
-
 ## Run it locally
 
 ```bash

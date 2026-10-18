@@ -24,7 +24,7 @@ A daily kindness log kept as a wall of postcards. MPCS 51238, Autumn 2026. **Due
 - **The student decides; the agent builds.** The brief marks one-shot work incomplete, so design choices come from the student. Ask about anything that changes the tool's scope, flows, wording the student chose, or the visual style. Routine code, fixes, docs, and tests don't need asking.
 - **Small commits pushed straight to `main`** (approved), each ending with the co-author line. Never force-push or rewrite history.
 - **No new dependencies** beyond Next.js/Tailwind without asking. Test tooling stays outside the repo (see Verifying).
-- **Left to the student; don't write these:** the README "My reflection" section, submitting in Google Classroom, and the in-class explanation.
+- **Left to the student; don't write these:** the reflection (the student writes it separately, outside the repo; don't add a section for it), submitting in Google Classroom, and the in-class explanation.
 
 ## The assignment
 A small everyday tool built around three flows: the **first visit**, the **main task**, and **coming back**. There's one route per flow step, with shared navigation. The flows are drawn in Mermaid in `flows.md` and embedded in `README.md`; keep the two in sync.
@@ -41,7 +41,7 @@ A small everyday tool built around three flows: the **first visit**, the **main 
 - **First visit = the Write tutorial (2026-10-18, student's choice):** with nothing saved, `/` redirects to `/write`, which shows `write/Tutorial.tsx`: one box per step (What, Who, When, Reaction, Feeling), a sky note beside each on what it's for, and the example's answer offered per box while it's empty ("Or use this example (it won't be saved)"). Using the example's sentence makes it a **practice postcard**: `pinPractice()` keeps it in memory only (never localStorage), merged into `useKindRegards()` while nothing real is saved, labeled "Practice, not saved", removable, not editable. `useTutorial()` is true until a postcard (real or practice) is pinned in this page session, so leaving or reloading brings the tutorial back. Shared form logic (limits, validate, choices, starting values) lives in `write/form.ts`.
 - **One daily idea (2026-10-18, student's choice):** no "Show me another" on the idea card (`showAnotherIdea` and the offset are gone); `today` in state only remembers the day and comfort level. The ideas grew to 83 (10 per group × comfort).
 - **Verified:** a 62-check end-to-end run passed before the corkboard. The corkboard had its own browser run (open, memory from Wall and Today, delete and Undo, edit, pin, keyboard, 360/390/1280 wide). Contrast is 25 of 25 (two cork pairs added; blue-on-sky retired). The tutorial, practice postcard, Look back edits, and one-idea Today were each checked in the browser and on the live site.
-- **Still with the student:** confirm `AGENTS.md` loads in `/context` (in a new session), write "My reflection", submit, and the class talk.
+- **Still with the student:** confirm `AGENTS.md` loads in `/context` (in a new session), write the reflection (separately), submit, and the class talk.
 
 ## Code map
 - `src/app/<route>/page.tsx` is a thin server file with metadata; the client UI sits next to it (`TodayView.tsx`, `write/WriteForm.tsx`, `wall/WallView.tsx`, `people/PeopleView.tsx`, `look-back/LookBackView.tsx`). There's also `not-found.tsx` and the pixel-heart `icon.svg`.
