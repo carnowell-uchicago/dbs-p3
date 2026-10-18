@@ -58,6 +58,13 @@ export function TodayView() {
   const lastWeek = postcardsInWeek(state.postcards, addDays(weekStart(today), -7)).length;
   const revisit = personToRevisit(state.postcards, today);
   const done = writtenToday.length > 0;
+  // Opens a random past postcard on the wall.
+  const memoryButton = state.postcards.some((p) => p.day < today) ? (
+    <LinkButton href="/wall?memory=1" variant="secondary">
+      <Icon name="shuffle" />
+      Show me a memory
+    </LinkButton>
+  ) : null;
 
   return (
     <>
@@ -96,6 +103,7 @@ export function TodayView() {
             <LinkButton href="/wall" variant="secondary">
               See your wall
             </LinkButton>
+            {memoryButton}
           </div>
         </PageHeader>
       ) : (
@@ -110,6 +118,7 @@ export function TodayView() {
             <LinkButton href="/wall" variant="secondary">
               See your wall
             </LinkButton>
+            {memoryButton}
           </div>
         </PageHeader>
       )}
