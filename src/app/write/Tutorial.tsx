@@ -183,10 +183,15 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
     <>
       <PageHeader title="Write your first postcard" />
       <form noValidate onSubmit={onSubmit} className="flex flex-col gap-6" aria-labelledby="step-label">
-        <p id="step-label" className={`${font.display} text-base text-(--cp-muted)`}>
-          Step {index + 1} of {steps.length}
-          <span className="sr-only">: {notes[step].title}</span>
-        </p>
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+          <p id="step-label" className={`${font.display} text-base text-(--cp-muted)`}>
+            Step {index + 1} of {steps.length}
+            <span className="sr-only">: {notes[step].title}</span>
+          </p>
+          <Button variant="quiet" size="sm" onClick={skip}>
+            Skip the tutorial
+          </Button>
+        </div>
 
         <div className="grid items-start gap-5 sm:grid-cols-[minmax(0,1fr)_15rem] sm:gap-8">
           <div className="flex min-w-0 flex-col gap-4">{field(step)}</div>
@@ -231,12 +236,7 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
             </Button>
           ) : null}
         </div>
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          <Button variant="quiet" onClick={skip}>
-            Skip the tutorial
-          </Button>
-          <p className={type.meta}>The other tabs open once you finish or skip.</p>
-        </div>
+        <p className={type.meta}>The other tabs open once you finish or skip.</p>
       </form>
     </>
   );
