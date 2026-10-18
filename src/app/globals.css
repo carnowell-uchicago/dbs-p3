@@ -1,9 +1,14 @@
 @import "tailwindcss";
 
-/* Always keep room for the scrollbar, so short pages (People, Look back) don't
-   shift the column and stretch the sky when it disappears. */
+/* The page is always the full window width, scrollbar or not, so short pages
+   (People, Look back) don't shift the column or stretch the sky when the
+   scrollbar disappears. On long pages the scrollbar covers the far edge. */
 html {
-  scrollbar-gutter: stable;
+  overflow-x: clip;
+}
+
+body {
+  width: 100vw;
 }
 
 /* Colors arrive as --cp-* variables on <html> (src/lib/tokens.ts). */
