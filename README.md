@@ -220,7 +220,7 @@ Two bugs were found while making these fixes, and fixed: "Show me another" didn'
 
 **Verified:** a 61-check end-to-end browser run (laptop and phone) passes, including every fix above. Contrast is still 24 of 24.
 
-**Since then:** the first visit became the Write tutorial, so the first-visit idea (and "Show me another") is gone; see Round 2 and the README.
+**Since then:** the first visit became the Write tutorial, so the first-visit idea (and "Show me another") is gone; see the second check below.
 
 ### Second check: after the corkboard and the new first visit
 
