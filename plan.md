@@ -47,7 +47,7 @@ The name "Kind Regards" is the agent's proposal (a postcard sign-off), and the s
 | `/look-back` | This week (Mon–Sun) and the week before: the count, the people, and each postcard with how they reacted and how you felt. It's highlighted on Sundays. |
 
 ## Form (`/write`), one column, every field labeled
-1. **What did you do or notice?** Required. It shows the specificity hint "Name the detail, like 'the green coat' or 'how calm you were in the meeting'." It has a live 0/280 counter.
+1. **What did you do or notice?** Required. It shows the specificity hint "Name the detail, like 'their green coat' or 'how calm you were in the meeting'." It has a live 0/280 counter.
    - **Empty or only spaces:** "Write what you did or noticed. A few words is enough, like 'told Sam the talk was clear.'"
    - **Over 280 characters:** "Keep it postcard-sized: 12 characters over."
 2. **Who was it for? (optional)** A text input that suggests past names. The hint says "Leave blank for a stranger."
