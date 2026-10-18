@@ -87,7 +87,17 @@ export function WriteForm() {
   }
 
   // Remount when switching between new and edit, so the fields start fresh.
-  return <Form key={`${editId ?? "new"}-${bfcacheId}`} state={state} editId={editing?.id} presetTo={params.get("to") ?? undefined} />;
+  // An edit started on Look back returns there; everything else goes to the wall.
+  const fromLookBack = params.get("from") === "look-back";
+  return (
+    <Form
+      key={`${editId ?? "new"}-${bfcacheId}`}
+      state={state}
+      editId={editing?.id}
+      presetTo={params.get("to") ?? undefined}
+      fromLookBack={fromLookBack}
+    />
+  );
 }
 
 function startingValues(state: State, editId: string | undefined, presetTo: string | undefined) {
@@ -113,7 +123,17 @@ function startingValues(state: State, editId: string | undefined, presetTo: stri
   };
 }
 
-function Form({ state, editId, presetTo }: { state: State; editId?: string; presetTo?: string }) {
+function Form({
+  state,
+  editId,
+  presetTo,
+  fromLookBack = false,
+}: {
+  state: State;
+  editId?: string;
+  presetTo?: string;
+  fromLookBack?: boolean;
+}) {
   const router = useRouter();
   const [{ values: initial, restored }] = useState(() => startingValues(state, editId, presetTo));
   const [values, setValues] = useState<Values>(initial);
@@ -161,7 +181,7 @@ function Form({ state, editId, presetTo }: { state: State; editId?: string; pres
     };
     if (editId) {
       updatePostcard(editId, input);
-      router.push(`/wall?pinned=${editId}&edited=1`);
+      router.push(fromLookBack ? `/look-back?edited=${editId}` : `/wall?pinned=${editId}&edited=1`);
     } else {
       const id = addPostcard(input);
       router.push(`/wall?pinned=${id}`);
@@ -171,7 +191,7 @@ function Form({ state, editId, presetTo }: { state: State; editId?: string; pres
   function discard() {
     pinned.current = true;
     saveDraft(undefined);
-    router.push(editId ? "/wall" : "/");
+    router.push(editId ? (fromLookBack ? "/look-back" : "/wall") : "/");
   }
 
   const what = values.what.trim().length;

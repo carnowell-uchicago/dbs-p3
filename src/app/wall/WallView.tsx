@@ -7,26 +7,19 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { CorkBoard } from "@/components/postcards/CorkBoard";
 import { MiniPostcard } from "@/components/postcards/MiniPostcard";
 import { Postcard } from "@/components/postcards/Postcard";
+import { afterRender, PostcardActions, useTakeDown } from "@/components/postcards/PostcardActions";
 import { Button, LinkButton } from "@/components/ui/Button";
 import { Dialog } from "@/components/ui/Dialog";
 import { Icon } from "@/components/ui/Icon";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { Toast } from "@/components/ui/Toast";
 import { focusRing, font, type } from "@/components/ui/styles";
 import { examplePostcard } from "@/data/example";
 import { placeNew } from "@/lib/board";
-import { dayKey, daysBetween, shortDate } from "@/lib/dates";
+import { dayKey, daysBetween } from "@/lib/dates";
 import { personKey, pickMemory } from "@/lib/derive";
 import { focusPageHeading } from "@/lib/focus";
-import {
-  deletePostcard,
-  placePostcards,
-  restorePostcard,
-  useKindRegards,
-  type Postcard as PostcardData,
-} from "@/lib/store";
+import { placePostcards, useKindRegards, type Postcard as PostcardData } from "@/lib/store";
 
-type ToastState = { message: string; undo?: { postcard: PostcardData; index: number } } | null;
 type Opened = { id: string; memory?: boolean } | null;
 
 // Where the example sits on an empty board.
@@ -51,9 +44,10 @@ function Wall() {
   const [pinned] = useState(() => params.get("pinned"));
   const [edited] = useState(() => Boolean(params.get("edited")));
   const [wantsMemory, setWantsMemory] = useState(() => params.has("memory"));
-  const [toast, setToast] = useState<ToastState>(() =>
-    params.get("pinned") ? { message: params.get("edited") ? "Postcard updated." : "Pinned to your wall." } : null,
+  const [welcome] = useState(() =>
+    params.get("pinned") ? (params.get("edited") ? "Postcard updated." : "Pinned to your wall.") : null,
   );
+  const { takeDown, toastEl } = useTakeDown(welcome, (id) => document.getElementById(`card-${id}`)?.focus());
   const [opened, setOpened] = useState<Opened>(null);
   const focusedPinned = useRef(false);
   const filter = params.get("to");
@@ -97,8 +91,6 @@ function Wall() {
     card.focus({ preventScroll: true });
   }, [pinned, state]);
 
-  const dismiss = useCallback(() => setToast(null), []);
-
   const close = useCallback(() => {
     setOpened(null);
     // Opened from Today, there's no card to return to: go to the heading.
@@ -136,30 +128,8 @@ function Wall() {
 
   function remove(id: string) {
     setOpened(null);
-    const removed = deletePostcard(id);
-    if (!removed) return;
-    setToast({ message: "Postcard taken down.", undo: removed });
-    // The card is gone; put focus on the page heading (after the re-render).
-    afterRender(focusPageHeading);
+    takeDown(id);
   }
-
-  function undo() {
-    if (toast?.undo) {
-      restorePostcard(toast.undo.postcard);
-      const id = toast.undo.postcard.id;
-      setToast({ message: "Postcard put back." });
-      afterRender(() => document.getElementById(`card-${id}`)?.focus());
-    }
-  }
-
-  const toastEl = (
-    <Toast
-      message={toast?.message ?? null}
-      action={toast?.undo ? { label: "Undo", onClick: undo } : undefined}
-      onDismiss={dismiss}
-      duration={toast?.undo ? 30000 : 5000}
-    />
-  );
 
   const memoryAge = current ? daysBetween(current.day, today) : 0;
   const dialog = (
@@ -188,16 +158,12 @@ function Wall() {
             example={current.id === example.id && total === 0}
             actions={
               current.id === example.id && total === 0 ? undefined : (
-                <>
-                  <LinkButton href={`/write?edit=${current.id}`} variant="quiet" size="sm" onClick={() => setOpened(null)}>
-                    <Icon name="pencil" />
-                    Edit<span className="sr-only"> postcard: {describe(current)}</span>
-                  </LinkButton>
-                  <Button variant="quiet" size="sm" onClick={() => remove(current.id)}>
-                    <Icon name="trash" />
-                    Delete<span className="sr-only"> postcard: {describe(current)}</span>
-                  </Button>
-                </>
+                <PostcardActions
+                  postcard={current}
+                  editHref={`/write?edit=${current.id}`}
+                  onEdit={() => setOpened(null)}
+                  onDelete={() => remove(current.id)}
+                />
               )
             }
           />
@@ -286,15 +252,4 @@ function Wall() {
       {toastEl}
     </>
   );
-}
-
-// "to Maya, Oct 3" or, with no name, the first few words: "“Returned a dropped glove…”, Oct 3".
-function describe(p: PostcardData): string {
-  const words = p.what.split(/\s+/).slice(0, 5).join(" ");
-  const who = p.to ? `to ${p.to}` : `“${words}${p.what.split(/\s+/).length > 5 ? "…" : ""}”`;
-  return `${who}, ${shortDate(p.day)}`;
-}
-
-function afterRender(fn: () => void) {
-  window.requestAnimationFrame(() => window.requestAnimationFrame(fn));
 }

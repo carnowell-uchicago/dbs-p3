@@ -65,7 +65,7 @@ flowchart TD
 | Write | New · prefilled name (`?to=`) · edit (`?edit=`) · edit of a deleted postcard · draft restored · errors · Earlier date · Other feeling |
 | Wall | Empty (an example postcard on the board, labeled) · board · full board (cards overlap, newest on top) · postcard opened · a memory · just pinned · updated · deleted with Undo · filtered by person |
 | People | No names yet (only strangers, or none) · list, with "7+ days" marked |
-| Look back | This week · last week · a quiet week (no guilt) |
+| Look back | This week · last week · a quiet week (no guilt) · edited (back on that postcard's week) · deleted with Undo |
 | Every page | The browser won't save (private mode): a notice that postcards won't be kept |
 
 ## Pages
@@ -78,7 +78,7 @@ Each step in the flow has its own route, and every page shares the same nav. The
 | `/write` | The one-column postcard form. It also handles editing (`?edit=`) and prefilling a name (`?to=`). |
 | `/wall` | A pixel corkboard with every postcard pinned small, and a running total. Open a postcard to read it full size, Edit, or Delete (with Undo). **Show me a memory** opens a random one from before today. Filter by person. |
 | `/people` | Everyone you've written to, how often, and when you last did. Anyone at 7+ days is marked. |
-| `/look-back` | This week or last week: who you noticed, how it landed, and how you felt. |
+| `/look-back` | This week or last week: who you noticed, how it landed, and how you felt. Each postcard can be edited (the form returns here) or deleted with Undo. |
 
 ## Design decisions
 

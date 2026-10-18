@@ -57,5 +57,5 @@ flowchart TD
 | Write | New · prefilled name (`?to=`) · edit (`?edit=`) · edit of a deleted postcard · draft restored · errors · Earlier date · Other feeling |
 | Wall | Empty (an example postcard on the board, labeled) · board · full board (cards overlap, newest on top) · postcard opened · a memory · just pinned · updated · deleted with Undo · filtered by person |
 | People | No names yet (only strangers, or none) · list, with "7+ days" marked |
-| Look back | This week · last week · a quiet week (no guilt) |
+| Look back | This week · last week · a quiet week (no guilt) · edited (back on that postcard's week) · deleted with Undo |
 | Every page | The browser won't save (private mode): a notice that postcards won't be kept |

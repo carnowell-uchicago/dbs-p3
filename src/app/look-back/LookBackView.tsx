@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Postcard } from "@/components/postcards/Postcard";
+import { PostcardActions, useTakeDown } from "@/components/postcards/PostcardActions";
 import { LinkButton } from "@/components/ui/Button";
 import { ChipGroup } from "@/components/ui/ChipGroup";
 import { Panel } from "@/components/ui/Panel";
@@ -15,18 +17,54 @@ import { useKindRegards } from "@/lib/store";
 type Which = "this" | "last";
 
 // The weekly look-back: who you noticed, what you said, how it landed.
-// Highlighted on Sundays from Today, but open any day.
+// Highlighted on Sundays from Today, but open any day. Each postcard can be
+// edited (the form comes back here) or deleted with Undo.
+// Keyed on bfcacheId like the wall, so a fresh visit re-reads "?edited=".
 export function LookBackView() {
+  const { bfcacheId } = useRouter();
+  return <LookBack key={bfcacheId} />;
+}
+
+function LookBack() {
   const state = useKindRegards();
+  const params = useSearchParams();
+  const router = useRouter();
+  const [edited] = useState(() => params.get("edited"));
   const [picked, setWhich] = useState<Which>();
+  const focused = useRef(false);
+  const { takeDown, toastEl } = useTakeDown(edited ? "Postcard updated." : null, focusPostcard);
+
+  // Drop the one-time "?edited=" so a reload doesn't repeat the message.
+  useEffect(() => {
+    if (params.has("edited")) router.replace("/look-back", { scroll: false });
+  }, [params, router]);
+
+  // Back from an edit: bring that postcard into view and focus it.
+  useEffect(() => {
+    if (!edited || !state || focused.current) return;
+    focused.current = true;
+    const card = document.getElementById(`look-${edited}`);
+    card?.scrollIntoView({ block: "center" });
+    card?.focus({ preventScroll: true });
+  }, [edited, state]);
+
   if (!state) return <Skeleton label="Gathering your week" />;
 
   const today = dayKey();
+  // Back from an edit, open on the week that postcard is in.
+  const editedDay = edited ? state.postcards.find((p) => p.id === edited)?.day : undefined;
+  const editedWeek: Which | undefined = editedDay
+    ? editedDay >= weekStart(today)
+      ? "this"
+      : editedDay >= addDays(weekStart(today), -7)
+        ? "last"
+        : undefined
+    : undefined;
   // Open on last week when this week has nothing yet, so coming back to
   // look back never lands on an empty page.
   const thisEmpty = postcardsInWeek(state.postcards, weekStart(today)).length === 0;
   const lastHas = postcardsInWeek(state.postcards, addDays(weekStart(today), -7)).length > 0;
-  const which: Which = picked ?? (thisEmpty && lastHas ? "last" : "this");
+  const which: Which = picked ?? editedWeek ?? (thisEmpty && lastHas ? "last" : "this");
   const start = which === "this" ? weekStart(today) : addDays(weekStart(today), -7);
   const end = addDays(start, 6);
   const week = postcardsInWeek(state.postcards, start);
@@ -94,16 +132,37 @@ export function LookBackView() {
             </h2>
             <ol className="flex flex-col gap-10">
               {week.map((p, i) => (
-                <li key={p.id}>
-                  <Postcard postcard={p} index={i} headingLevel="h3" />
+                <li key={p.id} id={`look-${p.id}`} tabIndex={-1} className="scroll-mt-24 outline-none">
+                  <Postcard
+                    postcard={p}
+                    index={i}
+                    headingLevel="h3"
+                    actions={
+                      <PostcardActions
+                        postcard={p}
+                        editHref={`/write?edit=${p.id}&from=look-back`}
+                        onDelete={() => {
+                          // Stay on this week even if it's now empty.
+                          setWhich(which);
+                          takeDown(p.id);
+                        }}
+                      />
+                    }
+                  />
                 </li>
               ))}
             </ol>
           </section>
         </>
       )}
+      {toastEl}
     </>
   );
+}
+
+// After Undo, the postcard is back in the list: focus it.
+function focusPostcard(id: string) {
+  document.getElementById(`look-${id}`)?.focus();
 }
 
 function listNames(names: string[], unnamed: number): string {
