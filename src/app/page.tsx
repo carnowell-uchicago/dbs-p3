@@ -1,5 +1,5 @@
-import { PageHeader } from "@/components/layout/PageHeader";
+import { TodayView } from "./TodayView";
 
-export default function Today() {
-  return <PageHeader title="Who did you notice today?" lead="Coming soon." />;
+export default function TodayPage() {
+  return <TodayView />;
 }
