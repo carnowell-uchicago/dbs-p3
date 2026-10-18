@@ -103,7 +103,7 @@ Subagents studied how three similar tools welcome someone new. The full notes ar
 |---|---|---|---|---|
 | Duolingo | "Learn for free. Forever." | 7–10 questions; the account comes *after* the first lesson | about 90 s | **Took:** the first real action before any setup. **Avoided:** streak guilt, mascot nagging. |
 | Happyfeed (now Orca) | An account form | Name, email, password, *before* any value | Right after sign-up | **Took:** scheduled look-backs. **Avoided:** the jar, shake-for-random, sign-up first. |
-| Random Acts of Kindness | Free resources, no sign-up | Nothing | One click to an idea | **Took:** an idea right away, asking for nothing. **Avoided:** their wording, calendars, terms. Filled their gap: no way to log or reflect. |
+| Random Acts of Kindness | Free resources, no sign-up | Nothing | One click to an idea | **Took:** asking for nothing, with something to do in one tap (here, the starters on the first visit; the daily idea starts on the second). **Avoided:** their wording, calendars, terms. Filled their gap: no way to log or reflect. |
 
 So the first visit asks for nothing and has almost nothing to read. Following the brief ("learn by doing, not by reading a tour"), Today opens on the question and the postcard's one required box, right on the page. Starters (**Complimented**, **Thanked**, **Checked in on**, **Helped**) begin the sentence for you, and **Pin it to my wall** drops the postcard onto the corkboard. The optional fields are one link away. The daily idea starts on the second visit, as part of coming back.
 
