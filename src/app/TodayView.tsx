@@ -10,7 +10,7 @@ import { Panel } from "@/components/ui/Panel";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { focusRing, font, type } from "@/components/ui/styles";
 import { examplePostcard } from "@/data/example";
-import { dayKey, isSunday, relativeDay, weekStart } from "@/lib/dates";
+import { addDays, dayKey, isSunday, relativeDay, weekStart } from "@/lib/dates";
 import { personToRevisit, postcardsInWeek, todaysIdea } from "@/lib/derive";
 import { useKindRegards } from "@/lib/store";
 
@@ -55,6 +55,7 @@ export function TodayView() {
   }
 
   const thisWeek = postcardsInWeek(state.postcards, weekStart(today)).length;
+  const lastWeek = postcardsInWeek(state.postcards, addDays(weekStart(today), -7)).length;
   const revisit = personToRevisit(state.postcards, today);
   const done = writtenToday.length > 0;
 
@@ -69,11 +70,14 @@ export function TodayView() {
             You were last here {relativeDay(lastVisit, today)}. Your wall has {total} {total === 1 ? "postcard" : "postcards"}
             {thisWeek ? `, ${thisWeek} from this week` : ""}. Here&rsquo;s a new idea for today.
           </p>
-          {sunday ? (
+          {sunday && (thisWeek || lastWeek) ? (
             <p className={type.body}>
               It&rsquo;s Sunday.{" "}
+              {/* An empty week isn't worth the trip; Look back opens on last week then. */}
               <Link href="/look-back" className={linkClass}>
-                Look back at your week
+                {thisWeek
+                  ? "Look back at your week"
+                  : `Look back at last week (${lastWeek} ${lastWeek === 1 ? "kindness" : "kindnesses"})`}
               </Link>
             </p>
           ) : null}
@@ -82,12 +86,12 @@ export function TodayView() {
 
       {done ? (
         <PageHeader
-          title="Done for today."
-          lead={`You've written ${writtenToday.length === 1 ? "a postcard" : `${writtenToday.length} postcards`} today. That's ${total} ${total === 1 ? "kindness" : "kindnesses"} on your wall.`}
+          title={writtenToday.length === 1 ? "One postcard today. Nice." : `${writtenToday.length} postcards today. Nice.`}
+          lead={`That's ${total} ${total === 1 ? "kindness" : "kindnesses"} on your wall. Notice someone else? There's no limit, write that one down too.`}
         >
           <div className="flex flex-wrap items-center gap-4 pt-2">
             <LinkButton href="/write" variant="primary">
-              Write another postcard
+              Write a postcard
             </LinkButton>
             <LinkButton href="/wall" variant="secondary">
               See your wall
@@ -134,7 +138,7 @@ export function TodayView() {
         </Panel>
       ) : null}
 
-      <IdeaCard idea={idea} comfort={comfort} title={done ? "Want another idea?" : "Idea for today"} />
+      <IdeaCard idea={idea} comfort={comfort} title={done ? "Another idea" : "Idea for today"} />
     </>
   );
 }

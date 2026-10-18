@@ -204,7 +204,8 @@ export function setComfort(comfort: Comfort) {
 export function showAnotherIdea() {
   update((s) => {
     const today = dayKey();
-    const current = s.today?.day === today ? s.today : { day: today, comfort: s.today?.comfort ?? "quiet", offset: 0 };
+    if (s.today?.day !== today) return { ...s, today: { day: today, comfort: s.today?.comfort ?? "quiet", offset: 1 } };
+    const current = s.today;
     return { ...s, today: { ...current, offset: current.offset + 1 } };
   });
 }

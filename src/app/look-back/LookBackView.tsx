@@ -18,10 +18,15 @@ type Which = "this" | "last";
 // Highlighted on Sundays from Today, but open any day.
 export function LookBackView() {
   const state = useKindRegards();
-  const [which, setWhich] = useState<Which>("this");
+  const [picked, setWhich] = useState<Which>();
   if (!state) return <Skeleton label="Gathering your week" />;
 
   const today = dayKey();
+  // Open on last week when this week has nothing yet, so coming back to
+  // look back never lands on an empty page.
+  const thisEmpty = postcardsInWeek(state.postcards, weekStart(today)).length === 0;
+  const lastHas = postcardsInWeek(state.postcards, addDays(weekStart(today), -7)).length > 0;
+  const which: Which = picked ?? (thisEmpty && lastHas ? "last" : "this");
   const start = which === "this" ? weekStart(today) : addDays(weekStart(today), -7);
   const end = addDays(start, 6);
   const week = postcardsInWeek(state.postcards, start);

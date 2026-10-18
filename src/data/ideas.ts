@@ -24,7 +24,7 @@ export const ideas: Idea[] = [
   // Compliments
   { id: "c-hair", group: "compliment", comfort: "in-person", text: "Notice someone's hair today, like a new cut or a style that suits them, and tell them what works about it." },
   { id: "c-style", group: "compliment", comfort: "in-person", text: "Notice one thing about someone's style, like a jacket, a color, or how it all goes together, and tell them what caught your eye." },
-  { id: "c-handled", group: "compliment", comfort: "in-person", text: "Think of how someone handled something hard this week. Tell them what you saw them do." },
+  { id: "c-handled", group: "compliment", comfort: "in-person", text: "Next time you see someone who handled something hard this week, tell them what you saw them do." },
   { id: "c-laugh", group: "compliment", comfort: "in-person", text: "Tell someone what their sense of humor does for the people around them." },
   { id: "c-skill", group: "compliment", comfort: "quiet", text: "Think of something a friend is quietly good at. Text them about the moment you noticed it." },
   { id: "c-idea", group: "compliment", comfort: "quiet", text: "Remember an idea someone shared that you're still thinking about. Let them know it stuck with you." },
@@ -53,7 +53,7 @@ export const ideas: Idea[] = [
   { id: "s-introduce", group: "small-act", comfort: "quiet", text: "Introduce two people who'd get along, and tell each one why you thought of them." },
   { id: "s-note", group: "small-act", comfort: "quiet", text: "Write a short note to someone you live or work with about something they did this week, and leave it where they'll see it." },
 
-  // For you (shown on Sundays)
+  // For you: leads on Sundays only, outside the Quiet / In person filter
   { id: "y-well", group: "for-you", comfort: "quiet", text: "Write down one thing you did well this week, the way you'd tell a friend about it." },
   { id: "y-replay", group: "for-you", comfort: "quiet", text: "Think of a mistake you keep replaying. Write yourself the note you'd write a friend who made it." },
   { id: "y-rest", group: "for-you", comfort: "quiet", text: "Do one thing today only because it's good for you, and don't explain it to anyone." },

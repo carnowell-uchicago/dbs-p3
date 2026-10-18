@@ -18,8 +18,11 @@ export function RouteFocus() {
       return;
     }
     const frame = window.requestAnimationFrame(() => {
+      // If the new page already focused something visible, leave it. (The link
+      // that was clicked stays focused inside the now-hidden previous page.)
+      const active = document.activeElement as HTMLElement | null;
       const main = document.getElementById("main");
-      if (main?.contains(document.activeElement) && document.activeElement !== main) return;
+      if (active && active !== main && main?.contains(active) && active.offsetParent !== null) return;
       focusPageHeading();
     });
     return () => window.cancelAnimationFrame(frame);
