@@ -23,7 +23,18 @@ export function todaysIdea(state: State, today: string): { idea: Idea; comfort: 
     return { idea: forYou[Math.floor(n / 7) % forYou.length], comfort: undefined };
   }
   const pool = ideas.filter((i) => i.group !== "for-you" && i.comfort === comfort);
-  return { idea: pool[mod(n * 5, pool.length)], comfort };
+  return { idea: pool[mod(n * stride(pool.length), pool.length)], comfort };
+}
+
+// Day to day, step through the pool by a stride that shares no factor with
+// its size, so every idea comes up once before any repeats, and consecutive
+// days jump between groups instead of walking through one.
+function stride(size: number): number {
+  return [7, 11, 13, 17, 19, 23].find((s) => gcd(s, size) === 1) ?? 1;
+}
+
+function gcd(a: number, b: number): number {
+  return b ? gcd(b, a % b) : a;
 }
 
 function mod(a: number, b: number) {
