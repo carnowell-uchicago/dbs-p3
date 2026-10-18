@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Always keep room for the scrollbar, so short pages (People, Look back) don't
+   shift the column and stretch the sky when it disappears. */
+html {
+  scrollbar-gutter: stable;
+}
+
 /* Colors arrive as --cp-* variables on <html> (src/lib/tokens.ts). */
 body {
   background-color: var(--cp-bg);
