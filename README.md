@@ -2,7 +2,7 @@
 
 **A daily kindness log, kept as a wall of postcards.** Do something kind for someone, write it on a postcard, and pin it to your wall. Each day brings a small idea, people you haven't appreciated in a while come back to mind, and on Sunday you look back at everyone you noticed that week.
 
-**Live:** _Vercel URL coming soon_ · Design, Build, Ship (MPCS 51238), Assignment 3: Patterns & Flows
+**Live:** https://dbs-p3.vercel.app · Design, Build, Ship (MPCS 51238), Assignment 3: Patterns & Flows
 
 > I do something kind → I write it on a postcard → it's pinned to my wall → I come back tomorrow for a new idea, and on Sunday I look back at everyone I appreciated.
 
