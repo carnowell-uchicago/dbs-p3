@@ -12,6 +12,7 @@ import { Toast } from "@/components/ui/Toast";
 import { focusRing, type } from "@/components/ui/styles";
 import { examplePostcard } from "@/data/example";
 import { personKey } from "@/lib/derive";
+import { focusPageHeading } from "@/lib/focus";
 import { deletePostcard, restorePostcard, useKindRegards, type Postcard as PostcardData } from "@/lib/store";
 
 type ToastState = { message: string; undo?: { postcard: PostcardData; index: number } } | null;
@@ -47,7 +48,10 @@ function Wall() {
   }, [params, router]);
 
   useEffect(() => {
-    if (pinned && state) document.getElementById(`card-${pinned}`)?.scrollIntoView({ block: "center" });
+    if (!pinned || !state) return;
+    const card = document.getElementById(`card-${pinned}`);
+    card?.scrollIntoView({ block: "center" });
+    card?.focus({ preventScroll: true });
   }, [pinned, state]);
 
   const dismiss = useCallback(() => setToast(null), []);
@@ -62,7 +66,7 @@ function Wall() {
     if (!removed) return;
     setToast({ message: "Postcard taken down.", undo: removed });
     // The card is gone; put focus on the page heading (after the re-render).
-    afterRender(() => document.querySelector<HTMLElement>("main h1")?.focus());
+    afterRender(focusPageHeading);
   }
 
   function undo() {

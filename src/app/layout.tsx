@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { NavBar } from "@/components/layout/NavBar";
+import { RouteFocus } from "@/components/layout/RouteFocus";
 import { SkyBand } from "@/components/layout/SkyBand";
 import { StorageNotice } from "@/components/layout/StorageNotice";
 import { Heart } from "@/components/ui/Icon";
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </header>
         <main id="main" tabIndex={-1} className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 pt-6 pb-32 outline-none sm:px-6">
           <StorageNotice />
+          <RouteFocus />
           {children}
         </main>
         <footer className={`mx-auto w-full max-w-3xl px-4 pb-8 text-sm text-(--cp-muted) sm:px-6 ${font.body}`}>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { focusPageHeading } from "@/lib/focus";
 import { edge, focusRing, font } from "./styles";
 
 // A short message pinned to the bottom of the screen, announced politely.
@@ -34,7 +35,7 @@ export function Toast({
     const hadFocus = box.current?.contains(document.activeElement);
     setPaused(false);
     onDismiss();
-    if (hadFocus) document.querySelector<HTMLElement>("main h1")?.focus();
+    if (hadFocus) focusPageHeading();
   }
 
   return (
