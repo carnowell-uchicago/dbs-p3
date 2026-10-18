@@ -24,17 +24,19 @@ A small everyday tool built around three flows: the **first visit**, the **main 
 - Deploy on Vercel's Hobby plan from `main`.
 
 ## Status
-- 2026-10-18: all five routes built and tested at 1280 and 390 wide in headless Chrome (a 42-check end-to-end script; no console errors). Contrast is 24 of 24. `flows.md` and the README are written.
-- **Waiting on:** the Vercel URL (the student is creating the project). After that: the first-run check by a subagent on the live URL, then **checkpoint 4**, where the student picks which fixes to make. Then record it in the README and do a final pass against the brief.
+- **2026-10-18: complete and deployed** at https://dbs-p3.vercel.app (Vercel deploys `main`).
+- The first-run check is done (`first-run.md`). The student picked 14 of 16 fixes (all except #12, #13, #16, the Look back wording), and they're shipped.
+- A 62-check end-to-end browser run passes locally and on production. Contrast is 24 of 24.
 - **Left for the student:** running `/context`, the README "My reflection" section, submitting, and explaining in class.
 
 ## Code map
+- **Form:** `/write` has What (required), Who, When (Today / Yesterday / Earlier with a date), Reaction, Feeling (chips + Other…), and the idea checkbox. Field ids double as error keys (`fieldOrder`).
 - `src/app/<route>/page.tsx` is a thin server file with metadata; the `*View.tsx` / `WriteForm.tsx` next to it is the client UI. Routes: `/` (TodayView), `/write`, `/wall`, `/people`, `/look-back`.
 - `src/lib/store.ts`: the single localStorage entry `kind-regards:v1`, `useKindRegards()` (null on the server, so pages show `Skeleton`), and actions. `derive.ts`: today's idea, people, nudges, weeks. `dates.ts`: local day keys (YYYY-MM-DD); weeks run Mon–Sun.
 - `src/data/ideas.ts`: 27 ideas (5 groups, quiet or in person). `example.ts`: the labeled example postcard.
 - `src/components/ui/`: shared Button/LinkButton, Fields (Field, TextField, TextAreaField, CheckboxField), ChipGroup, Panel, Notice, Toast, Skeleton, Icon, styles (pixel `edge`, `focusRing`, `type`). **Use these everywhere.**
 - `src/lib/tokens.ts`: colors (CSS vars `--cp-*` on `<html>`) and the contrast pairs. Add a pair whenever a new color combination appears; `npm run contrast`.
-- **Gotcha:** Cache Components keeps up to 3 pages mounted (hidden). Wall and Write key their content on `useRouter().bfcacheId` so a fresh visit resets local state. Pages using `useSearchParams` sit inside `<Suspense>`.
+- **Gotcha:** Cache Components keeps up to 3 pages mounted (hidden, still in the DOM). Use `focusPageHeading()` (`src/lib/focus.ts`) instead of querying `main h1` directly; `RouteFocus` moves focus on navigation. Wall and Write key their content on `useRouter().bfcacheId` so a fresh visit resets local state. Pages using `useSearchParams` sit inside `<Suspense>`.
 
 ## Decisions (made by the student)
 - **Tool:** a kindness log/jar. Each day it suggests one small kind act. Doing it and logging it fills your jar. The goal is to help the user thoughtfully appreciate others every day.
