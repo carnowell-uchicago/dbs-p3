@@ -99,3 +99,34 @@ export function TextAreaField({ id, label, optional, hint, error, count, inputRe
     </Field>
   );
 }
+
+type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "id"> & {
+  id: string;
+  label: ReactNode;
+  hint?: ReactNode;
+};
+
+// Checkbox with its label to the right and an optional hint below.
+export function CheckboxField({ id, label, hint, ...rest }: CheckboxProps) {
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="flex items-start gap-3">
+        <input
+          id={id}
+          type="checkbox"
+          aria-describedby={hint ? `${id}-hint` : undefined}
+          className={`mt-0.5 size-6 shrink-0 cursor-pointer accent-(--cp-wood) ${focusRing} focus-visible:outline-offset-2`}
+          {...rest}
+        />
+        <label htmlFor={id} className={`${type.label} cursor-pointer`}>
+          {label}
+        </label>
+      </div>
+      {hint ? (
+        <div id={`${id}-hint`} className={`${type.meta} pl-9`}>
+          {hint}
+        </div>
+      ) : null}
+    </div>
+  );
+}
