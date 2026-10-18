@@ -1,0 +1,58 @@
+# Kind Regards: User Flows
+
+**Main task:** I do something kind → I write it on a postcard → it's pinned to my wall → I come back tomorrow for a new idea, and on Sunday I look back at everyone I appreciated.
+
+Each box with a route in brackets is a page. Every page shares the same nav: Today · Write · Wall · People · Look back.
+
+### 1 · First visit: useful right away
+
+```mermaid
+flowchart LR
+    A["Today [/]<br/>Who did you notice today?<br/>(nothing saved yet)"] --> I["Idea for today<br/>a compliment to try"]
+    I -->|"Quiet / In person,<br/>Show me another"| I
+    A --> X["Example postcard<br/>(labeled Example, not an empty wall)"]
+    A -->|"Write a postcard"| W["Write [/write]"]
+    I -->|"did it"| W
+```
+
+### 2 · Main task: write it down and pin it
+
+```mermaid
+flowchart TD
+    W["Write [/write]<br/>What did you do or notice? (required)<br/>Who? · How did they react? · How did you feel? (optional)<br/>☐ This was today's idea"]
+    W -->|"Pin it to my wall"| V{"Valid?"}
+    V -->|"empty or only spaces"| E1["Under the field:<br/>'Write what you did or noticed.<br/>A few words is enough…'"]
+    V -->|"too long"| E2["Under the field:<br/>'Keep it postcard-sized: N characters over'<br/>'Shorten the name to 40 characters…'"]
+    E1 & E2 -->|"text kept, focus on the first error"| W
+    W -.->|"leave mid-way"| D[("Draft saved on this device")]
+    D -.->|"'We kept what you were writing.'"| W
+    V -->|"yes"| P["Wall [/wall]<br/>new postcard highlighted:<br/>'Pinned to your wall.'"]
+    P -->|"Edit"| W
+    P -->|"Delete"| U["'Postcard taken down.' + Undo"]
+    U -->|"Undo"| P
+```
+
+### 3 · Coming back: it remembers
+
+```mermaid
+flowchart TD
+    R["Today [/]<br/>Welcome back: last here Tuesday,<br/>N postcards, M this week,<br/>and a new idea for today"]
+    R -->|"wrote one today"| DONE["Done for today<br/>today's postcard + Want another idea?"]
+    R -->|"someone not written to in 7+ days"| N["'Thinking of Sam?'"]
+    N -->|"Write to Sam"| W["Write [/write?to=Sam]"]
+    R -->|"on Sunday"| L["Look back [/look-back]<br/>this week / last week: who you noticed,<br/>how it landed, how you felt"]
+    L -->|"quiet week, no guilt"| W
+    PE["People [/people]<br/>everyone you've written to, and when"] -->|"Write again"| W
+    PE -->|"See postcards"| PF["Wall [/wall?to=Sam]"]
+```
+
+## States each page handles
+
+| Page | States |
+|---|---|
+| Today | Loading (a brief skeleton while localStorage is read) · first visit · returning · done for today · Sunday · person to revisit |
+| Write | New · prefilled name (`?to=`) · edit (`?edit=`) · edit of a deleted postcard · draft restored · errors |
+| Wall | Empty (an example postcard, labeled) · list · just pinned · updated · deleted with Undo · filtered by person |
+| People | No names yet (only strangers, or none) · list, with "7+ days" marked |
+| Look back | This week · last week · a quiet week (no guilt) |
+| Every page | The browser won't save (private mode): a notice that postcards won't be kept |
