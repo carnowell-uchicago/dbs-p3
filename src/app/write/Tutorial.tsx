@@ -188,8 +188,9 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
             Step {index + 1} of {steps.length}
             <span className="sr-only">: {notes[step].title}</span>
           </p>
-          <Button variant="quiet" size="sm" onClick={skip}>
+          <Button size="sm" onClick={skip}>
             Skip the tutorial
+            <Icon name="skip" />
           </Button>
         </div>
 

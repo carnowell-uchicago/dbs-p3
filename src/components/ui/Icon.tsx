@@ -10,6 +10,7 @@ const shapes = {
   plus: ["...xx...", "...xx...", "...xx...", "xxxxxxxx", "xxxxxxxx", "...xx...", "...xx...", "...xx..."],
   pencil: ["......xx", ".....x.x", "....x.x.", "...x.x..", "..x.x...", ".x.x....", "xxx.....", "xx......"],
   trash: ["..xxxx..", "xxxxxxxx", ".x....x.", ".x.x.x..", ".x.x.x..", ".x.x.x..", ".x....x.", "..xxxx.."],
+  skip: ["........", "x..x...x", "xx.xx..x", "xxxxxx.x", "xxxxxx.x", "xx.xx..x", "x..x...x", "........"],
   shuffle: ["......x.", "xx...xxx", "..x.x.x.", "...x....", "...x....", "..x.x.x.", "xx...xxx", "......x."],
 };
 
