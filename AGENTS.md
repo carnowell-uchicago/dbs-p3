@@ -25,3 +25,9 @@ A small everyday tool built around three flows: the **first visit**, the **main 
 
 ## Status
 - 2026-10-18: scaffolded. Idea chosen: a kindness log/jar with a daily kindness prompt (for example, "Genuinely compliment someone on…"), to help the user appreciate others every day and fill their jar.
+
+## Decisions (made by the student)
+- **Tool:** a kindness log/jar. Each day it suggests one small kind act. Doing it and logging it fills your jar. The goal is to help the user thoughtfully appreciate others every day.
+- **Prompt groups (keep all):** compliments (the seed: "Genuinely compliment someone on [their hair, their sense of style, …]"), gratitude, reaching out, small acts, and kindness to yourself (optional, about once a week).
+- **Onboarding research tools:** Duolingo, Happyfeed, and the Random Acts of Kindness Foundation.
+- **Must be substantially different** from all three (and any other existing kindness jar or kindness app): no copied names, terms, mechanics, visuals, or prompt wording. Having something that makes it better is a secondary goal.
