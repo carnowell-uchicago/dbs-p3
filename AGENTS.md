@@ -66,6 +66,6 @@ A small everyday tool built around three flows: the **first visit**, the **main 
 - **Research:** Duolingo, Happyfeed, and the RAK Foundation. The app must be **substantially different** from them and from other kindness apps (no jars, streaks, mascots, or growing plants, and none of RAK's wording or terms). Being better is secondary.
 - **Collection:** a postcard wall (jars are taken). **One log action** for any kindness; the daily idea is secondary.
 - **Extras:** people-first prompts, a specificity nudge, optional reaction and feeling fields, Quiet / In person, and optional names (blank is fine for strangers).
-- **Return:** a new idea daily, the Sunday look-back, people you haven't written to lately, and a running total (never a streak).
+- **Return:** a new idea daily (one a day, no "Show me another": ideas are optional), the Sunday look-back, people you haven't written to lately, and a running total (never a streak).
 - **Style:** Cozy Pixel (from Assignment 2, `~/projects/p2`) plus Life is Strange-inspired journal touches (golden-hour sky, tape, handwriting, postmarks). No butterflies, Polaroids, or game names.
 - **Name:** "Kind Regards" (proposed by the agent; kept by the student).

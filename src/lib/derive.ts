@@ -3,19 +3,18 @@ import { daysBetween, dayNumber, isSunday, weekStart, addDays } from "./dates";
 import type { Postcard, State } from "./store";
 
 // Today's idea: picked from the date, so it's the same all day and new
-// tomorrow. "Show me another" moves the offset along. On Sundays the day
-// opens on one for yourself, until you pick Quiet / In person or ask for
-// another; then it's ideas for someone else (comfort is undefined while the
-// "For you" idea shows, so neither chip reads as selected).
+// tomorrow (one a day; it can't be swapped). On Sundays the day opens on one
+// for yourself, until you pick Quiet / In person; then it's an idea for
+// someone else (comfort is undefined while the "For you" idea shows, so
+// neither chip reads as selected).
 export function todaysIdea(state: State, today: string): { idea: Idea; comfort: Comfort | undefined } {
   const sameDay = state.today?.day === today;
   const comfort = state.today?.comfort ?? "quiet";
-  const offset = sameDay ? state.today!.offset : 0;
   const n = dayNumber(today);
 
   // Before the first postcard, open on a compliment: it shows what the tool
   // is for (noticing someone else) better than any explanation would.
-  if (state.postcards.length === 0 && offset === 0) {
+  if (state.postcards.length === 0) {
     const compliments = ideas.filter((i) => i.group === "compliment" && i.comfort === comfort);
     return { idea: compliments[mod(n, compliments.length)], comfort };
   }
@@ -24,7 +23,7 @@ export function todaysIdea(state: State, today: string): { idea: Idea; comfort: 
     return { idea: forYou[Math.floor(n / 7) % forYou.length], comfort: undefined };
   }
   const pool = ideas.filter((i) => i.group !== "for-you" && i.comfort === comfort);
-  return { idea: pool[mod(n * 5 + offset, pool.length)], comfort };
+  return { idea: pool[mod(n * 5, pool.length)], comfort };
 }
 
 function mod(a: number, b: number) {

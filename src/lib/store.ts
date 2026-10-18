@@ -44,7 +44,7 @@ export type Draft = {
 export type State = {
   version: 1;
   postcards: Postcard[]; // newest first
-  today?: { day: string; comfort: Comfort; offset: number };
+  today?: { day: string; comfort: Comfort }; // the comfort level picked today
   draft?: Draft;
   visits?: { current: string; previous?: string };
 };
@@ -264,16 +264,7 @@ export function saveDraft(draft: Draft | undefined) {
 }
 
 export function setComfort(comfort: Comfort) {
-  update((s) => ({ ...s, today: { day: dayKey(), comfort, offset: 0 } }));
-}
-
-export function showAnotherIdea() {
-  update((s) => {
-    const today = dayKey();
-    if (s.today?.day !== today) return { ...s, today: { day: today, comfort: s.today?.comfort ?? "quiet", offset: 1 } };
-    const current = s.today;
-    return { ...s, today: { ...current, offset: current.offset + 1 } };
-  });
+  update((s) => ({ ...s, today: { day: dayKey(), comfort } }));
 }
 
 // Called once per page load. Moves the last visit day into `previous` when
