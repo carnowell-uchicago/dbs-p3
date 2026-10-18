@@ -8,13 +8,16 @@ Each box with a route in brackets is a page. Every page shares the same nav: Tod
 
 ```mermaid
 flowchart LR
-    A["Today [/]<br/>Who did you notice today?<br/>(nothing saved yet)"] --> Q["What did you do or notice?<br/>the one box, right on the page<br/>+ Who was it for? (optional)"]
-    Q -->|"tap a starter:<br/>Complimented / Thanked /<br/>Checked in on / Helped"| Q
-    Q -->|"Pin it to my wall"| V{"Valid?"}
-    V -->|"empty, or only a starter"| QE["Under the box:<br/>'Write what you did or noticed…'<br/>'Finish the sentence…'<br/>(text kept, focus on the box)"]
-    QE --> Q
-    V -->|"yes"| P["Wall [/wall]<br/>it drops onto the corkboard:<br/>'Pinned to your wall.'"]
-    Q -->|"Add when or how it felt"| W["Write [/write]<br/>what you typed carries over"]
+    A["Open the site [/]<br/>nothing saved yet"] -->|"straight to"| T1["Write [/write] · first-visit tutorial<br/>one box at a time, each with a note on what it's for"]
+    T1 --> S1["1 · What did you do or notice? (required)"]
+    S1 -->|"Next, empty"| E1["Under the box: 'Write what you did or noticed…'<br/>(focus stays on the box)"]
+    E1 --> S1
+    S1 -.->|"stuck? 'Or use this example (it won't be saved)'"| S1
+    S1 -->|"Next"| S2["2 · Who · 3 · When · 4 · How they reacted · 5 · How you felt<br/>(optional; Back, Next, or Pin it now)"]
+    S2 -->|"Pin it to my wall"| R{"Your own words,<br/>or the example?"}
+    R -->|"your own"| P["Wall [/wall]<br/>it drops onto the corkboard: 'Pinned to your wall.'<br/>saved; the tutorial is over"]
+    R -->|"the example"| PR["Wall [/wall]<br/>'Practice postcard pinned. It isn't saved.'<br/>shown on every tab, labeled Practice"]
+    PR -->|"leave or reload"| A
 ```
 
 ### 2 · Main task: write it down and pin it
@@ -55,9 +58,9 @@ flowchart TD
 
 | Page | States |
 |---|---|
-| Today | Loading (a brief skeleton while localStorage is read) · first visit (write right here; errors under the box) · returning · wrote one today · Sunday ("For you" idea; links to last week if this week is empty) · person to revisit |
-| Write | New · prefilled name (`?to=`) · edit (`?edit=`) · edit of a deleted postcard · draft restored · errors · Earlier date · Other feeling |
-| Wall | Empty (an example postcard on the board, labeled) · board · full board (cards overlap, newest on top) · postcard opened · a memory · just pinned · updated · deleted with Undo · filtered by person |
+| Today | Loading (a brief skeleton while localStorage is read) · first visit (goes straight to the Write tutorial) · nothing saved after practice (one button and the idea) · returning · wrote one today · Sunday ("For you" idea; links to last week if this week is empty) · person to revisit |
+| Write | First-visit tutorial (one box at a time, example offered, practice not saved) · new · prefilled name (`?to=`) · edit (`?edit=`) · edit of a deleted postcard · draft restored · errors · Earlier date · Other feeling |
+| Wall | Practice postcard (labeled, removable, not saved) · empty (an example postcard on the board, labeled) · board · full board (cards overlap, newest on top) · postcard opened · a memory · just pinned · updated · deleted with Undo · filtered by person |
 | People | No names yet (only strangers, or none) · list, with "7+ days" marked |
 | Look back | This week · last week · a quiet week (no guilt) · edited (back on that postcard's week) · deleted with Undo |
 | Every page | The browser won't save (private mode): a notice that postcards won't be kept |
