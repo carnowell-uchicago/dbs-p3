@@ -38,4 +38,22 @@ Step 8 of the brief. On 2026-10-18 a subagent used the **live site** (https://db
 - **Not fixed (the student's choice):** #12, #13, #16 (Look back wording).
 
 ## What changed
-_Filled in as the fixes land._
+| # | Feedback | Change |
+|---|---|---|
+| 1 | Undo toast vanished while focused | The toast pauses while hovered or focused, Undo stays 30 s, and Escape closes it. If it closes while focused, focus goes to the heading. |
+| 2 | No way to log past days | Optional **When was it?** (Today / Yesterday / Earlier, with a date). Future or missing dates get an error next to the field. The wall sorts by the day it happened. |
+| 3 | Look back opened an empty week on return | On Sunday the link says "Look back at last week (N kindnesses)" when this week is empty, and Look back opens on last week. |
+| 4 | "Done for today." felt like a quota | Now "One postcard today. Nice." plus "There's no limit." Write a postcard stays the main button. |
+| 5 | Focus lost after page changes | Focus moves to the new page's heading after every navigation. After pinning, the new postcard gets focus. |
+| 6 | Mis-tagged ideas | "For you" ideas lead only on Sundays, labeled, with neither Quiet nor In person selected; picking one switches to ideas for someone else. An In person idea that worked remotely was reworded. |
+| 7 | Phone nav wrapped | All five pills fit on one row at 390 px. |
+| 8 | Edit offered today's idea on old postcards | The checkbox only shows on an edit if that postcard had an idea. |
+| 9 | "Just pinned" after an edit | Now says "Updated". |
+| 10 | Toast covered postcards | The toast sits bottom right on wide screens, and the page has extra bottom space. |
+| 11 | Screen-reader text ran together | Separators added, the counter reads "N characters over", and Edit/Delete on unnamed postcards name the first words and date. Fixed heading ids for names with spaces. |
+| 14 | Name field looked like a select | Arrow hidden; the hint says "Type a name, or pick someone you've written to." |
+| 15 | Feeling text box repeated the chips | One chip group with **Other…**, which opens a text field. |
+
+Two bugs were found while making these fixes, and fixed: "Show me another" didn't change the first-visit idea, and focus after navigation could get stuck on the hidden previous page.
+
+**Verified:** a 61-check end-to-end browser run (laptop and phone) passes, including every fix above. Contrast is still 24 of 24.

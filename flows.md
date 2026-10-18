@@ -19,10 +19,10 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    W["Write [/write]<br/>What did you do or notice? (required)<br/>Who? · How did they react? · How did you feel? (optional)<br/>☐ This was today's idea"]
+    W["Write [/write]<br/>What did you do or notice? (required)<br/>Who? · When? · How did they react? · How did you feel? (optional)<br/>☐ This was today's idea"]
     W -->|"Pin it to my wall"| V{"Valid?"}
     V -->|"empty or only spaces"| E1["Under the field:<br/>'Write what you did or noticed.<br/>A few words is enough…'"]
-    V -->|"too long"| E2["Under the field:<br/>'Keep it postcard-sized: N characters over'<br/>'Shorten the name to 40 characters…'"]
+    V -->|"too long / future date"| E2["Under the field:<br/>'Keep it postcard-sized: N characters over'<br/>'Shorten the name to 40 characters…'<br/>'Pick today or an earlier date…'"]
     E1 & E2 -->|"text kept, focus on the first error"| W
     W -.->|"leave mid-way"| D[("Draft saved on this device")]
     D -.->|"'We kept what you were writing.'"| W
@@ -37,10 +37,10 @@ flowchart TD
 ```mermaid
 flowchart TD
     R["Today [/]<br/>Welcome back: last here Tuesday,<br/>N postcards, M this week,<br/>and a new idea for today"]
-    R -->|"wrote one today"| DONE["Done for today<br/>today's postcard + Want another idea?"]
+    R -->|"wrote one today"| DONE["One postcard today. Nice.<br/>today's postcard + another idea, no limit"]
     R -->|"someone not written to in 7+ days"| N["'Thinking of Sam?'"]
     N -->|"Write to Sam"| W["Write [/write?to=Sam]"]
-    R -->|"on Sunday"| L["Look back [/look-back]<br/>this week / last week: who you noticed,<br/>how it landed, how you felt"]
+    R -->|"on Sunday"| L["Look back [/look-back]<br/>this week (or last week, if this one is empty):<br/>who you noticed, how it landed, how you felt"]
     L -->|"quiet week, no guilt"| W
     PE["People [/people]<br/>everyone you've written to, and when"] -->|"Write again"| W
     PE -->|"See postcards"| PF["Wall [/wall?to=Sam]"]
@@ -50,8 +50,8 @@ flowchart TD
 
 | Page | States |
 |---|---|
-| Today | Loading (a brief skeleton while localStorage is read) · first visit · returning · done for today · Sunday · person to revisit |
-| Write | New · prefilled name (`?to=`) · edit (`?edit=`) · edit of a deleted postcard · draft restored · errors |
+| Today | Loading (a brief skeleton while localStorage is read) · first visit · returning · wrote one today · Sunday ("For you" idea; links to last week if this week is empty) · person to revisit |
+| Write | New · prefilled name (`?to=`) · edit (`?edit=`) · edit of a deleted postcard · draft restored · errors · Earlier date · Other feeling |
 | Wall | Empty (an example postcard, labeled) · list · just pinned · updated · deleted with Undo · filtered by person |
 | People | No names yet (only strangers, or none) · list, with "7+ days" marked |
 | Look back | This week · last week · a quiet week (no guilt) |
