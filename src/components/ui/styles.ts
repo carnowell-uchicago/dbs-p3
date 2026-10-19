@@ -47,7 +47,8 @@ export const bevelEdge: CSSProperties = {
 };
 
 export const font = {
-  display: "font-(family-name:--cp-display)",
+  // Ligatures off: Pixelify's joined "fi" reads as a capital A.
+  display: "font-(family-name:--cp-display) [font-variant-ligatures:none]",
   body: "font-(family-name:--cp-body)",
   hand: "font-(family-name:--cp-hand)",
 };
