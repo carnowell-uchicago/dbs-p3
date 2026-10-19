@@ -169,7 +169,7 @@ function Form({
         <TextAreaField
           id="what"
           label="What did you do or notice?"
-          hint="Name the detail, like “their green coat” or “how calm you were in the meeting.”"
+          hint="Name the detail, like “their green coat” or “how calm they were in the meeting.”"
           error={errors.what}
           count={{ value: what, max: limits.what }}
           value={values.what}

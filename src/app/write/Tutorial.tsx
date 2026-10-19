@@ -250,7 +250,7 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
           <TextAreaField
             id="what"
             label="What did you do or notice?"
-            hint="Name the detail, like “their green coat” or “how calm you were in the meeting.”"
+            hint="Name the detail, like “their green coat” or “how calm they were in the meeting.”"
             error={error}
             count={{ value: values.what.trim().length, max: limits.what }}
             value={values.what}
