@@ -1,5 +1,5 @@
 import { ideas, type Comfort, type Idea } from "@/data/ideas";
-import { daysBetween, dayNumber, isSunday, weekStart, addDays } from "./dates";
+import { daysBetween, dayKey, dayNumber, isSunday, weekStart, addDays } from "./dates";
 import type { Postcard, State } from "./store";
 
 // Today's idea: picked from the date, so it's the same all day and new
@@ -12,9 +12,12 @@ export function todaysIdea(state: State, today: string): { idea: Idea; comfort: 
   const comfort = state.today?.comfort ?? "quiet";
   const n = dayNumber(today);
 
-  // Before the first postcard, open on a compliment: it shows what the tool
-  // is for (noticing someone else) better than any explanation would.
-  if (state.postcards.length === 0) {
+  // On the first day, open on a compliment: it shows what the tool is for
+  // (noticing someone else) better than any explanation would. "First day"
+  // means nothing was written before today, so pinning (or deleting) a
+  // postcard today never changes today's idea.
+  const firstDay = !state.postcards.some((p) => dayKey(new Date(p.createdAt)) < today);
+  if (firstDay) {
     const compliments = ideas.filter((i) => i.group === "compliment" && i.comfort === comfort);
     return { idea: compliments[mod(n, compliments.length)], comfort };
   }
