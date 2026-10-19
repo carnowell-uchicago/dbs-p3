@@ -252,7 +252,7 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
             label="What did you do or notice?"
             hint="Name the detail, like “their green coat” or “how calm they were in the meeting.”"
             error={error}
-            count={{ value: values.what.trim().length, max: limits.what }}
+            count={{ value: values.what.length, max: limits.what }}
             value={values.what}
             onChange={(e) => set("what", e.target.value)}
           />
@@ -304,7 +304,7 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
             label="How did they react?"
             optional
             error={error}
-            count={{ value: values.reaction.trim().length, max: limits.reaction }}
+            count={{ value: values.reaction.length, max: limits.reaction }}
             value={values.reaction}
             onChange={(e) => set("reaction", e.target.value)}
           />
@@ -335,7 +335,7 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
                 id="feeling"
                 label="In your own words"
                 error={error}
-                count={{ value: values.feeling.trim().length, max: limits.feeling }}
+                count={{ value: values.feeling.length, max: limits.feeling }}
                 value={values.feeling}
                 onChange={(e) => set("feeling", e.target.value)}
               />

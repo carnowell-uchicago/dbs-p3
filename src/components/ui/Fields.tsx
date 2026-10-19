@@ -49,7 +49,7 @@ export function Field({ id, label, optional, hint, error, count, children }: Fie
             {over > 0 ? (
               <>
                 {over}
-                <span className="sr-only"> characters</span> over
+                <span className="sr-only">{over === 1 ? " character" : " characters"}</span> over
               </>
             ) : (
               <>

@@ -31,17 +31,19 @@ const over = (n: number) => `${n} ${n === 1 ? "character" : "characters"} over`;
 // Errors say what to do next, and never clear what was typed.
 export function validate(values: Values, today: string = dayKey()): Errors {
   const errors: Errors = {};
-  const what = values.what.trim();
-  if (!what) errors.what = "Write what you did or noticed. A few words is enough, like “told Sam the talk was clear.”";
-  else if (what.length > limits.what) errors.what = `Keep it postcard-sized: ${over(what.length - limits.what)}.`;
-  if (values.to.trim().length > limits.to) errors.to = `Shorten the name to ${limits.to} characters, or use a nickname.`;
+  // Limits count every character typed, spaces included, so the counter and
+  // the error always agree with what's in the box.
+  const what = values.what.length;
+  if (!values.what.trim()) errors.what = "Write what you did or noticed. A few words is enough, like “told Sam the talk was clear.”";
+  else if (what > limits.what) errors.what = `Keep it postcard-sized: ${over(what - limits.what)}.`;
+  if (values.to.length > limits.to) errors.to = `Shorten the name to ${limits.to} characters, or use a nickname.`;
   if (values.when === "earlier") {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(values.day)) errors.day = "Pick the date it happened, or choose Today.";
     else if (values.day > today) errors.day = "Pick today or an earlier date. Postcards are for things that already happened.";
   }
-  const reaction = values.reaction.trim().length;
+  const reaction = values.reaction.length;
   if (reaction > limits.reaction) errors.reaction = `Keep it to ${limits.reaction} characters: ${over(reaction - limits.reaction)}.`;
-  const feeling = values.feeling.trim().length;
+  const feeling = values.feeling.length;
   if (feeling > limits.feeling) errors.feeling = `Keep it to ${limits.feeling} characters: ${over(feeling - limits.feeling)}.`;
   return errors;
 }

@@ -152,7 +152,7 @@ function Form({
     router.push(editId ? (fromLookBack ? "/look-back" : "/wall") : "/");
   }
 
-  const what = values.what.trim().length;
+  const what = values.what.length;
 
   return (
     <>
@@ -229,7 +229,7 @@ function Form({
           optional
           hint="A smile, a reply, or nothing yet. All fine."
           error={errors.reaction}
-          count={{ value: values.reaction.trim().length, max: limits.reaction }}
+          count={{ value: values.reaction.length, max: limits.reaction }}
           value={values.reaction}
           onChange={(e) => set("reaction", e.target.value)}
         />
@@ -257,7 +257,7 @@ function Form({
               id="feeling"
               label="In your own words"
               error={errors.feeling}
-              count={{ value: values.feeling.trim().length, max: limits.feeling }}
+              count={{ value: values.feeling.length, max: limits.feeling }}
               value={values.feeling}
               onChange={(e) => set("feeling", e.target.value)}
             />
