@@ -3,6 +3,7 @@ import Link from "next/link";
 import { NavBar } from "@/components/layout/NavBar";
 import { RouteFocus } from "@/components/layout/RouteFocus";
 import { SkyBand } from "@/components/layout/SkyBand";
+import { TutorialGate } from "@/components/layout/TutorialGate";
 import { StorageNotice } from "@/components/layout/StorageNotice";
 import { Heart } from "@/components/ui/Icon";
 import { focusRing, font } from "@/components/ui/styles";
@@ -39,7 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main id="main" tabIndex={-1} className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 pt-6 pb-32 outline-none sm:px-6">
           <StorageNotice />
           <RouteFocus />
-          {children}
+          <TutorialGate>{children}</TutorialGate>
         </main>
         <footer className={`mx-auto w-full max-w-3xl px-4 pb-8 text-sm text-(--cp-muted) sm:px-6 ${font.body}`}>
           Your postcards are saved only in this browser, on this device. Nothing is sent anywhere.

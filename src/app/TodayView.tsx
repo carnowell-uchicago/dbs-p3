@@ -1,8 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { IdeaCard } from "@/components/postcards/IdeaCard";
 import { Postcard } from "@/components/postcards/Postcard";
@@ -20,14 +18,8 @@ const linkClass = `font-semibold underline decoration-2 underline-offset-4 decor
 export function TodayView() {
   const state = useKindRegards();
   const tutorial = useTutorial();
-  const router = useRouter();
 
-  // First visit (nothing saved): the onboarding is the Write tutorial, so go
-  // straight there.
-  useEffect(() => {
-    if (tutorial) router.replace("/write");
-  }, [tutorial, router]);
-
+  // First visit: TutorialGate sends you to the Write tutorial.
   if (!state || tutorial) return <Skeleton />;
 
   const today = dayKey();

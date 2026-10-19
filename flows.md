@@ -8,7 +8,7 @@ Each box with a route in brackets is a page. Every page shares the same nav: Tod
 
 ```mermaid
 flowchart LR
-    A["Open the site [/]<br/>nothing saved yet"] -->|"straight to"| T1["Write [/write] · first-visit tutorial<br/>one box at a time, each with a note on what it's for"]
+    A["Open any page of the site<br/>nothing saved yet"] -->|"straight to"| T1["Write [/write] · first-visit tutorial<br/>one box at a time, each with a note on what it's for"]
     T1 --> S1["1 · What did you do or notice? (required)"]
     S1 -->|"Next, empty"| E1["Under the box: 'Write what you did or noticed…'<br/>(focus stays on the box)"]
     E1 --> S1
