@@ -43,7 +43,7 @@ const fieldFor: Record<Step, keyof ReturnType<typeof validate>> = {
 const notes: Record<Step, { title: string; text: string }> = {
   what: {
     title: "The postcard itself",
-    text: "The kind thing you did or noticed, in a sentence or two. A small detail makes it worth rereading later.",
+    text: "A kind thing you did or noticed, in a sentence or two. A small detail makes it worth rereading later.",
   },
   to: {
     title: "Who it was for",
