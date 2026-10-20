@@ -4,11 +4,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/Button";
-import { ChipGroup } from "@/components/ui/ChipGroup";
-import { CheckboxField, TextAreaField, TextField } from "@/components/ui/Fields";
+import { chip, ChipGroup } from "@/components/ui/ChipGroup";
+import { TextAreaField, TextField } from "@/components/ui/Fields";
 import { Icon } from "@/components/ui/Icon";
 import { Panel } from "@/components/ui/Panel";
-import { font, type } from "@/components/ui/styles";
+import { edge, font, type } from "@/components/ui/styles";
 import { examplePostcard } from "@/data/example";
 import { addDays, dayKey, longDate } from "@/lib/dates";
 import { todaysIdea } from "@/lib/derive";
@@ -44,23 +44,23 @@ const fieldFor: Record<Step, keyof ReturnType<typeof validate>> = {
 const notes: Record<Step, { title: string; text: string }> = {
   what: {
     title: "The postcard itself",
-    text: "A kind thing you did or noticed, in a sentence or two. A small detail makes it worth rereading later.",
+    text: "A kind thing you did or noticed, with a detail.",
   },
   to: {
     title: "Who it was for",
-    text: "Names fill your People page, so you can see who you haven't appreciated in a while. Leave it blank for a stranger.",
+    text: "Names fill your People page. Blank is fine for a stranger.",
   },
   when: {
     title: "When it happened",
-    text: "Usually today. Your Sunday look-back uses it to gather the week.",
+    text: "Your Sunday look-back gathers the week.",
   },
   reaction: {
     title: "How they took it",
-    text: "A smile, a reply, or nothing yet. It's nice to remember when you look back.",
+    text: "A smile, a reply, or nothing yet.",
   },
   feeling: {
     title: "How it felt for you",
-    text: "Noticing that it felt good makes the next one easier.",
+    text: "Noticing it makes the next one easier.",
   },
 };
 
@@ -202,22 +202,12 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
         </div>
 
         {step === "what" ? (
-          <Panel as="section" labelledBy="tutorial-idea" className="flex flex-col gap-3 p-4 sm:p-5">
-            <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h2 id="tutorial-idea" className={type.title}>
-                Today&rsquo;s idea
-              </h2>
-              <p className={type.meta}>A new one every day</p>
-            </div>
-            <p className={`${font.body} text-lg leading-relaxed`}>{idea.text}</p>
-            <p className={type.meta}>Did this? Write it down. Did something else? That counts too.</p>
-            <CheckboxField
-              id="idea"
-              label="I'm writing about this idea"
-              checked={values.ideaId === idea.id}
-              onChange={(e) => set("ideaId", e.target.checked ? idea.id : undefined)}
-            />
-          </Panel>
+          <section aria-labelledby="tutorial-idea" className="flex flex-col gap-1">
+            <h2 id="tutorial-idea" className={type.title}>
+              Today&rsquo;s idea
+            </h2>
+            <p className={`${font.body} text-lg leading-relaxed`}>&ldquo;{idea.text}&rdquo;</p>
+          </section>
         ) : null}
 
         <div className="grid items-start gap-5 sm:grid-cols-[minmax(0,1fr)_15rem] sm:gap-8">
@@ -230,16 +220,29 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
           </Panel>
         </div>
 
-        {offer.open ? (
-          <div className="flex flex-col items-start gap-2">
-            <p className={type.meta}>
-              {step === "what" ? "Or use this example (it won't be saved):" : "Or use the example's answer:"}
-            </p>
-            <p className={`${font.hand} text-xl text-(--cp-ink)`}>{offer.show}</p>
-            <Button size="sm" onClick={offer.use}>
-              <Icon name="plus" className="size-3" />
-              Use this example
-            </Button>
+        {/* Ways to start without writing from scratch: on the first step, mark
+            it as today's idea, or use the example (never saved). */}
+        {step === "what" || offer.open ? (
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-3">
+            <span className={type.meta}>Or start with:</span>
+            {step === "what" ? (
+              <button
+                type="button"
+                aria-pressed={values.ideaId === idea.id}
+                onClick={() => set("ideaId", values.ideaId === idea.id ? undefined : idea.id)}
+                style={edge}
+                className={chip}
+              >
+                {values.ideaId === idea.id ? <Icon name="check" /> : null}
+                Today&rsquo;s idea
+              </button>
+            ) : null}
+            {offer.open ? (
+              <button type="button" onClick={offer.use} style={edge} className={chip}>
+                <Icon name="plus" className="size-3" />
+                {step === "what" ? "The example (not saved)" : offer.show}
+              </button>
+            ) : null}
           </div>
         ) : null}
         {practice ? (
@@ -263,7 +266,6 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
             </Button>
           ) : null}
         </div>
-        <p className={type.meta}>The other tabs open once you finish or skip.</p>
       </form>
     </>
   );
@@ -276,7 +278,6 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
           <TextAreaField
             id="what"
             label="What did you do or notice?"
-            hint="Name the detail, like “their green coat” or “how calm they were in the meeting.”"
             error={error}
             count={{ value: values.what.length, max: limits.what }}
             value={values.what}

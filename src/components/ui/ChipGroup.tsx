@@ -5,6 +5,13 @@ import { edge, focusRing, font } from "./styles";
 
 type Option<T extends string> = { value: T; label: string };
 
+// A toggle chip's look (also used on its own, with aria-pressed).
+export const chip = `inline-flex h-9 items-center gap-2 px-3 text-base font-semibold select-none [--w:3px] [--e:var(--cp-wood)] [--d:3px] ${font.display} ${focusRing}
+                bg-(--cp-surface) text-(--cp-text) not-aria-pressed:hover:bg-(--cp-hover)
+                active:translate-y-[3px] active:[--d:0px] not-aria-pressed:active:bg-(--cp-pressed)
+                aria-pressed:bg-(--cp-wood) aria-pressed:text-(--cp-surface) aria-pressed:[--e:var(--cp-text)] aria-pressed:[--d:0px] aria-pressed:translate-y-[3px]
+                motion-safe:transition-[translate] motion-safe:duration-75`;
+
 // A row of toggle chips that act as one choice. Selected fills with wood and
 // shows a check, so the state never rests on color alone. Pressing the
 // selected chip again clears it when `clearable` is set.
@@ -45,11 +52,7 @@ export function ChipGroup<T extends string>({
               aria-pressed={on}
               onClick={() => onChange(on && clearable ? undefined : option.value)}
               style={edge}
-              className={`inline-flex h-9 items-center gap-2 px-3 text-base font-semibold select-none [--w:3px] [--e:var(--cp-wood)] [--d:3px] ${font.display} ${focusRing}
-                bg-(--cp-surface) text-(--cp-text) not-aria-pressed:hover:bg-(--cp-hover)
-                active:translate-y-[3px] active:[--d:0px] not-aria-pressed:active:bg-(--cp-pressed)
-                aria-pressed:bg-(--cp-wood) aria-pressed:text-(--cp-surface) aria-pressed:[--e:var(--cp-text)] aria-pressed:[--d:0px] aria-pressed:translate-y-[3px]
-                motion-safe:transition-[translate] motion-safe:duration-75`}
+              className={chip}
             >
               {on ? <Icon name="check" /> : null}
               {option.label}
