@@ -235,7 +235,7 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
             <span className={type.meta}>Or start with:</span>
             <button type="button" onClick={offer.use} style={edge} className={chip}>
               <Icon name="plus" className="size-3" />
-              {step === "what" ? "The example (not saved)" : offer.show}
+              {step === "what" ? "An example (not saved)" : offer.show}
             </button>
           </div>
         ) : null}

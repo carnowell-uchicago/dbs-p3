@@ -24,7 +24,7 @@ export function Field({ id, label, optional, hint, error, count, children }: Fie
     <div className="flex flex-col gap-2">
       <label htmlFor={id} className={`${type.label} self-start text-(--cp-text)`}>
         {label}
-        {optional ? <span className={`${font.body} ml-1 text-sm font-normal text-(--cp-muted)`}> optional</span> : null}
+        {optional ? <span className={`${font.body} ml-1 text-sm font-normal text-(--cp-muted)`}> (optional)</span> : null}
       </label>
       {hint ? (
         <p id={`${id}-hint`} className={`${type.meta} -mt-1`}>
