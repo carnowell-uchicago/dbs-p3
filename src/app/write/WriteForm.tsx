@@ -97,9 +97,9 @@ function Form({
   const [submitted, setSubmitted] = useState(false);
   // "Other…" is open when the saved feeling isn't one of the quick picks.
   const [otherFeeling, setOtherFeeling] = useState(() => Boolean(initial.feeling) && !feelingPicks.includes(initial.feeling));
-  // Only offer the idea checkbox on an edit if that postcard had one, and not
-  // before the first postcard (the first visit doesn't show an idea yet).
-  const [offerIdea] = useState(() => (editId ? Boolean(initial.ideaId) : state.postcards.length > 0));
+  // Always offer the idea checkbox on a new postcard (even with an empty
+  // wall); on an edit, only if that postcard had one.
+  const [offerIdea] = useState(() => (editId ? Boolean(initial.ideaId) : true));
 
   const today = dayKey();
   const errors = submitted ? validate(values, today) : {};

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "rea
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/Button";
 import { chip, ChipGroup } from "@/components/ui/ChipGroup";
-import { TextAreaField, TextField } from "@/components/ui/Fields";
+import { CheckboxField, TextAreaField, TextField } from "@/components/ui/Fields";
 import { Icon } from "@/components/ui/Icon";
 import { Panel } from "@/components/ui/Panel";
 import { edge, font, type } from "@/components/ui/styles";
@@ -207,6 +207,14 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
               Today&rsquo;s idea
             </h2>
             <p className={`${font.body} text-lg leading-relaxed`}>&ldquo;{idea.text}&rdquo;</p>
+            <div className="pt-2">
+              <CheckboxField
+                id="idea"
+                label="I'm writing about this idea"
+                checked={values.ideaId === idea.id}
+                onChange={(e) => set("ideaId", e.target.checked ? idea.id : undefined)}
+              />
+            </div>
           </section>
         ) : null}
 
@@ -220,29 +228,15 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
           </Panel>
         </div>
 
-        {/* Ways to start without writing from scratch: on the first step, mark
-            it as today's idea, or use the example (never saved). */}
-        {step === "what" || offer.open ? (
+        {/* Stuck? Each box offers the example's answer while it's empty (the
+            example's sentence is never saved). */}
+        {offer.open ? (
           <div className="flex flex-wrap items-center gap-x-3 gap-y-3">
             <span className={type.meta}>Or start with:</span>
-            {step === "what" ? (
-              <button
-                type="button"
-                aria-pressed={values.ideaId === idea.id}
-                onClick={() => set("ideaId", values.ideaId === idea.id ? undefined : idea.id)}
-                style={edge}
-                className={chip}
-              >
-                {values.ideaId === idea.id ? <Icon name="check" /> : null}
-                Today&rsquo;s idea
-              </button>
-            ) : null}
-            {offer.open ? (
-              <button type="button" onClick={offer.use} style={edge} className={chip}>
-                <Icon name="plus" className="size-3" />
-                {step === "what" ? "The example (not saved)" : offer.show}
-              </button>
-            ) : null}
+            <button type="button" onClick={offer.use} style={edge} className={chip}>
+              <Icon name="plus" className="size-3" />
+              {step === "what" ? "The example (not saved)" : offer.show}
+            </button>
           </div>
         ) : null}
         {practice ? (
