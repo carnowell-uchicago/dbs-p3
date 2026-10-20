@@ -16,11 +16,11 @@ These are the three flows (first visit, main task, coming back). The source is i
 
 ```mermaid
 flowchart LR
-    A["Open any page of the site<br/>nothing saved yet"] -->|"straight to"| T1["Write [/write] · first-visit tutorial<br/>one box at a time, each with a note on what it's for;<br/>step 1 shows today's idea"]
+    A["Open any page of the site<br/>nothing saved yet"] -->|"straight to"| T1["Write [/write] · first-visit tutorial<br/>one box at a time, each with a note on what it's for;<br/>step 1 shows today's idea, with 'I'm writing about this idea'"]
     T1 --> S1["1 · What did you do or notice? (required)"]
     S1 -->|"Next, empty"| E1["Under the box: 'Write what you did or noticed…'<br/>(focus stays on the box)"]
     E1 --> S1
-    S1 -.->|"'Or start with:' Today's idea · The example (not saved)"| S1
+    S1 -.->|"'Or start with: + The example (not saved)'"| S1
     S1 -->|"Next"| S2["2 · Who · 3 · When · 4 · How they reacted · 5 · How you felt<br/>(optional; Back, Next, or Pin it now)"]
     S2 -->|"Pin it to my wall"| R{"Your own words,<br/>or the example?"}
     R -->|"your own"| P["Today's idea [/]<br/>'Pinned to your wall.' then 'Here's today's idea':<br/>a new one every day, come back tomorrow<br/>saved; the tutorial is over"]
@@ -110,7 +110,7 @@ Subagents studied how three similar tools welcome someone new. The full notes ar
 | Happyfeed (now Orca) | An account form | Name, email, password, *before* any value | Right after sign-up | **Took:** scheduled look-backs. **Avoided:** the jar, shake-for-random, sign-up first. |
 | Random Acts of Kindness | Free resources, no sign-up | Nothing | One click to an idea | **Took:** asking for nothing, with something to do in one tap (here, today's idea and "Use this example" on the first screen). **Avoided:** their wording, calendars, terms. Filled their gap: no way to log or reflect. |
 
-Under the logo on every page, one line says what the site is for: "A new way to be kind every day, and a wall to remember it." So the first visit asks for nothing: opening any page goes straight to **Write**, where the first postcard is written one box at a time. Step 1 opens with **today's idea**. Each box has a one-line note beside it on what it's for (names fill People; the date feeds the Sunday look-back), and under it an "Or start with:" row: on step 1, **Today's idea** (marks the postcard as the idea) and **The example (not saved)**; on later steps, the example's answer (like "+ Priya"), so nobody stalls on having nothing good yet. Writing your own saves it and ends the tutorial. Finishing with the example pins a **practice postcard**: it shows like a real one on every tab, labeled "Practice, not saved", and disappears when you leave or reload (which brings the tutorial back). Pinning, practice, or **Skip the tutorial** all finish on **Today's idea**, which leads with the idea and "There's a new idea every day. Come back tomorrow for the next one." Until the tutorial is finished or skipped, the other tabs are switched off (flat and pale, out of the Tab order, with a "Finish or skip the tutorial first" tooltip). After the first postcard, Write is the full form.
+Under the logo on every page, one line says what the site is for: "A new way to be kind every day, and a wall to remember it." So the first visit asks for nothing: opening any page goes straight to **Write**, where the first postcard is written one box at a time. Step 1 opens with **today's idea** and an "I'm writing about this idea" checkbox. Each box has a one-line note beside it on what it's for (names fill People; the date feeds the Sunday look-back), and under it "Or start with:" and the example's answer as a chip (**The example (not saved)** on step 1, then answers like "+ Priya"), so nobody stalls on having nothing good yet. Writing your own saves it and ends the tutorial. Finishing with the example pins a **practice postcard**: it shows like a real one on every tab, labeled "Practice, not saved", and disappears when you leave or reload (which brings the tutorial back). Pinning, practice, or **Skip the tutorial** all finish on **Today's idea**, which leads with the idea and "There's a new idea every day. Come back tomorrow for the next one." Until the tutorial is finished or skipped, the other tabs are switched off (flat and pale, out of the Tab order, with a "Finish or skip the tutorial first" tooltip). After the first postcard, Write is the full form.
 
 ## The form
 
