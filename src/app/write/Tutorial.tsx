@@ -190,7 +190,9 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
       <form noValidate onSubmit={onSubmit} className="flex flex-col gap-6" aria-labelledby="step-label">
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
           <p id="step-label" className={`${font.display} text-base text-(--cp-muted)`}>
-            Step {index + 1} of {steps.length}
+            {/* Numbers in the body font: Pixelify's 5 reads as an S. */}
+            Step <span className={`${font.body} text-lg font-semibold text-(--cp-text)`}>{index + 1}</span> of{" "}
+            <span className={`${font.body} text-lg font-semibold text-(--cp-text)`}>{steps.length}</span>
             <span className="sr-only">: {notes[step].title}</span>
           </p>
           <Button variant="primary" size="sm" onClick={skip}>
