@@ -6,7 +6,7 @@ import { edge, focusRing, font } from "@/components/ui/styles";
 import { useTutorial } from "@/lib/store";
 
 export const navItems = [
-  { href: "/", label: "Today" },
+  { href: "/", label: "Today’s idea" },
   { href: "/write", label: "Write" },
   { href: "/wall", label: "Wall" },
   { href: "/people", label: "People" },

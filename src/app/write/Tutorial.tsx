@@ -5,12 +5,13 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "rea
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/Button";
 import { ChipGroup } from "@/components/ui/ChipGroup";
-import { TextAreaField, TextField } from "@/components/ui/Fields";
+import { CheckboxField, TextAreaField, TextField } from "@/components/ui/Fields";
 import { Icon } from "@/components/ui/Icon";
 import { Panel } from "@/components/ui/Panel";
 import { font, type } from "@/components/ui/styles";
 import { examplePostcard } from "@/data/example";
 import { addDays, dayKey, longDate } from "@/lib/dates";
+import { todaysIdea } from "@/lib/derive";
 import { addPostcard, pinPractice, saveDraft, skipTutorial, type State } from "@/lib/store";
 import {
   chosenDay,
@@ -81,6 +82,8 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
   // The example's own sentence makes this a practice postcard.
   const practice = values.what.trim() === example.what;
   const all = validate(values, today);
+  // Today's idea, shown on the first step: the site's point is a new one daily.
+  const idea = todaysIdea(state, today).idea;
   const error = checked.includes(step) ? all[fieldFor[step]] : undefined;
 
   // Keep a real draft on the device as you type (never the practice one).
@@ -138,22 +141,24 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
       day: chosenDay(values, today),
       reaction: values.reaction,
       feeling: values.feeling,
+      ideaId: values.ideaId,
     };
+    // Either way, finish on Today, where the daily idea waits.
     if (practice) {
       if (state.draft) saveDraft(undefined);
       pinPractice(input);
-      router.push("/wall?pinned=practice");
+      router.push("/?tutorial=practice");
     } else {
-      const id = addPostcard(input);
-      router.push(`/wall?pinned=${id}`);
+      addPostcard(input);
+      router.push("/?tutorial=pinned");
     }
   }
 
-  // Skip: go to the wall, where the example postcard waits on the empty board.
-  // Anything typed stays as a draft for the full form.
+  // Skip: go to Today, where the daily idea waits. Anything typed stays as a
+  // draft for the full form.
   function skip() {
     skipTutorial();
-    router.push("/wall");
+    router.push("/?tutorial=skipped");
   }
 
   // The example's answer for this step, and how to fill it in. It's offered
@@ -193,6 +198,25 @@ export function Tutorial({ state, presetTo }: { state: State; presetTo?: string 
             <Icon name="skip" />
           </Button>
         </div>
+
+        {step === "what" ? (
+          <Panel as="section" labelledBy="tutorial-idea" className="flex flex-col gap-3 p-4 sm:p-5">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <h2 id="tutorial-idea" className={type.title}>
+                Today&rsquo;s idea
+              </h2>
+              <p className={type.meta}>A new one every day</p>
+            </div>
+            <p className={`${font.body} text-lg leading-relaxed`}>{idea.text}</p>
+            <p className={type.meta}>Did this? Write it down. Did something else? That counts too.</p>
+            <CheckboxField
+              id="idea"
+              label="I'm writing about this idea"
+              checked={values.ideaId === idea.id}
+              onChange={(e) => set("ideaId", e.target.checked ? idea.id : undefined)}
+            />
+          </Panel>
+        ) : null}
 
         <div className="grid items-start gap-5 sm:grid-cols-[minmax(0,1fr)_15rem] sm:gap-8">
           <div className="flex min-w-0 flex-col gap-4">{field(step)}</div>

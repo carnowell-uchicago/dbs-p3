@@ -16,17 +16,17 @@ These are the three flows (first visit, main task, coming back). The source is i
 
 ```mermaid
 flowchart LR
-    A["Open any page of the site<br/>nothing saved yet"] -->|"straight to"| T1["Write [/write] · first-visit tutorial<br/>one box at a time, each with a note on what it's for"]
+    A["Open any page of the site<br/>nothing saved yet"] -->|"straight to"| T1["Write [/write] · first-visit tutorial<br/>one box at a time, each with a note on what it's for;<br/>step 1 shows today's idea (tick it if you're writing about it)"]
     T1 --> S1["1 · What did you do or notice? (required)"]
     S1 -->|"Next, empty"| E1["Under the box: 'Write what you did or noticed…'<br/>(focus stays on the box)"]
     E1 --> S1
     S1 -.->|"stuck? 'Or use this example (it won't be saved)'"| S1
     S1 -->|"Next"| S2["2 · Who · 3 · When · 4 · How they reacted · 5 · How you felt<br/>(optional; Back, Next, or Pin it now)"]
     S2 -->|"Pin it to my wall"| R{"Your own words,<br/>or the example?"}
-    R -->|"your own"| P["Wall [/wall]<br/>it drops onto the corkboard: 'Pinned to your wall.'<br/>saved; the tutorial is over"]
-    R -->|"the example"| PR["Wall [/wall]<br/>'Practice postcard pinned. It isn't saved.'<br/>shown on every tab, labeled Practice"]
+    R -->|"your own"| P["Today's idea [/]<br/>'Pinned to your wall.' then 'Here's today's idea':<br/>a new one every day, come back tomorrow<br/>saved; the tutorial is over"]
+    R -->|"the example"| PR["Today's idea [/]<br/>'Practice postcard pinned. It isn't saved.'<br/>then today's idea; the practice card shows on every tab"]
     PR -->|"leave or reload"| A
-    T1 -->|"Skip the tutorial"| SK["Wall [/wall]<br/>the example postcard on the empty board<br/>(anything typed stays as a draft)"]
+    T1 -->|"Skip the tutorial"| SK["Today's idea [/]<br/>'Here's today's idea' (the wall shows the example)<br/>(anything typed stays as a draft)"]
     SK -->|"leave or reload"| A
 ```
 
@@ -52,7 +52,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    R["Today [/]<br/>Welcome back: last here Tuesday,<br/>N postcards, M this week,<br/>and a new idea for today"]
+    R["Today's idea [/]<br/>Welcome back: last here Tuesday,<br/>N postcards, M this week,<br/>and a new idea for today"]
     R -->|"wrote one today"| DONE["One postcard today. Nice.<br/>today's postcard + another idea, no limit"]
     R -->|"someone not written to in 7+ days"| N["'Thinking of Sam?'"]
     N -->|"Write to Sam"| W["Write [/write?to=Sam]"]
@@ -81,7 +81,7 @@ Each step in the flow has its own route, and every page shares the same nav. The
 
 | Route | What it's for |
 |---|---|
-| `/` Today | **First visit:** goes straight to the Write tutorial. **Returning:** a welcome back message, today's idea, someone to revisit, a Sunday look-back link, and **Show me a memory** (opens a past postcard on the wall). After one postcard: "One postcard today. Nice." |
+| `/` Today's idea | **First visit:** goes straight to the Write tutorial, and ends here with today's idea first. **Returning:** a welcome back message, today's idea, someone to revisit, a Sunday look-back link, and **Show me a memory** (opens a past postcard on the wall). After one postcard: "One postcard today. Nice." |
 | `/write` | **First visit:** the tutorial, one box at a time with a note on what each is for, and the example offered. **After that:** the one-column postcard form. It also handles editing (`?edit=`) and prefilling a name (`?to=`). |
 | `/wall` | A pixel corkboard with every postcard pinned small, and a running total. Open a postcard to read it full size, Edit, or Delete (with Undo). **Show me a memory** opens a random one from before today. Filter by person. |
 | `/people` | Everyone you've written to, how often, and when you last did. Anyone at 7+ days is marked. |
@@ -91,7 +91,7 @@ Each step in the flow has its own route, and every page shares the same nav. The
 
 **Who it's for:** me, someone who wants to thoughtfully appreciate the people around them a little every day.
 
-- **One way to log anything.** Any kind act counts, so there's a single **Write a postcard** action. The daily idea is a nudge, not an assignment. If you used it, you tick "This was today's idea."
+- **A new idea every day is the point.** The tagline, the first tab (**Today's idea**), and the tutorial's first step all lead with it. Writing is still one action for any kindness: **Write a postcard** works with or without the idea. If you used it, you tick "This was today's idea."
 - **Ideas use a "notice, then say" voice.** For example: "Notice one thing about someone's style… and tell them what caught your eye." **Quiet / In person** lets you match the idea to your energy that day. On Sundays the first idea is one for yourself. There's one idea a day, the same all day whether or not you write anything, and no way to swap it: ideas are optional, so there's nothing to shop around for. There are 80 ideas for someone else, 10 for each kind (compliment, thanks, reach out, small act) at each comfort level, so a full cycle runs 40 days before any idea repeats, plus 3 for yourself on Sundays.
 - **A postcard wall, not a jar.** The research found the jar already taken by Happyfeed's "Happiness Jar" and a "Gratitude Jar" app. Postcards are addressed to someone, which suits an app about people.
 - **A corkboard.** The wall is a pixel corkboard in a wood frame. Each postcard is pinned small, in the emptiest spot when it's written, and keeps that spot. Once the board is full, new cards overlap older ones, with the newest on top. Opening one shows it full size. **Show me a memory** pulls up a random past postcard.
@@ -108,9 +108,9 @@ Subagents studied how three similar tools welcome someone new. The full notes ar
 |---|---|---|---|---|
 | Duolingo | "Learn for free. Forever." | 7–10 questions; the account comes *after* the first lesson | about 90 s | **Took:** the first real action before any setup. **Avoided:** streak guilt, mascot nagging. |
 | Happyfeed (now Orca) | An account form | Name, email, password, *before* any value | Right after sign-up | **Took:** scheduled look-backs. **Avoided:** the jar, shake-for-random, sign-up first. |
-| Random Acts of Kindness | Free resources, no sign-up | Nothing | One click to an idea | **Took:** asking for nothing, with something to do in one tap (here, "Use this example" on the first visit; the daily idea starts on the second). **Avoided:** their wording, calendars, terms. Filled their gap: no way to log or reflect. |
+| Random Acts of Kindness | Free resources, no sign-up | Nothing | One click to an idea | **Took:** asking for nothing, with something to do in one tap (here, today's idea and "Use this example" on the first screen). **Avoided:** their wording, calendars, terms. Filled their gap: no way to log or reflect. |
 
-Under the logo on every page, one line says what the site is for: "Appreciate someone each day, and keep a postcard to remember." So the first visit asks for nothing: opening the site goes straight to **Write**, where the first postcard is written one box at a time. Each box has a short note beside it on what it's for (names fill People; the date feeds the Sunday look-back), and every box offers the example's answer, "Or use this example (it won't be saved)", so nobody stalls on having nothing good yet. Writing your own saves it and ends the tutorial. Finishing with the example pins a **practice postcard**: it shows like a real one on every tab, labeled "Practice, not saved", and disappears when you leave or reload (which brings the tutorial back). **Skip the tutorial** goes straight to the wall, where the example postcard sits on the empty board. Until the tutorial is finished or skipped, the other tabs are switched off (flat and pale, and out of the Tab order), with a note saying they open once you finish or skip. After the first postcard, Write is the full form.
+Under the logo on every page, one line says what the site is for: "A new way to be kind every day, and a wall to remember it." So the first visit asks for nothing: opening the site goes straight to **Write**, where the first postcard is written one box at a time. Each box has a short note beside it on what it's for (names fill People; the date feeds the Sunday look-back), and every box offers the example's answer, "Or use this example (it won't be saved)", so nobody stalls on having nothing good yet. Writing your own saves it and ends the tutorial. Finishing with the example pins a **practice postcard**: it shows like a real one on every tab, labeled "Practice, not saved", and disappears when you leave or reload (which brings the tutorial back). The first step also shows **today's idea**, with "Did this? Write it down. Did something else? That counts too." and a box to tick if you're writing about it. Pinning, practice, or **Skip the tutorial** all finish on **Today's idea**, which leads with the idea and "There's a new idea every day. Come back tomorrow for the next one." Until the tutorial is finished or skipped, the other tabs are switched off (flat and pale, and out of the Tab order), with a note saying they open once you finish or skip. After the first postcard, Write is the full form.
 
 ## The form
 

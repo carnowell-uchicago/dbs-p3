@@ -13,7 +13,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: { default: "Kind Regards", template: "%s · Kind Regards" },
-  description: "Appreciate someone each day, and keep a postcard to remember. Saved on your device.",
+  description: "A new way to be kind every day, and a wall to remember it. Saved on your device.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -35,7 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Heart className="h-6 w-7" />
             Kind Regards
           </Link>
-          <p className={`-mt-2 text-base text-(--cp-muted) ${font.body}`}>Appreciate someone each day, and keep a postcard to remember.</p>
+          <p className={`-mt-2 text-base text-(--cp-muted) ${font.body}`}>A new way to be kind every day, and a wall to remember it.</p>
           <NavBar />
         </header>
         <main id="main" tabIndex={-1} className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 pt-6 pb-32 outline-none sm:px-6">

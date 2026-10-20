@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { IdeaCard } from "@/components/postcards/IdeaCard";
 import { Postcard } from "@/components/postcards/Postcard";
 import { LinkButton } from "@/components/ui/Button";
+import { Notice } from "@/components/ui/Notice";
 import { Icon } from "@/components/ui/Icon";
 import { Panel } from "@/components/ui/Panel";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -15,9 +18,29 @@ import { useKindRegards, useTutorial } from "@/lib/store";
 
 const linkClass = `font-semibold underline decoration-2 underline-offset-4 decoration-(--cp-wood) hover:decoration-4 ${focusRing} focus-visible:outline-offset-2`;
 
+// Pages stay mounted (hidden) between navigations, so key on bfcacheId: a
+// fresh visit re-reads "just finished the tutorial" from the URL.
 export function TodayView() {
+  const { bfcacheId } = useRouter();
+  return <Today key={bfcacheId} />;
+}
+
+const tutorialNotes = {
+  pinned: "Pinned to your wall.",
+  practice: "Practice postcard pinned. It isn't saved.",
+} as const;
+
+function Today() {
   const state = useKindRegards();
   const tutorial = useTutorial();
+  const params = useSearchParams();
+  const router = useRouter();
+  // Just finished (or skipped) the tutorial: read it once, then drop it from
+  // the URL so a reload doesn't repeat it.
+  const [fromTutorial] = useState(() => params.get("tutorial"));
+  useEffect(() => {
+    if (params.has("tutorial")) router.replace("/", { scroll: false });
+  }, [params, router]);
 
   // First visit: TutorialGate sends you to the Write tutorial.
   if (!state || tutorial) return <Skeleton />;
@@ -28,6 +51,26 @@ export function TodayView() {
   const writtenToday = state.postcards.filter((p) => p.day === today);
   const lastVisit = state.visits?.current !== today ? state.visits?.current : state.visits?.previous;
   const sunday = isSunday(today);
+
+  // Straight from the tutorial: today's idea comes first, with what it's for.
+  if (fromTutorial) {
+    const note = tutorialNotes[fromTutorial as keyof typeof tutorialNotes];
+    return (
+      <>
+        {note ? <Notice tone="success" title={note} /> : null}
+        <PageHeader title="Here's today's idea" lead="There's a new idea every day. Come back tomorrow for the next one." />
+        <IdeaCard idea={idea} comfort={comfort} title="Idea for today" />
+        <div className="flex flex-wrap items-center gap-4">
+          <LinkButton href="/write" variant="primary">
+            Write a postcard
+          </LinkButton>
+          <LinkButton href="/wall" variant="secondary">
+            See your wall
+          </LinkButton>
+        </div>
+      </>
+    );
+  }
 
   // Nothing saved, but the tutorial's done for this visit (skipped, or its
   // practice postcard was removed): one way forward, and today's idea.

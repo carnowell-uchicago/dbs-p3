@@ -2,23 +2,23 @@
 
 **Main task:** I do something kind → I write it on a postcard → it's pinned to my wall → I come back tomorrow for a new idea, and on Sunday I look back at everyone I appreciated.
 
-Each box with a route in brackets is a page. Every page shares the same nav: Today · Write · Wall · People · Look back.
+Each box with a route in brackets is a page. Every page shares the same nav: Today's idea · Write · Wall · People · Look back.
 
 ### 1 · First visit: useful right away
 
 ```mermaid
 flowchart LR
-    A["Open any page of the site<br/>nothing saved yet"] -->|"straight to"| T1["Write [/write] · first-visit tutorial<br/>one box at a time, each with a note on what it's for"]
+    A["Open any page of the site<br/>nothing saved yet"] -->|"straight to"| T1["Write [/write] · first-visit tutorial<br/>one box at a time, each with a note on what it's for;<br/>step 1 shows today's idea (tick it if you're writing about it)"]
     T1 --> S1["1 · What did you do or notice? (required)"]
     S1 -->|"Next, empty"| E1["Under the box: 'Write what you did or noticed…'<br/>(focus stays on the box)"]
     E1 --> S1
     S1 -.->|"stuck? 'Or use this example (it won't be saved)'"| S1
     S1 -->|"Next"| S2["2 · Who · 3 · When · 4 · How they reacted · 5 · How you felt<br/>(optional; Back, Next, or Pin it now)"]
     S2 -->|"Pin it to my wall"| R{"Your own words,<br/>or the example?"}
-    R -->|"your own"| P["Wall [/wall]<br/>it drops onto the corkboard: 'Pinned to your wall.'<br/>saved; the tutorial is over"]
-    R -->|"the example"| PR["Wall [/wall]<br/>'Practice postcard pinned. It isn't saved.'<br/>shown on every tab, labeled Practice"]
+    R -->|"your own"| P["Today's idea [/]<br/>'Pinned to your wall.' then 'Here's today's idea':<br/>a new one every day, come back tomorrow<br/>saved; the tutorial is over"]
+    R -->|"the example"| PR["Today's idea [/]<br/>'Practice postcard pinned. It isn't saved.'<br/>then today's idea; the practice card shows on every tab"]
     PR -->|"leave or reload"| A
-    T1 -->|"Skip the tutorial"| SK["Wall [/wall]<br/>the example postcard on the empty board<br/>(anything typed stays as a draft)"]
+    T1 -->|"Skip the tutorial"| SK["Today's idea [/]<br/>'Here's today's idea' (the wall shows the example)<br/>(anything typed stays as a draft)"]
     SK -->|"leave or reload"| A
 ```
 
@@ -44,7 +44,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    R["Today [/]<br/>Welcome back: last here Tuesday,<br/>N postcards, M this week,<br/>and a new idea for today"]
+    R["Today's idea [/]<br/>Welcome back: last here Tuesday,<br/>N postcards, M this week,<br/>and a new idea for today"]
     R -->|"wrote one today"| DONE["One postcard today. Nice.<br/>today's postcard + another idea, no limit"]
     R -->|"someone not written to in 7+ days"| N["'Thinking of Sam?'"]
     N -->|"Write to Sam"| W["Write [/write?to=Sam]"]
